@@ -6,6 +6,8 @@ namespace NonFactors.Mvc.Grid
     {
         IGridColumns Columns { get; }
         IGridRows Rows { get; }
+
+        IGridPager Pager { get; }
     }
 
     public interface IGrid<TModel> : IGrid where TModel : class

@@ -28,11 +28,19 @@ namespace NonFactors.Mvc.Grid
             protected set;
         }
 
+        public IGridPager Pager
+        {
+            get;
+            protected set;
+        }
+
         public Grid(IQueryable<TModel> source)
         {
-            Columns = new GridColumns<TModel>();
-            Rows = new GridRows<TModel>(source);
             Source = source;
+            Pager = new GridPager();
+
+            Columns = new GridColumns<TModel>();
+            Rows = new GridRows<TModel>(source, Pager);
         }
     }
 }

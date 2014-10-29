@@ -22,6 +22,12 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public IGridOptions<TModel> Pageable(Action<IGridPager> builder)
+        {
+            builder(grid.Pager);
+
+            return this;
+        }
 
         public String ToHtmlString()
         {
