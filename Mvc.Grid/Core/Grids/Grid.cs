@@ -31,16 +31,15 @@ namespace NonFactors.Mvc.Grid
         public IGridPager Pager
         {
             get;
-            protected set;
+            set;
         }
 
         public Grid(IQueryable<TModel> source)
         {
             Source = source;
-            Pager = new GridPager();
 
             Columns = new GridColumns<TModel>();
-            Rows = new GridRows<TModel>(source, Pager);
+            Rows = new GridRows<TModel>(source, this);
         }
     }
 }

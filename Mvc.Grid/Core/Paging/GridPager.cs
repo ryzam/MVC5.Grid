@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridPager : IGridPager
+    public class GridPager<TModel> : IGridPager where TModel : class
     {
         public const Int32 DefaultItemsPerPage = 20;
 
-        public Int32 ItemsPerPage
+        public String PartialViewName
+        {
+            get;
+            set;
+        }
+
+        public Int32 RowsPerPage
         {
             get;
             set;
@@ -16,11 +23,18 @@ namespace NonFactors.Mvc.Grid
             get;
             set;
         }
-
-        public GridPager()
+        public Int32 TotalPages
         {
-            ItemsPerPage = DefaultItemsPerPage;
-            CurrentPage = 0;
+            get;
+            private set;
+        }
+
+        public GridPager(IGrid<TModel> grid)
+        {
+            PartialViewName = "MvcGrid/_Pager";
+
+            RowsPerPage = DefaultItemsPerPage;
+            TotalPages = (Int32)(Math.Ceiling(grid.Source.Count() / (Double)DefaultItemsPerPage));
         }
     }
 }

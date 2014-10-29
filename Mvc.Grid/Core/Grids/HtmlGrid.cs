@@ -6,6 +6,11 @@ namespace NonFactors.Mvc.Grid
 {
     public class HtmlGrid<TModel> : IHtmlGrid<TModel> where TModel : class
     {
+        public String PartialViewName
+        {
+            get;
+            set;
+        }
         public Grid<TModel> Grid
         {
             get;
@@ -19,6 +24,7 @@ namespace NonFactors.Mvc.Grid
 
         public HtmlGrid(HtmlHelper html, Grid<TModel> grid)
         {
+            PartialViewName = "MvcGrid/_Grid";
             Html = html;
             Grid = grid;
         }
@@ -29,16 +35,23 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public IHtmlGrid<TModel> Pageable(Action<IGridPager> builder)
+        public IHtmlGrid<TModel> WithPager(Action<IGridPager> builder)
         {
+            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Grid);
             builder(Grid.Pager);
+
+            return this;
+        }
+        public IHtmlGrid<TModel> WithPager()
+        {
+            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Grid);
 
             return this;
         }
 
         public String ToHtmlString()
         {
-            return Html.Partial("_MvcGrid", Grid).ToHtmlString();
+            return Html.Partial(PartialViewName, Grid).ToHtmlString();
         }
     }
 }

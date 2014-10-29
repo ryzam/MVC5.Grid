@@ -4,7 +4,9 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGridPager
     {
-        Int32 ItemsPerPage { get; set; }
+        String PartialViewName { get; set; }
+
+        Int32 RowsPerPage { get; set; }
         Int32 CurrentPage { get; set; }
     }
 }
