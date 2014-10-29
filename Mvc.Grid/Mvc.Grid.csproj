@@ -67,6 +67,7 @@
     <Compile Include="Core\Grids\Grid.cs" />
     <Compile Include="Core\Columns\GridColumns.cs" />
     <Compile Include="Core\Grids\HtmlGrid.cs" />
+    <Compile Include="Core\Grids\IHtmlGrid.cs" />
     <Compile Include="Core\Paging\GridPager.cs" />
     <Compile Include="Core\Paging\IGridPager.cs" />
     <Compile Include="Core\Rows\GridRow.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Core\Grids\IGrid.cs" />
     <Compile Include="Core\Columns\IGridColumn.cs" />
     <Compile Include="Core\Columns\IGridColumns.cs" />
-    <Compile Include="Core\Options\IGridOptions.cs" />
     <Compile Include="Core\Rows\IGridRow.cs" />
     <Compile Include="Core\Rows\IGridRows.cs" />
     <Compile Include="Html\GridHtmlExtensions.cs" />

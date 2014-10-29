@@ -1,37 +1,44 @@
 ﻿using System;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class HtmlGrid<TModel> : IGridOptions<TModel>, IHtmlString where TModel : class
+    public class HtmlGrid<TModel> : IHtmlGrid<TModel> where TModel : class
     {
-        private HtmlHelper html;
-        private Grid<TModel> grid;
+        public Grid<TModel> Grid
+        {
+            get;
+            set;
+        }
+        public HtmlHelper Html
+        {
+            get;
+            set;
+        }
 
         public HtmlGrid(HtmlHelper html, Grid<TModel> grid)
         {
-            this.html = html;
-            this.grid = grid;
+            Html = html;
+            Grid = grid;
         }
 
-        public IGridOptions<TModel> Build(Action<IGridColumns<TModel>> builder)
+        public IHtmlGrid<TModel> Build(Action<IGridColumns<TModel>> builder)
         {
-            builder(grid.Columns);
+            builder(Grid.Columns);
 
             return this;
         }
-        public IGridOptions<TModel> Pageable(Action<IGridPager> builder)
+        public IHtmlGrid<TModel> Pageable(Action<IGridPager> builder)
         {
-            builder(grid.Pager);
+            builder(Grid.Pager);
 
             return this;
         }
 
         public String ToHtmlString()
         {
-            return html.Partial("_MvcGrid", grid).ToHtmlString();
+            return Html.Partial("_MvcGrid", Grid).ToHtmlString();
         }
     }
 }
