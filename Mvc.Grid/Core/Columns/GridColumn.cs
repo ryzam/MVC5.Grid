@@ -3,9 +3,9 @@ using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridColumn<TModel, TProperty> : IGridColumn<TModel> where TModel : class
+    public class GridColumn<TModel, TValue> : IGridColumn<TModel> where TModel : class
     {
-        protected Func<TModel, TProperty> Expression
+        protected Func<TModel, TValue> Expression
         {
             get;
             set;
@@ -16,10 +16,10 @@ namespace NonFactors.Mvc.Grid
             protected set;
         }
 
-        public GridColumn()
+        public GridColumn() : this(null)
         {
         }
-        public GridColumn(Func<TModel, TProperty> expression)
+        public GridColumn(Func<TModel, TValue> expression)
         {
             Expression = expression;
         }
@@ -33,7 +33,14 @@ namespace NonFactors.Mvc.Grid
 
         public IHtmlString ValueFor(IGridRow row)
         {
-            return new HtmlString(Expression(row.Model as TModel).ToString());
+            if (Expression == null)
+                return new HtmlString(String.Empty);
+
+            TValue value = Expression(row.Model as TModel);
+            if (value == null)
+                return new HtmlString(String.Empty);
+
+            return new HtmlString(value.ToString());
         }
     }
 }
