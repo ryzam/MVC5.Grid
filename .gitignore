@@ -1,0 +1,8 @@
+/TestResults
+/packages
+bin
+obj
+*.user
+*.suo
+*.mdf
+*.ldf
