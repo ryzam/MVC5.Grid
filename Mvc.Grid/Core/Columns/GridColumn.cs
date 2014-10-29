@@ -3,15 +3,28 @@ using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridColumn<T> : IGridColumn<T> where T : class
+    public class GridColumn<TModel, TProperty> : IGridColumn<TModel> where TModel : class
     {
+        protected Func<TModel, TProperty> Expression
+        {
+            get;
+            set;
+        }
         public String Title
         {
             get;
             protected set;
         }
 
-        public IGridColumn<T> Titled(String title)
+        public GridColumn()
+        {
+        }
+        public GridColumn(Func<TModel, TProperty> expression)
+        {
+            Expression = expression;
+        }
+
+        public IGridColumn<TModel> Titled(String title)
         {
             Title = title;
 
@@ -20,7 +33,7 @@ namespace NonFactors.Mvc.Grid
 
         public IHtmlString ValueFor(IGridRow row)
         {
-            return new HtmlString(row.Model.ToString());
+            return new HtmlString(Expression(row.Model as TModel).ToString());
         }
     }
 }

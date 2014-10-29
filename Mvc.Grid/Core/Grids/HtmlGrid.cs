@@ -5,18 +5,18 @@ using System.Web.Mvc.Html;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class HtmlGrid<T> : IGridOptions<T>, IHtmlString where T : class
+    public class HtmlGrid<TModel> : IGridOptions<TModel>, IHtmlString where TModel : class
     {
         private HtmlHelper html;
-        private Grid<T> grid;
+        private Grid<TModel> grid;
 
-        public HtmlGrid(HtmlHelper html, Grid<T> grid)
+        public HtmlGrid(HtmlHelper html, Grid<TModel> grid)
         {
             this.html = html;
             this.grid = grid;
         }
 
-        public IGridOptions<T> Build(Action<IGridColumns<T>> builder)
+        public IGridOptions<TModel> Build(Action<IGridColumns<TModel>> builder)
         {
             builder(grid.Columns);
 

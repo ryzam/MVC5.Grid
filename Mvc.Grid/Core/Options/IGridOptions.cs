@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
-    public interface IGridOptions<T> where T : class
+    public interface IGridOptions<TModel> where TModel : class
     {
-        IGridOptions<T> Build(Action<IGridColumns<T>> builder);
+        IGridOptions<TModel> Build(Action<IGridColumns<TModel>> builder);
     }
 }

@@ -5,25 +5,25 @@ using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridColumns<T> : IGridColumns<T> where T : class
+    public class GridColumns<TModel> : IGridColumns<TModel> where TModel : class
     {
-        private List<IGridColumn<T>> columns;
+        private List<IGridColumn<TModel>> columns;
 
         public GridColumns()
         {
-            columns = new List<IGridColumn<T>>();
+            columns = new List<IGridColumn<TModel>>();
         }
 
-        public IGridColumn<T> Add()
+        public IGridColumn<TModel> Add()
         {
-            IGridColumn<T> column = new GridColumn<T>();
+            IGridColumn<TModel> column = new GridColumn<TModel, String>();
             columns.Add(column);
 
             return column;
         }
-        public IGridColumn<T> Add<TKey>(Expression<Func<T, TKey>> constraint)
+        public IGridColumn<TModel> Add<TKey>(Expression<Func<TModel, TKey>> expression)
         {
-            IGridColumn<T> column = new GridColumn<T>();
+            IGridColumn<TModel> column = new GridColumn<TModel, TKey>(expression.Compile());
             columns.Add(column);
 
             return column;

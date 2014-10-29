@@ -6,7 +6,7 @@ namespace NonFactors.Mvc.Grid
     {
     }
 
-    public interface IGridRows<T> : IGridRows where T : class
+    public interface IGridRows<TModel> : IGridRows where TModel : class
     {
 
     }

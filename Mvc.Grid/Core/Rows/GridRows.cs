@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridRows<T> : IGridRows<T> where T : class
+    public class GridRows<TModel> : IGridRows<TModel> where TModel : class
     {
-        private List<IGridRow> rows;
+        private IEnumerable<IGridRow> rows;
 
-        public GridRows()
+        public GridRows(IEnumerable<TModel> source)
         {
-            rows = new List<IGridRow>() { new GridRow(new Object()) };
+            rows = source.Select(model => new GridRow(model)).ToList();
         }
 
         public IEnumerator<IGridRow> GetEnumerator()

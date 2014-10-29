@@ -2,15 +2,15 @@
 
 namespace NonFactors.Mvc.Grid
 {
-    public class Grid<T> : IGrid<T> where T : class
+    public class Grid<TModel> : IGrid<TModel> where TModel : class
     {
-        public IQueryable<T> Source
+        public IQueryable<TModel> Source
         {
             get;
             protected set;
         }
 
-        public IGridColumns<T> Columns
+        public IGridColumns<TModel> Columns
         {
             get;
             protected set;
@@ -28,10 +28,10 @@ namespace NonFactors.Mvc.Grid
             protected set;
         }
 
-        public Grid(IQueryable<T> source)
+        public Grid(IQueryable<TModel> source)
         {
-            Columns = new GridColumns<T>();
-            Rows = new GridRows<T>();
+            Columns = new GridColumns<TModel>();
+            Rows = new GridRows<TModel>(source);
             Source = source;
         }
     }

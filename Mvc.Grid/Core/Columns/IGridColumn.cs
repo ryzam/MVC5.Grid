@@ -10,8 +10,8 @@ namespace NonFactors.Mvc.Grid
         IHtmlString ValueFor(IGridRow row);
     }
 
-    public interface IGridColumn<T> : IGridColumn where T : class
+    public interface IGridColumn<TModel> : IGridColumn where TModel : class
     {
-        IGridColumn<T> Titled(String title);
+        IGridColumn<TModel> Titled(String title);
     }
 }
