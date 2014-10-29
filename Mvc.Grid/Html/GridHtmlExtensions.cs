@@ -6,9 +6,9 @@ namespace NonFactors.Mvc.Grid.Html
 {
     public static class GridHtmlExtensions
     {
-        public static IGrid<T> Grid<T>(this HtmlHelper<T> html, IEnumerable<T> source) where T : class
+        public static HtmlGrid<T> Grid<T>(this HtmlHelper<T> html, IEnumerable<T> source) where T : class
         {
-            return new Grid<T>(html, source.AsQueryable());
+            return new HtmlGrid<T>(html, new Grid<T>(source.AsQueryable()));
         }
     }
 }

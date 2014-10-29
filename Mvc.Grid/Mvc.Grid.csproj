@@ -66,6 +66,7 @@
     <Compile Include="Core\Columns\GridColumn.cs" />
     <Compile Include="Core\Grids\Grid.cs" />
     <Compile Include="Core\Columns\GridColumns.cs" />
+    <Compile Include="Core\Grids\HtmlGrid.cs" />
     <Compile Include="Core\Rows\GridRow.cs" />
     <Compile Include="Core\Rows\GridRows.cs" />
     <Compile Include="Core\Grids\IGrid.cs" />

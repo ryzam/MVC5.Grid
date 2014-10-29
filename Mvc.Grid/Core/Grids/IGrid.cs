@@ -8,7 +8,7 @@ namespace NonFactors.Mvc.Grid
         IGridRows Rows { get; }
     }
 
-    public interface IGrid<T> : IGrid, IGridOptions<T> where T : class
+    public interface IGrid<T> : IGrid where T : class
     {
         IQueryable<T> Source { get; }
     }
