@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Grid", "src\Mvc.Grid\Mv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Grid.Tests", "test\Mvc.Grid.Tests\Mvc.Grid.Tests.csproj", "{B0AD8296-C273-48CD-A014-6DBAF2DD33F8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C57402FE-D7BE-4F16-9B6A-3A81690133A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0B6037F4-8835-4AEF-9AE6-41AF751A78B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C8601EA2-46E2-4E8D-86DD-0EE7C70AB3EA} = {C57402FE-D7BE-4F16-9B6A-3A81690133A7}
+		{B0AD8296-C273-48CD-A014-6DBAF2DD33F8} = {0B6037F4-8835-4AEF-9AE6-41AF751A78B9}
 	EndGlobalSection
 EndGlobal
