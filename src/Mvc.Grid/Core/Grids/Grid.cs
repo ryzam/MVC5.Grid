@@ -17,7 +17,7 @@ namespace NonFactors.Mvc.Grid
             Source = source;
 
             Columns = new GridColumns<TModel>();
-            Rows = new GridRows<TModel>(source, this);
+            Rows = new GridRows<TModel>(this, source);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Grid
         protected IEnumerable<TModel> Source { get; set; }
         protected IGrid Grid { get; set; }
 
-        public GridRows(IEnumerable<TModel> source, IGrid grid)
+        public GridRows(IGrid grid, IEnumerable<TModel> source)
         {
             Source = source;
             Grid = grid;

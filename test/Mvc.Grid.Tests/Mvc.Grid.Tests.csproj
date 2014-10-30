@@ -56,6 +56,8 @@
     <Compile Include="Unit\Core\Columns\GridColumnsTests.cs" />
     <Compile Include="Unit\Core\Columns\GridColumnTests.cs" />
     <Compile Include="Unit\Core\Paging\GridPagerTests.cs" />
+    <Compile Include="Unit\Core\Rows\GridRowsTests.cs" />
+    <Compile Include="Unit\Core\Rows\GridRowTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -68,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Unit\Core\Grids\" />
-    <Folder Include="Unit\Core\Rows\" />
     <Folder Include="Unit\Html\" />
   </ItemGroup>
   <Choose>
