@@ -75,11 +75,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             GridRows<GridModel> gridRows = new GridRows<GridModel>(grid, grid.Source);
 
-            IEnumerator actual = (gridRows.Select(row => row.Model) as IEnumerable).GetEnumerator();
-            IEnumerator expected = models.GetEnumerator();
+            IEnumerator actual = (gridRows as IEnumerable).GetEnumerator();
+            IEnumerator expected = gridRows.GetEnumerator();
 
             while (expected.MoveNext() | actual.MoveNext())
-                Assert.AreSame(expected.Current, actual.Current);
+                Assert.AreSame((expected.Current as IGridRow).Model, (actual.Current as IGridRow).Model);
         }
 
         #endregion
