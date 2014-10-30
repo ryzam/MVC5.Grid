@@ -5,8 +5,11 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumn<TModel, TValue> : IGridColumn<TModel> where TModel : class
     {
-        protected Func<TModel, TValue> Expression { get; set; }
-        public String Title { get; protected set; }
+        public Func<TModel, TValue> Expression { get; private set; }
+        public String CssClasses { get; private set; }
+        public String Format { get; private set; }
+        public String Title { get; private set; }
+        public Int32 Width { get; private set; }
 
         public GridColumn() : this(null)
         {
@@ -16,6 +19,24 @@ namespace NonFactors.Mvc.Grid
             Expression = expression;
         }
 
+        public IGridColumn<TModel> Formatted(String format)
+        {
+            Format = format;
+
+            return this;
+        }
+        public IGridColumn<TModel> Css(String cssClasses)
+        {
+            CssClasses = cssClasses;
+
+            return this;
+        }
+        public IGridColumn<TModel> SetWidth(Int32 width)
+        {
+            Width = width;
+
+            return this;
+        }
         public IGridColumn<TModel> Titled(String title)
         {
             Title = title;
@@ -32,7 +53,10 @@ namespace NonFactors.Mvc.Grid
             if (value == null)
                 return new HtmlString(String.Empty);
 
-            return new HtmlString(value.ToString());
+            if (Format == null)
+                return new HtmlString(value.ToString());
+
+            return new HtmlString(String.Format(Format, value));
         }
     }
 }
