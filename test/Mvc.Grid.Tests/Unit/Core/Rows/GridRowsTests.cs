@@ -10,6 +10,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridRowsTests
     {
+        #region Constructor: GridRows(IGrid grid, IEnumerable<TModel> source)
+
+        [Test]
+        public void GridRows_SetsGrid()
+        {
+            IGrid expected = new Grid<GridModel>(null);
+            IGrid actual = new GridRows<GridModel>(expected, null).Grid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void GridRows_SetsSource()
+        {
+            IEnumerable<GridModel> expected = new GridModel[1];
+            IEnumerable<GridModel> actual = new GridRows<GridModel>(null, expected).Source;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: GetEnumerator()
 
         [Test]

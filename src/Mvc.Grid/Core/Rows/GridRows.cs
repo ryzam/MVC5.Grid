@@ -6,8 +6,8 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridRows<TModel> : IGridRows where TModel : class
     {
-        protected IEnumerable<TModel> Source { get; set; }
-        protected IGrid Grid { get; set; }
+        public IEnumerable<TModel> Source { get; protected set; }
+        public IGrid Grid { get; protected set; }
 
         public GridRows(IGrid grid, IEnumerable<TModel> source)
         {
