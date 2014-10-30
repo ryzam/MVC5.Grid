@@ -5,16 +5,8 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumn<TModel, TValue> : IGridColumn<TModel> where TModel : class
     {
-        protected Func<TModel, TValue> Expression
-        {
-            get;
-            set;
-        }
-        public String Title
-        {
-            get;
-            protected set;
-        }
+        protected Func<TModel, TValue> Expression { get; set; }
+        public String Title { get; protected set; }
 
         public GridColumn() : this(null)
         {

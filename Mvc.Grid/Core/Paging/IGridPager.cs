@@ -8,5 +8,6 @@ namespace NonFactors.Mvc.Grid
 
         Int32 RowsPerPage { get; set; }
         Int32 CurrentPage { get; set; }
+        Int32 TotalPages { get; }
     }
 }

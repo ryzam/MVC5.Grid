@@ -6,21 +6,9 @@ namespace NonFactors.Mvc.Grid
 {
     public class HtmlGrid<TModel> : IHtmlGrid<TModel> where TModel : class
     {
-        public String PartialViewName
-        {
-            get;
-            set;
-        }
-        public Grid<TModel> Grid
-        {
-            get;
-            set;
-        }
-        public HtmlHelper Html
-        {
-            get;
-            set;
-        }
+        public String PartialViewName { get; set; }
+        public Grid<TModel> Grid { get; set; }
+        public HtmlHelper Html { get; set; }
 
         public HtmlGrid(HtmlHelper html, Grid<TModel> grid)
         {

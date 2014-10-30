@@ -7,31 +7,31 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumns<TModel> : IGridColumns<TModel> where TModel : class
     {
-        private List<IGridColumn<TModel>> columns;
+        protected List<IGridColumn<TModel>> Columns { get; set; }
 
         public GridColumns()
         {
-            columns = new List<IGridColumn<TModel>>();
+            Columns = new List<IGridColumn<TModel>>();
         }
 
         public IGridColumn<TModel> Add()
         {
             IGridColumn<TModel> column = new GridColumn<TModel, String>();
-            columns.Add(column);
+            Columns.Add(column);
 
             return column;
         }
         public IGridColumn<TModel> Add<TKey>(Expression<Func<TModel, TKey>> expression)
         {
             IGridColumn<TModel> column = new GridColumn<TModel, TKey>(expression.Compile());
-            columns.Add(column);
+            Columns.Add(column);
 
             return column;
         }
 
         public IEnumerator<IGridColumn> GetEnumerator()
         {
-            return columns.GetEnumerator();
+            return Columns.GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
         {

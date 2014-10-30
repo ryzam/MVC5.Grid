@@ -4,28 +4,28 @@ using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridRows<TModel> : IGridRows<TModel> where TModel : class
+    public class GridRows<TModel> : IGridRows where TModel : class
     {
-        private IEnumerable<TModel> source;
-        private IGrid grid;
+        protected IEnumerable<TModel> Source { get; set; }
+        protected IGrid Grid { get; set; }
 
         public GridRows(IEnumerable<TModel> source, IGrid grid)
         {
-            this.source = source;
-            this.grid = grid;
+            Source = source;
+            Grid = grid;
         }
 
         public IEnumerator<IGridRow> GetEnumerator()
         {
-            if (grid.Pager == null)
-                return source
+            if (Grid.Pager == null)
+                return Source
                     .Select(model => new GridRow(model))
                     .ToList()
                     .GetEnumerator();
 
-            return source
-                .Skip(grid.Pager.CurrentPage * grid.Pager.RowsPerPage)
-                .Take(grid.Pager.RowsPerPage)
+            return Source
+                .Skip(Grid.Pager.CurrentPage * Grid.Pager.RowsPerPage)
+                .Take(Grid.Pager.RowsPerPage)
                 .Select(model => new GridRow(model))
                 .ToList()
                 .GetEnumerator();
