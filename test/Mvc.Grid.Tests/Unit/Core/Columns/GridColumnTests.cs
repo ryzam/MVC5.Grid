@@ -1,6 +1,7 @@
 ﻿using NonFactors.Mvc.Grid.Tests.Objects;
 using NUnit.Framework;
 using System;
+using System.Net;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -23,6 +24,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Func<GridModel, Object> actual = new GridColumn<GridModel, Object>().Expression;
 
             Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsIsEncodedToTrue()
+        {
+            Boolean actual = new GridColumn<GridModel, Object>().IsEncoded;
+
+            Assert.IsTrue(actual);
         }
 
         [Test]
@@ -70,6 +79,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Func<GridModel, String> expected = expression;
 
             Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_Expression_SetsIsEncodedToTrue()
+        {
+            Boolean actual = new GridColumn<GridModel, Object>().IsEncoded;
+
+            Assert.IsTrue(actual);
         }
 
         [Test]
@@ -123,6 +140,30 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Formatted_ReturnsSameGrid()
         {
             IGridColumn actual = column.Formatted("Format");
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
+        #region Method: Encoded(Boolean encode)
+
+        [Test]
+        public void Encoded_SetsIsEncoded()
+        {
+            column.Encoded(false);
+
+            Boolean actual = column.IsEncoded;
+            Boolean expected = false;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Encoded_ReturnsSameGrid()
+        {
+            IGridColumn actual = column.Encoded(false);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);
@@ -205,6 +246,33 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: ValueFor(IGridRow row)
 
         [Test]
+        public void ValueFor_OnNullFormatReturnsEncodedValue()
+        {
+            IGridRow row = new GridRow(new GridModel { Name = "<script />" });
+            column = new GridColumn<GridModel, Object>(model => model.Name);
+            column.Encoded(true);
+
+            String expected = WebUtility.HtmlEncode("<script />");
+            String actual = column.ValueFor(row).ToString();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ValueFor_ReturnsEncodedAndFormattedValue()
+        {
+            column = new GridColumn<GridModel, Object>(model => model.Sum);
+            IGridRow row = new GridRow(new GridModel { Sum = 100 });
+            column.Formatted("<script value='{0:C2}' />");
+            column.Encoded(true);
+
+            String expected = WebUtility.HtmlEncode(String.Format("<script value='{0:C2}' />", 100));
+            String actual = column.ValueFor(row).ToString();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void ValueFor_OnNullExpressionReturnsEmpty()
         {
             column = new GridColumn<GridModel, Object>(null);
@@ -228,26 +296,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void ValueFor_OnNullFormatReturnsNotFormattedValue()
+        public void ValueFor_OnNullFormatReturnsNotEncodedValue()
         {
-            column = new GridColumn<GridModel, Object>(model => model.Sum);
-            IGridRow row = new GridRow(new GridModel { Sum = 100 });
+            IGridRow row = new GridRow(new GridModel { Name = "<script />" });
+            column = new GridColumn<GridModel, Object>(model => model.Name);
+            column.Encoded(false);
 
             String actual = column.ValueFor(row).ToString();
-            String expected = "100";
+            String expected = "<script />";
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void ValueFor_ReturnsFormattedValue()
+        public void ValueFor_ReturnsNotEncodedButFormattedValue()
         {
             column = new GridColumn<GridModel, Object>(model => model.Sum);
             IGridRow row = new GridRow(new GridModel { Sum = 100 });
-            column.Formatted("{0:C2}");
+            column.Formatted("<script value='{0:C2}' />");
+            column.Encoded(false);
 
+            String expected = String.Format("<script value='{0:C2}' />", 100);
             String actual = column.ValueFor(row).ToString();
-            String expected = String.Format("{0:C2}", 100);
 
             Assert.AreEqual(expected, actual);
         }

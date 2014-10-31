@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Web;
 
 namespace NonFactors.Mvc.Grid
@@ -6,6 +7,7 @@ namespace NonFactors.Mvc.Grid
     public class GridColumn<TModel, TValue> : IGridColumn<TModel> where TModel : class
     {
         public Func<TModel, TValue> Expression { get; private set; }
+        public Boolean IsEncoded { get; private set; }
         public String CssClasses { get; private set; }
         public String Format { get; private set; }
         public String Title { get; private set; }
@@ -17,11 +19,18 @@ namespace NonFactors.Mvc.Grid
         public GridColumn(Func<TModel, TValue> expression)
         {
             Expression = expression;
+            IsEncoded = true;
         }
 
         public IGridColumn<TModel> Formatted(String format)
         {
             Format = format;
+
+            return this;
+        }
+        public IGridColumn<TModel> Encoded(Boolean encode)
+        {
+            IsEncoded = encode;
 
             return this;
         }
@@ -46,17 +55,25 @@ namespace NonFactors.Mvc.Grid
 
         public IHtmlString ValueFor(IGridRow row)
         {
+            String value = GetRawValueFor(row);
+            if (IsEncoded) value = WebUtility.HtmlEncode(value);
+
+            return new HtmlString(value);
+        }
+
+        private String GetRawValueFor(IGridRow row)
+        {
             if (Expression == null)
-                return new HtmlString(String.Empty);
+                return String.Empty;
 
             TValue value = Expression(row.Model as TModel);
             if (value == null)
-                return new HtmlString(String.Empty);
+                return String.Empty;
 
             if (Format == null)
-                return new HtmlString(value.ToString());
+                return value.ToString();
 
-            return new HtmlString(String.Format(Format, value));
+            return String.Format(Format, value);
         }
     }
 }
