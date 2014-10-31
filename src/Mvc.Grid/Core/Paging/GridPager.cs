@@ -8,9 +8,24 @@ namespace NonFactors.Mvc.Grid
     {
         public String PartialViewName { get; set; }
 
+        public Int32 PagesToDisplay { get; set; }
         public Int32 CurrentPage { get; set; }
         public Int32 RowsPerPage { get; set; }
         public Int32 TotalRows { get; set; }
+        public Int32 StartingPage
+        {
+            get
+            {
+                Int32 middlePage = (PagesToDisplay / 2) + (PagesToDisplay % 2) - 1;
+                if (CurrentPage - middlePage + PagesToDisplay > TotalPages)
+                    return TotalPages - PagesToDisplay;
+
+                if (CurrentPage < middlePage)
+                    return 0;
+
+                return CurrentPage - middlePage;
+            }
+        }
         public Int32 TotalPages
         {
             get
@@ -25,6 +40,7 @@ namespace NonFactors.Mvc.Grid
 
             CurrentPage = 0;
             RowsPerPage = 20;
+            PagesToDisplay = 5;
             TotalRows = source.Count();
         }
     }

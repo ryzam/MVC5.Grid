@@ -10,7 +10,7 @@
                 <li><a href="#">&laquo;</a></li>
                 <li><a href="#">&lsaquo;</a></li>
             }
-            @for (Int32 page = 0; page < Model.TotalPages; page++)
+            @for (Int32 page = Model.StartingPage; page < Model.TotalPages && page < Model.StartingPage + Model.PagesToDisplay; page++)
             {
                 if (page == Model.CurrentPage)
                 {
