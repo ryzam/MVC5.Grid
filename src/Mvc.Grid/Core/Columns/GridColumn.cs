@@ -11,7 +11,6 @@ namespace NonFactors.Mvc.Grid
         public String CssClasses { get; private set; }
         public String Format { get; private set; }
         public String Title { get; private set; }
-        public Int32 Width { get; private set; }
 
         public GridColumn() : this(null)
         {
@@ -37,12 +36,6 @@ namespace NonFactors.Mvc.Grid
         public IGridColumn<TModel> Css(String cssClasses)
         {
             CssClasses = cssClasses;
-
-            return this;
-        }
-        public IGridColumn<TModel> SetWidth(Int32 width)
-        {
-            Width = width;
 
             return this;
         }

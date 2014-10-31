@@ -42,7 +42,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
-            Assert.AreEqual(expected.Width, actual.Width);
         }
 
         [Test]
@@ -70,7 +69,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
-            Assert.AreEqual(expected.Width, actual.Width);
         }
 
         [Test]

@@ -195,30 +195,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: SetWidth(Int32 width)
-
-        [Test]
-        public void SetWidth_SetsWidth()
-        {
-            column.SetWidth(11);
-
-            Int32 actual = column.Width;
-            Int32 expected = 11;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void SetWidth_ReturnsSameGrid()
-        {
-            IGridColumn actual = column.SetWidth(11);
-            IGridColumn expected = column;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        #endregion
-
         #region Method: Titled(String title)
 
         [Test]

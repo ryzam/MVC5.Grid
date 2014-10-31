@@ -9,7 +9,6 @@ namespace NonFactors.Mvc.Grid
         String CssClasses { get; }
         String Format { get; }
         String Title { get; }
-        Int32 Width { get; }
 
         IHtmlString ValueFor(IGridRow row);
     }
@@ -19,7 +18,6 @@ namespace NonFactors.Mvc.Grid
         IGridColumn<TModel> Formatted(String format);
         IGridColumn<TModel> Encoded(Boolean encode);
         IGridColumn<TModel> Css(String cssClasses);
-        IGridColumn<TModel> SetWidth(Int32 width);
         IGridColumn<TModel> Titled(String title);
     }
 }
