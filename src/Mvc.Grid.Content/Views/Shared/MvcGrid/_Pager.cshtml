@@ -1,0 +1,31 @@
+﻿@using NonFactors.Mvc.Grid;
+@model IGridPager
+
+@if (Model != null && Model.TotalPages > 1)
+{
+    <div class="mvc-grid-pager">
+        <ul class="pagination">
+            @if (Model.CurrentPage > 0)
+            {
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">&lsaquo;</a></li>
+            }
+            @for (Int32 page = 0; page < Model.TotalPages; page++)
+            {
+                if (page == Model.CurrentPage)
+                {
+                    <li class="active"><a href="#">@(page + 1)</a></li>
+                }
+                else
+                {
+                    <li><a href="#">@(page + 1)</a></li>
+                }
+            }
+            @if (Model.CurrentPage < Model.TotalPages - 1)
+            {
+                <li><a href="#">&rsaquo;</a></li>
+                <li><a href="#">&raquo;</a></li>
+            }
+        </ul>
+    </div>
+}
