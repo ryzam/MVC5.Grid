@@ -36,11 +36,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -55,6 +59,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\Core\Columns\GridColumnsTests.cs" />
     <Compile Include="Unit\Core\Columns\GridColumnTests.cs" />
+    <Compile Include="Unit\Core\Grids\GridTests.cs" />
+    <Compile Include="Unit\Core\Grids\HtmlGridTests.cs" />
     <Compile Include="Unit\Core\Paging\GridPagerTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowsTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowTests.cs" />
@@ -69,7 +75,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Unit\Core\Grids\" />
     <Folder Include="Unit\Html\" />
   </ItemGroup>
   <Choose>
