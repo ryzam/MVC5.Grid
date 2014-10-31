@@ -64,6 +64,7 @@
     <Compile Include="Unit\Core\Paging\GridPagerTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowsTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowTests.cs" />
+    <Compile Include="Unit\Html\GridHtmlExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -74,9 +75,7 @@
       <Name>Mvc.Grid</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Unit\Html\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
