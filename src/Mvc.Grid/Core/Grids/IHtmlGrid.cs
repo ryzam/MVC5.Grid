@@ -8,6 +8,8 @@ namespace NonFactors.Mvc.Grid
         String PartialViewName { get; set; }
 
         IHtmlGrid<TModel> Build(Action<IGridColumns<TModel>> builder);
+        IHtmlGrid<TModel> Empty(String text);
+
         IHtmlGrid<TModel> WithPager(Action<IGridPager> builder);
         IHtmlGrid<TModel> WithPager();
     }

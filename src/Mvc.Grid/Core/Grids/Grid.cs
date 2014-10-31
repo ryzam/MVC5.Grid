@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -11,6 +12,8 @@ namespace NonFactors.Mvc.Grid
         public IGridRows Rows { get; protected set; }
 
         public IGridPager Pager { get; set; }
+
+        public String EmptyText { get; set; }
 
         public Grid(IQueryable<TModel> source)
         {

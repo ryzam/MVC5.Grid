@@ -23,6 +23,13 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public IHtmlGrid<TModel> Empty(String text)
+        {
+            Grid.EmptyText = text;
+
+            return this;
+        }
+
         public IHtmlGrid<TModel> WithPager(Action<IGridPager> builder)
         {
             Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Grid.Source);

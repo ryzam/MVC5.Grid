@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
     public interface IGrid
     {
+        String EmptyText { get; set; }
+
         IGridColumns Columns { get; }
         IGridRows Rows { get; }
 

@@ -82,6 +82,30 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: Empty(String text)
+
+        [Test]
+        public void Empty_SetsEmptyText()
+        {
+            htmlGrid.Empty("Text");
+
+            String actual = htmlGrid.Grid.EmptyText;
+            String expected = "Text";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Empty_ReturnsSameGrid()
+        {
+            IHtmlGrid<GridModel> actual = htmlGrid.Empty("Text");
+            IHtmlGrid<GridModel> expected = htmlGrid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: WithPager(Action<IGridPager> builder)
 
         [Test]

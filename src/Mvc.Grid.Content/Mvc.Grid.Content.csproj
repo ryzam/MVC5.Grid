@@ -33,7 +33,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\MvcGrid\mvc-grid.css" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Views\Shared\MvcGrid\_Grid.cshtml" />
     <None Include="Views\Shared\MvcGrid\_Pager.cshtml" />

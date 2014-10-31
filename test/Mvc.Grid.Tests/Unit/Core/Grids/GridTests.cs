@@ -62,6 +62,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.IsNull(actual.Pager);
         }
 
+        [Test]
+        public void Grid_SetsEmptyTextToNull()
+        {
+            Grid<GridModel> actual = new Grid<GridModel>(null);
+
+            Assert.IsNull(actual.EmptyText);
+        }
+
         #endregion
     }
 }
