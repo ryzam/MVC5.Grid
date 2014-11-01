@@ -27,19 +27,19 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_SetsIsEncodedToTrue()
-        {
-            Boolean actual = new GridColumn<GridModel, Object>().IsEncoded;
-
-            Assert.IsTrue(actual);
-        }
-
-        [Test]
         public void GridColumn_SetsCssClassesToNull()
         {
             String actual = new GridColumn<GridModel, Object>().CssClasses;
 
             Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsIsEncodedToTrue()
+        {
+            Boolean actual = new GridColumn<GridModel, Object>().IsEncoded;
+
+            Assert.IsTrue(actual);
         }
 
         [Test]
@@ -54,14 +54,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void GridColumn_SetsTitleToNull()
         {
             String actual = new GridColumn<GridModel, Object>().Title;
-
-            Assert.IsNull(actual);
-        }
-
-        [Test]
-        public void GridColumn_SetsWidthToNull()
-        {
-            String actual = new GridColumn<GridModel, Object>().CssClasses;
 
             Assert.IsNull(actual);
         }
@@ -82,19 +74,19 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_Expression_SetsIsEncodedToTrue()
-        {
-            Boolean actual = new GridColumn<GridModel, Object>().IsEncoded;
-
-            Assert.IsTrue(actual);
-        }
-
-        [Test]
         public void GridColumn_Expression_SetsCssClassesToNull()
         {
             String actual = new GridColumn<GridModel, String>(model => model.Name).CssClasses;
 
             Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void GridColumn_Expression_SetsIsEncodedToTrue()
+        {
+            Boolean actual = new GridColumn<GridModel, Object>().IsEncoded;
+
+            Assert.IsTrue(actual);
         }
 
         [Test]
@@ -109,14 +101,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void GridColumn_Expression_SetsTitleToNull()
         {
             String actual = new GridColumn<GridModel, String>(model => model.Name).Title;
-
-            Assert.IsNull(actual);
-        }
-
-        [Test]
-        public void GridColumn_Expression_SetsWidthToNull()
-        {
-            String actual = new GridColumn<GridModel, String>(model => model.Name).CssClasses;
 
             Assert.IsNull(actual);
         }

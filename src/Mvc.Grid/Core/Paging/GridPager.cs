@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace NonFactors.Mvc.Grid
 {
     public class GridPager<TModel> : IGridPager where TModel : class
     {
+        public RequestContext RequestContext { get; private set; }
         public String PartialViewName { get; set; }
 
         public Int32 PagesToDisplay { get; set; }
@@ -34,14 +38,37 @@ namespace NonFactors.Mvc.Grid
             }
         }
 
-        public GridPager(IEnumerable<TModel> source)
+        public GridPager(RequestContext requestContext, IEnumerable<TModel> source)
         {
             PartialViewName = "MvcGrid/_Pager";
+            RequestContext = requestContext;
 
-            CurrentPage = 0;
-            RowsPerPage = 20;
-            PagesToDisplay = 5;
+            CurrentPage = GetCurrentPage();
             TotalRows = source.Count();
+            PagesToDisplay = 5;
+            RowsPerPage = 20;
+        }
+
+        public String LinkForPage(Int32 page)
+        {
+            RouteValueDictionary routeValues = new RouteValueDictionary(RequestContext.RouteData.Values);
+            NameValueCollection query = RequestContext.HttpContext.Request.QueryString;
+            UrlHelper urlHelper = new UrlHelper(RequestContext);
+
+            foreach (String parameter in query)
+                routeValues[parameter] = query[parameter];
+
+            routeValues["grid-page"] = page;
+
+            return urlHelper.Action(routeValues["action"] as String, routeValues);
+        }
+
+        private Int32 GetCurrentPage()
+        {
+            Int32 page = 0;
+            Int32.TryParse(RequestContext.HttpContext.Request.QueryString["grid-page"], out page);
+
+            return page;
         }
     }
 }

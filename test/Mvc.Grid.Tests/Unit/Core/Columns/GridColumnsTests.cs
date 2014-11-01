@@ -40,6 +40,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             Assert.AreEqual(expected.Expression, actual.Expression);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
+            Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
         }
@@ -67,6 +68,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             Assert.AreEqual(expected.Expression, actual.Expression);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
+            Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
         }

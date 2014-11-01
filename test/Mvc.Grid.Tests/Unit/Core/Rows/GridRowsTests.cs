@@ -1,9 +1,11 @@
-﻿using NonFactors.Mvc.Grid.Tests.Objects;
+﻿using NonFactors.Mvc.Grid.Tests.Helpers;
+using NonFactors.Mvc.Grid.Tests.Objects;
 using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Routing;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -52,9 +54,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumerator_GetsPagedRows()
         {
+            RequestContext context = HtmlHelperFactory.CreateHtmlHelper().ViewContext.RequestContext;
             GridModel[] models = { new GridModel(), new GridModel(), new GridModel() };
             Grid<GridModel> grid = new Grid<GridModel>(models.AsQueryable());
-            grid.Pager = new GridPager<GridModel>(grid.Source);
+
+            grid.Pager = new GridPager<GridModel>(context, grid.Source);
             grid.Pager.CurrentPage = 1;
             grid.Pager.RowsPerPage = 1;
 

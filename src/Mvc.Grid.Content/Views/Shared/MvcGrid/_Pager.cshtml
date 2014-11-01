@@ -7,24 +7,24 @@
         <ul class="pagination">
             @if (Model.CurrentPage > 0)
             {
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">&lsaquo;</a></li>
+                <li><a href="@Model.LinkForPage(0)">&laquo;</a></li>
+                <li><a href="@Model.LinkForPage(Model.CurrentPage - 1)">&lsaquo;</a></li>
             }
             @for (Int32 page = Model.StartingPage; page < Model.TotalPages && page < Model.StartingPage + Model.PagesToDisplay; page++)
             {
                 if (page == Model.CurrentPage)
                 {
-                    <li class="active"><a href="#">@(page + 1)</a></li>
+                    <li class="active"><a>@(page + 1)</a></li>
                 }
                 else
                 {
-                    <li><a href="#">@(page + 1)</a></li>
+                    <li><a href="@Model.LinkForPage(page)">@(page + 1)</a></li>
                 }
             }
             @if (Model.CurrentPage < Model.TotalPages - 1)
             {
-                <li><a href="#">&rsaquo;</a></li>
-                <li><a href="#">&raquo;</a></li>
+                <li><a href="@Model.LinkForPage(Model.CurrentPage + 1)">&rsaquo;</a></li>
+                <li><a href="@Model.LinkForPage(Model.TotalPages - 1)">&raquo;</a></li>
             }
         </ul>
     </div>

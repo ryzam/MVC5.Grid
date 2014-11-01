@@ -11,5 +11,7 @@ namespace NonFactors.Mvc.Grid
         Int32 CurrentPage { get; set; }
         Int32 StartingPage { get; }
         Int32 TotalPages { get; }
+
+        String LinkForPage(Int32 page);
     }
 }

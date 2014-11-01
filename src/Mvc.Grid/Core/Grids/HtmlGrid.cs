@@ -32,14 +32,14 @@ namespace NonFactors.Mvc.Grid
 
         public IHtmlGrid<TModel> WithPager(Action<IGridPager> builder)
         {
-            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Grid.Source);
+            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Html.ViewContext.RequestContext, Grid.Source);
             builder(Grid.Pager);
 
             return this;
         }
         public IHtmlGrid<TModel> WithPager()
         {
-            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Grid.Source);
+            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Html.ViewContext.RequestContext, Grid.Source);
 
             return this;
         }
