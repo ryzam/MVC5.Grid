@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -212,6 +213,44 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void WithPager_Builder_AddsGridProcessor()
+        {
+            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+
+            htmlGrid.WithPager(pager => { });
+
+            Object actual = htmlGrid.Grid.Processors.Single();
+            Object expected = htmlGrid.Grid.Pager;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void WithPager_Builder_DoesNotReaddGridProcessor()
+        {
+            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+
+            htmlGrid.WithPager(pager => { });
+            htmlGrid.WithPager(pager => { });
+
+            Object actual = htmlGrid.Grid.Processors.Single();
+            Object expected = htmlGrid.Grid.Pager;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void WithPager_Builder_DoesNotAddNonGridProcessor()
+        {
+            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+            htmlGrid.Grid.Pager = Substitute.For<IGridPager>();
+
+            htmlGrid.WithPager(pager => { });
+
+            CollectionAssert.IsEmpty(htmlGrid.Grid.Processors);
+        }
+
+        [Test]
         public void WithPager_Builder_ReturnsSameGrid()
         {
             IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
@@ -258,6 +297,45 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected.RowsPerPage, actual.RowsPerPage);
             Assert.AreEqual(expected.TotalRows, actual.TotalRows);
             Assert.IsNull(previousPager);
+        }
+
+
+        [Test]
+        public void WithPager_AddsGridProcessor()
+        {
+            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+
+            htmlGrid.WithPager();
+
+            Object actual = htmlGrid.Grid.Processors.Single();
+            Object expected = htmlGrid.Grid.Pager;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void WithPager_DoesNotReaddGridProcessor()
+        {
+            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+
+            htmlGrid.WithPager();
+            htmlGrid.WithPager();
+
+            Object actual = htmlGrid.Grid.Processors.Single();
+            Object expected = htmlGrid.Grid.Pager;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void WithPager_DoesNotAddNonGridProcessor()
+        {
+            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+            htmlGrid.Grid.Pager = Substitute.For<IGridPager>();
+
+            htmlGrid.WithPager();
+
+            CollectionAssert.IsEmpty(htmlGrid.Grid.Processors);
         }
 
         [Test]

@@ -51,12 +51,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Grid_CreatesRows()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[2]);
+            Grid<GridModel> grid = new Grid<GridModel>(null);
 
-            GridRows<GridModel> expected = new GridRows<GridModel>(grid, grid.Source);
             GridRows<GridModel> actual = grid.Rows as GridRows<GridModel>;
+            GridRows<GridModel> expected = new GridRows<GridModel>(grid);
 
-            Assert.AreSame(expected.Source, actual.Source);
             Assert.AreSame(actual.Grid, actual.Grid);
         }
 

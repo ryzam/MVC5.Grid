@@ -49,13 +49,15 @@ namespace NonFactors.Mvc.Grid
             Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Html.ViewContext.RequestContext, Grid.Source);
             builder(Grid.Pager);
 
+            IGridProcessor<TModel> processor = Grid.Pager as IGridProcessor<TModel>;
+            if (processor != null && !Grid.Processors.Contains(processor))
+                Grid.Processors.Add(processor);
+
             return this;
         }
         public IHtmlGrid<TModel> WithPager()
         {
-            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Html.ViewContext.RequestContext, Grid.Source);
-
-            return this;
+            return WithPager(builder => { });
         }
 
         public String ToHtmlString()

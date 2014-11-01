@@ -1,31 +1,22 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Routing;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
     [TestFixture]
     public class GridRowsTests
     {
-        #region Constructor: GridRows(IGrid grid, IEnumerable<TModel> source)
+        #region Constructor: GridRows(IGrid<TModel> grid)
 
         [Test]
         public void GridRows_SetsGrid()
         {
-            IGrid expected = new Grid<GridModel>(null);
-            IGrid actual = new GridRows<GridModel>(expected, null).Grid;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        [Test]
-        public void GridRows_SetsSource()
-        {
-            IEnumerable<GridModel> expected = new GridModel[1];
-            IEnumerable<GridModel> actual = new GridRows<GridModel>(null, expected).Source;
+            IGrid<GridModel> expected = new Grid<GridModel>(null);
+            IGrid<GridModel> actual = new GridRows<GridModel>(expected).Grid;
 
             Assert.AreSame(expected, actual);
         }
@@ -35,36 +26,30 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: GetEnumerator()
 
         [Test]
-        public void GetEnumerator_GetsNotPagedRows()
+        public void GetEnumerator_ProcessesRows()
         {
-            List<GridModel> models = new List<GridModel> { new GridModel(), new GridModel() };
+            IGridProcessor<GridModel> postProcessor = Substitute.For<IGridProcessor<GridModel>>();
+            IGridProcessor<GridModel> preProcessor = Substitute.For<IGridProcessor<GridModel>>();
+            GridModel[] models = { new GridModel(), new GridModel() };
+            GridModel[] postProcessedModels = { new GridModel() };
+            GridModel[] preProcessedModels = { new GridModel() };
             Grid<GridModel> grid = new Grid<GridModel>(models);
+            postProcessor.Type = GridProcessorType.Post;
+            preProcessor.Type = GridProcessorType.Pre;
 
-            GridRows<GridModel> rows = new GridRows<GridModel>(grid, grid.Source);
+            postProcessor.Process(preProcessedModels).Returns(postProcessedModels);
+            preProcessor.Process(models).Returns(preProcessedModels);
+            grid.Processors.Add(postProcessor);
+            grid.Processors.Add(preProcessor);
+
+            GridRows<GridModel> rows = new GridRows<GridModel>(grid);
 
             IEnumerable<Object> actual = rows.ToList().Select(row => row.Model);
-            IEnumerable<Object> expected = models;
+            IEnumerable<Object> expected = postProcessedModels;
 
+            postProcessor.Received().Process(preProcessedModels);
             CollectionAssert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GetEnumerator_GetsPagedRows()
-        {
-            RequestContext context = HtmlHelperFactory.CreateHtmlHelper().ViewContext.RequestContext;
-            GridModel[] models = { new GridModel(), new GridModel(), new GridModel() };
-            Grid<GridModel> grid = new Grid<GridModel>(models);
-
-            grid.Pager = new GridPager<GridModel>(context, grid.Source);
-            grid.Pager.CurrentPage = 1;
-            grid.Pager.RowsPerPage = 1;
-
-            GridRows<GridModel> gridRows = new GridRows<GridModel>(grid, grid.Source);
-
-            IEnumerable<Object> actual = gridRows.ToList().Select(row => row.Model);
-            IEnumerable<Object> expected = models.Skip(1).Take(1);
-
-            CollectionAssert.AreEqual(expected, actual);
+            preProcessor.Received().Process(models);
         }
 
         [Test]
@@ -73,7 +58,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridModel[] models = { new GridModel(), new GridModel() };
             Grid<GridModel> grid = new Grid<GridModel>(models);
 
-            GridRows<GridModel> rows = new GridRows<GridModel>(grid, grid.Source);
+            GridRows<GridModel> rows = new GridRows<GridModel>(grid);
 
             IEnumerator actual = (rows as IEnumerable).GetEnumerator();
             IEnumerator expected = rows.GetEnumerator();

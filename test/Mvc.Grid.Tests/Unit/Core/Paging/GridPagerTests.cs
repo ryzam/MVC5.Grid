@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -119,6 +121,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void GridPager_SetsTypeAsPreProcessor()
+        {
+            GridProcessorType actual = new GridPager<GridModel>(requestContext, new GridModel[0]).Type;
+            GridProcessorType expected = GridProcessorType.Pre;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void GridPager_SetsRowsPerPageTo20()
         {
             Int32 actual = new GridPager<GridModel>(requestContext, new GridModel[0]).RowsPerPage;
@@ -143,6 +154,26 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Int32 expected = 2;
 
             Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
+        #region Method: Process(IEnumerable<TModel> items)
+
+        [Test]
+        public void Process_ReturnsPagedItems()
+        {
+            RequestContext context = HtmlHelperFactory.CreateHtmlHelper().ViewContext.RequestContext;
+            GridModel[] models = { new GridModel(), new GridModel(), new GridModel() };
+
+            GridPager<GridModel> pager = new GridPager<GridModel>(context, models);
+            pager.CurrentPage = 1;
+            pager.RowsPerPage = 1;
+
+            IEnumerable<GridModel> expected = models.Skip(1).Take(1);
+            IEnumerable<GridModel> actual = pager.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         #endregion

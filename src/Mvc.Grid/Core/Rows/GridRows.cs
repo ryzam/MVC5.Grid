@@ -6,26 +6,23 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridRows<TModel> : IGridRows where TModel : class
     {
-        public IEnumerable<TModel> Source { get; protected set; }
-        public IGrid Grid { get; protected set; }
+        public IGrid<TModel> Grid { get; protected set; }
 
-        public GridRows(IGrid grid, IEnumerable<TModel> source)
+        public GridRows(IGrid<TModel> grid)
         {
-            Source = source;
             Grid = grid;
         }
 
         public IEnumerator<IGridRow> GetEnumerator()
         {
-            if (Grid.Pager == null)
-                return Source
-                    .Select(model => new GridRow(model))
-                    .ToList()
-                    .GetEnumerator();
+            IEnumerable<TModel> items = Grid.Source;
+            foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.Type == GridProcessorType.Pre))
+                items = processor.Process(items);
 
-            return Source
-                .Skip(Grid.Pager.CurrentPage * Grid.Pager.RowsPerPage)
-                .Take(Grid.Pager.RowsPerPage)
+            foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.Type == GridProcessorType.Post))
+                items = processor.Process(items);
+
+            return items
                 .Select(model => new GridRow(model))
                 .ToList()
                 .GetEnumerator();
