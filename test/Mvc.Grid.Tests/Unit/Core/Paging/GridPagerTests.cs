@@ -110,7 +110,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridPager_SetsCurrentPage()
+        public void GridPager_SetsCurrentPageFromRequestContext()
         {
             requestContext = HttpContextFactory.CreateHttpContext("grid-page=4").Request.RequestContext;
 
@@ -166,7 +166,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void LinkForPage_GeneratesLinkForPageByOverwritingGridPageInQueryString()
+        public void LinkForPage_GeneratesLinkForPageByOverwritingQueryString()
         {
             requestContext = HttpContextFactory.CreateHttpContext("grid-page=44").Request.RequestContext;
             String currentAction = requestContext.RouteData.Values["action"] as String;

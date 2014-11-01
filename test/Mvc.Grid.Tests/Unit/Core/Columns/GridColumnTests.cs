@@ -8,7 +8,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridColumnTests
     {
-        private GridColumn<GridModel, Object> column;
+        private IGridColumn<GridModel, Object> column;
 
         [SetUp]
         public void SetUp()
@@ -21,41 +21,41 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridColumn_SetsExpressionToNull()
         {
-            Func<GridModel, Object> actual = new GridColumn<GridModel, Object>().Expression;
+            column = new GridColumn<GridModel, Object>();
 
-            Assert.IsNull(actual);
+            Assert.IsNull(column.Expression);
         }
 
         [Test]
         public void GridColumn_SetsCssClassesToNull()
         {
-            String actual = new GridColumn<GridModel, Object>().CssClasses;
+            column = new GridColumn<GridModel, Object>();
 
-            Assert.IsNull(actual);
+            Assert.IsNull(column.CssClasses);
         }
 
         [Test]
         public void GridColumn_SetsIsEncodedToTrue()
         {
-            Boolean actual = new GridColumn<GridModel, Object>().IsEncoded;
+            column = new GridColumn<GridModel, Object>();
 
-            Assert.IsTrue(actual);
+            Assert.IsTrue(column.IsEncoded);
         }
 
         [Test]
         public void GridColumn_SetsFormatToNull()
         {
-            String actual = new GridColumn<GridModel, Object>().CssClasses;
+            column = new GridColumn<GridModel, Object>();
 
-            Assert.IsNull(actual);
+            Assert.IsNull(column.Format);
         }
 
         [Test]
         public void GridColumn_SetsTitleToNull()
         {
-            String actual = new GridColumn<GridModel, Object>().Title;
+            column = new GridColumn<GridModel, Object>();
 
-            Assert.IsNull(actual);
+            Assert.IsNull(column.Title);
         }
 
         #endregion
@@ -76,33 +76,33 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridColumn_Expression_SetsCssClassesToNull()
         {
-            String actual = new GridColumn<GridModel, String>(model => model.Name).CssClasses;
+            column = new GridColumn<GridModel, Object>(model => model.Name);
 
-            Assert.IsNull(actual);
+            Assert.IsNull(column.CssClasses);
         }
 
         [Test]
         public void GridColumn_Expression_SetsIsEncodedToTrue()
         {
-            Boolean actual = new GridColumn<GridModel, Object>().IsEncoded;
+            column = new GridColumn<GridModel, Object>(model => model.Name);
 
-            Assert.IsTrue(actual);
+            Assert.IsTrue(column.IsEncoded);
         }
 
         [Test]
         public void GridColumn_Expression_SetsFormatToNull()
         {
-            String actual = new GridColumn<GridModel, String>(model => model.Name).CssClasses;
+            column = new GridColumn<GridModel, Object>(model => model.Name);
 
-            Assert.IsNull(actual);
+            Assert.IsNull(column.Format);
         }
 
         [Test]
         public void GridColumn_Expression_SetsTitleToNull()
         {
-            String actual = new GridColumn<GridModel, String>(model => model.Name).Title;
+            column = new GridColumn<GridModel, Object>(model => model.Name);
 
-            Assert.IsNull(actual);
+            Assert.IsNull(column.Title);
         }
 
         #endregion
@@ -112,9 +112,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Formatted_SetsFormat()
         {
-            column.Formatted("Format");
-
-            String actual = column.Format;
+            String actual = column.Formatted("Format").Format;
             String expected = "Format";
 
             Assert.AreEqual(expected, actual);
@@ -136,9 +134,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Encoded_SetsIsEncoded()
         {
-            column.Encoded(false);
-
-            Boolean actual = column.IsEncoded;
+            Boolean actual = column.Encoded(false).IsEncoded;
             Boolean expected = false;
 
             Assert.AreEqual(expected, actual);
@@ -160,9 +156,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Css_SetsCssClasses()
         {
-            column.Css("column-class");
-
-            String actual = column.CssClasses;
+            String actual = column.Css("column-class").CssClasses;
             String expected = "column-class";
 
             Assert.AreEqual(expected, actual);
@@ -184,9 +178,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Titled_SetsTitle()
         {
-            column.Titled("Title");
-
-            String actual = column.Title;
+            String actual = column.Titled("Title").Title;
             String expected = "Title";
 
             Assert.AreEqual(expected, actual);
@@ -210,6 +202,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             IGridRow row = new GridRow(new GridModel { Name = "<script />" });
             column = new GridColumn<GridModel, Object>(model => model.Name);
+            column.Formatted(null);
             column.Encoded(true);
 
             String expected = WebUtility.HtmlEncode("<script />");
@@ -260,6 +253,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             IGridRow row = new GridRow(new GridModel { Name = "<script />" });
             column = new GridColumn<GridModel, Object>(model => model.Name);
+            column.Formatted(null);
             column.Encoded(false);
 
             String actual = column.ValueFor(row).ToString();

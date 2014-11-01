@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace NonFactors.Mvc.Grid
 {
     public class Grid<TModel> : IGrid<TModel> where TModel : class
     {
-        public IQueryable<TModel> Source { get; protected set; }
+        public IEnumerable<TModel> Source { get; protected set; }
 
         public IGridColumns<TModel> Columns { get; protected set; }
         IGridColumns IGrid.Columns { get { return Columns; } }
@@ -15,12 +15,12 @@ namespace NonFactors.Mvc.Grid
 
         public String EmptyText { get; set; }
 
-        public Grid(IQueryable<TModel> source)
+        public Grid(IEnumerable<TModel> source)
         {
             Source = source;
 
             Columns = new GridColumns<TModel>();
-            Rows = new GridRows<TModel>(this, source);
+            Rows = new GridRows<TModel>(this, Source);
         }
     }
 }

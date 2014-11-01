@@ -1,5 +1,4 @@
-﻿using NonFactors.Mvc.Grid.Tests.Objects;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
@@ -12,7 +11,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridRow_SetsModel()
         {
-            Object expected = new GridModel();
+            Object expected = new Object();
             Object actual = new GridRow(expected).Model;
 
             Assert.AreSame(expected, actual);

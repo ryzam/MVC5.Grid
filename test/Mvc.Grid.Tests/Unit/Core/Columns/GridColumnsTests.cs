@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
@@ -21,8 +20,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: GridColumns()
 
         [Test]
-        public void GridColumns_IsEmpty()
+        public void GridColumns_AreEmpty()
         {
+            columns = new GridColumns<GridModel>();
+
             CollectionAssert.IsEmpty(columns);
         }
 
@@ -89,28 +90,23 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumarator_ReturnsColumns()
         {
-            List<IGridColumn> addedColumns = new List<IGridColumn>();
-            addedColumns.Add(columns.Add());
-            addedColumns.Add(columns.Add());
+            IGridColumn[] addedColumns = { columns.Add(), columns.Add() };
 
-            IEnumerator expected = addedColumns.GetEnumerator();
-            IEnumerator actual = columns.GetEnumerator();
+            IEnumerable actual = columns.ToList();
+            IEnumerable expected = addedColumns;
 
-            while (expected.MoveNext() | actual.MoveNext())
-                Assert.AreSame(expected.Current, actual.Current);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GetEnumerator_ReturnsSameColumns()
         {
-            columns.Add();
-            columns.Add();
+            IGridColumn[] addedColumns = { columns.Add(), columns.Add() };
 
-            IEnumerator actual = (columns as IEnumerable).GetEnumerator();
-            IEnumerator expected = columns.GetEnumerator();
+            IEnumerable expected = columns.ToList();
+            IEnumerable actual = columns;
 
-            while (expected.MoveNext() | actual.MoveNext())
-                Assert.AreSame(expected.Current, actual.Current);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         #endregion

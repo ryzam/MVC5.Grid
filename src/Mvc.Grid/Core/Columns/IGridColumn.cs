@@ -13,11 +13,13 @@ namespace NonFactors.Mvc.Grid
         IHtmlString ValueFor(IGridRow row);
     }
 
-    public interface IGridColumn<TModel> : IGridColumn where TModel : class
+    public interface IGridColumn<TModel, TValue> : IGridColumn where TModel : class
     {
-        IGridColumn<TModel> Formatted(String format);
-        IGridColumn<TModel> Encoded(Boolean encode);
-        IGridColumn<TModel> Css(String cssClasses);
-        IGridColumn<TModel> Titled(String title);
+        Func<TModel, TValue> Expression { get; }
+
+        IGridColumn<TModel, TValue> Formatted(String format);
+        IGridColumn<TModel, TValue> Encoded(Boolean encode);
+        IGridColumn<TModel, TValue> Css(String cssClasses);
+        IGridColumn<TModel, TValue> Titled(String title);
     }
 }

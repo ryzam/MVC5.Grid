@@ -39,16 +39,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumerator_GetsNotPagedRows()
         {
-            List<GridModel> models = new List<GridModel> { new GridModel(), new GridModel(), new GridModel() };
-            Grid<GridModel> grid = new Grid<GridModel>(models.AsQueryable());
+            List<GridModel> models = new List<GridModel> { new GridModel(), new GridModel() };
+            Grid<GridModel> grid = new Grid<GridModel>(models);
 
-            GridRows<GridModel> gridRows = new GridRows<GridModel>(grid, grid.Source);
+            GridRows<GridModel> rows = new GridRows<GridModel>(grid, grid.Source);
 
-            IEnumerator<Object> actual = gridRows.Select(row => row.Model).GetEnumerator();
-            IEnumerator<GridModel> expected = models.GetEnumerator();
+            IEnumerable<Object> actual = rows.ToList().Select(row => row.Model);
+            IEnumerable<Object> expected = models;
 
-            while (expected.MoveNext() | actual.MoveNext())
-                Assert.AreSame(expected.Current, actual.Current);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -56,7 +55,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             RequestContext context = HtmlHelperFactory.CreateHtmlHelper().ViewContext.RequestContext;
             GridModel[] models = { new GridModel(), new GridModel(), new GridModel() };
-            Grid<GridModel> grid = new Grid<GridModel>(models.AsQueryable());
+            Grid<GridModel> grid = new Grid<GridModel>(models);
 
             grid.Pager = new GridPager<GridModel>(context, grid.Source);
             grid.Pager.CurrentPage = 1;
@@ -64,23 +63,22 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             GridRows<GridModel> gridRows = new GridRows<GridModel>(grid, grid.Source);
 
-            IEnumerator actual = gridRows.Select(row => row.Model).GetEnumerator();
-            IEnumerator expected = models.Skip(1).Take(1).GetEnumerator();
+            IEnumerable<Object> actual = gridRows.ToList().Select(row => row.Model);
+            IEnumerable<Object> expected = models.Skip(1).Take(1);
 
-            while (expected.MoveNext() | actual.MoveNext())
-                Assert.AreSame(expected.Current, actual.Current);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GetEnumerator_GetsSameEnumerable()
         {
-            GridModel[] models = { new GridModel(), new GridModel(), new GridModel() };
-            Grid<GridModel> grid = new Grid<GridModel>(models.AsQueryable());
+            GridModel[] models = { new GridModel(), new GridModel() };
+            Grid<GridModel> grid = new Grid<GridModel>(models);
 
-            GridRows<GridModel> gridRows = new GridRows<GridModel>(grid, grid.Source);
+            GridRows<GridModel> rows = new GridRows<GridModel>(grid, grid.Source);
 
-            IEnumerator actual = (gridRows as IEnumerable).GetEnumerator();
-            IEnumerator expected = gridRows.GetEnumerator();
+            IEnumerator actual = (rows as IEnumerable).GetEnumerator();
+            IEnumerator expected = rows.GetEnumerator();
 
             while (expected.MoveNext() | actual.MoveNext())
                 Assert.AreSame((expected.Current as IGridRow).Model, (actual.Current as IGridRow).Model);

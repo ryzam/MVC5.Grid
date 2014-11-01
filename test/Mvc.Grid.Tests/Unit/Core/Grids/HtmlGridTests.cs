@@ -4,7 +4,6 @@ using NSubstitute;
 using NUnit.Framework;
 using System;
 using System.IO;
-using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -19,7 +18,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[10].AsQueryable());
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[8]);
             HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper();
             requestContext = html.ViewContext.RequestContext;
 
@@ -49,8 +48,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void HtmlGrid_SetsGrid()
         {
-            Grid<GridModel> expected = new Grid<GridModel>(null);
-            Grid<GridModel> actual = new HtmlGrid<GridModel>(null, expected).Grid;
+            Grid<GridModel> actual = new HtmlGrid<GridModel>(null, htmlGrid.Grid).Grid;
+            Grid<GridModel> expected = htmlGrid.Grid;
 
             Assert.AreSame(expected, actual);
         }
@@ -89,9 +88,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Empty_SetsEmptyText()
         {
-            htmlGrid.Empty("Text");
-
-            String actual = htmlGrid.Grid.EmptyText;
+            String actual = htmlGrid.Empty("Text").Grid.EmptyText;
             String expected = "Text";
 
             Assert.AreEqual(expected, actual);
@@ -113,13 +110,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_DoesNotChangeExistingPager()
         {
-            IGridPager gridPager = new GridPager<GridModel>(requestContext, new GridModel[0]);
-            htmlGrid.Grid.Pager = gridPager;
+            IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            htmlGrid.Grid.Pager = pager;
 
-            htmlGrid.WithPager(pager => { });
+            htmlGrid.WithPager(gridPager => { });
 
             IGridPager actual = htmlGrid.Grid.Pager;
-            IGridPager expected = gridPager;
+            IGridPager expected = pager;
 
             Assert.AreSame(expected, actual);
         }
@@ -160,10 +157,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_ReturnsSameGrid()
         {
-            IGridPager gridPager = new GridPager<GridModel>(requestContext, new GridModel[0]);
-            htmlGrid.Grid.Pager = gridPager;
+            IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            htmlGrid.Grid.Pager = pager;
 
-            IHtmlGrid<GridModel> actual = htmlGrid.WithPager(pager => { });
+            IHtmlGrid<GridModel> actual = htmlGrid.WithPager(gridPager => { });
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
@@ -176,13 +173,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_DoesNotChangeExistingPager()
         {
-            IGridPager gridPager = new GridPager<GridModel>(requestContext, new GridModel[0]);
-            htmlGrid.Grid.Pager = gridPager;
+            IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            htmlGrid.Grid.Pager = pager;
 
             htmlGrid.WithPager();
 
             IGridPager actual = htmlGrid.Grid.Pager;
-            IGridPager expected = gridPager;
+            IGridPager expected = pager;
 
             Assert.AreSame(expected, actual);
         }
@@ -209,8 +206,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_ReturnsSameGrid()
         {
-            IGridPager gridPager = new GridPager<GridModel>(requestContext, new GridModel[0]);
-            htmlGrid.Grid.Pager = gridPager;
+            IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            htmlGrid.Grid.Pager = pager;
 
             IHtmlGrid<GridModel> actual = htmlGrid.WithPager();
             IHtmlGrid<GridModel> expected = htmlGrid;

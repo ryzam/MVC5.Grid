@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -15,6 +15,6 @@ namespace NonFactors.Mvc.Grid
 
     public interface IGrid<TModel> : IGrid where TModel : class
     {
-        IQueryable<TModel> Source { get; }
+        IEnumerable<TModel> Source { get; }
     }
 }

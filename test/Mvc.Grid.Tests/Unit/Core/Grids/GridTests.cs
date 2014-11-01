@@ -1,6 +1,6 @@
 ﻿using NonFactors.Mvc.Grid.Tests.Objects;
 using NUnit.Framework;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -22,13 +22,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Constructor: Grid(IQueryable<TModel> source)
+        #region Constructor: Grid(IEnumerable<TModel> source)
 
         [Test]
         public void Grid_SetsSource()
         {
-            IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
-            IQueryable<GridModel> actual = new Grid<GridModel>(expected).Source;
+            IEnumerable<GridModel> expected = new GridModel[2];
+            IEnumerable<GridModel> actual = new Grid<GridModel>(expected).Source;
 
             Assert.AreSame(expected, actual);
         }
@@ -36,38 +36,37 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Grid_CreatesEmptyColumns()
         {
-            IQueryable<GridModel> source = new GridModel[2].AsQueryable();
-            GridColumns<GridModel> actual = new Grid<GridModel>(source).Columns as GridColumns<GridModel>;
+            IGridColumns<GridModel> columns = new Grid<GridModel>(null).Columns;
 
-            CollectionAssert.IsEmpty(actual);
+            CollectionAssert.IsEmpty(columns);
         }
 
         [Test]
         public void Grid_CreatesRows()
         {
-            IQueryable<GridModel> source = new GridModel[2].AsQueryable();
-            Grid<GridModel> grid = new Grid<GridModel>(source);
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[2]);
 
+            GridRows<GridModel> expected = new GridRows<GridModel>(grid, grid.Source);
             GridRows<GridModel> actual = grid.Rows as GridRows<GridModel>;
 
-            Assert.AreSame(source, actual.Source);
-            Assert.AreSame(grid, actual.Grid);
+            Assert.AreSame(expected.Source, actual.Source);
+            Assert.AreSame(actual.Grid, actual.Grid);
         }
 
         [Test]
         public void Grid_SetsPagerToNull()
         {
-            Grid<GridModel> actual = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(null);
 
-            Assert.IsNull(actual.Pager);
+            Assert.IsNull(grid.Pager);
         }
 
         [Test]
         public void Grid_SetsEmptyTextToNull()
         {
-            Grid<GridModel> actual = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(null);
 
-            Assert.IsNull(actual.EmptyText);
+            Assert.IsNull(grid.EmptyText);
         }
 
         #endregion

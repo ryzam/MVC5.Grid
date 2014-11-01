@@ -10,7 +10,7 @@ namespace NonFactors.Mvc.Grid
 
     public interface IGridColumns<TModel> : IGridColumns where TModel : class
     {
-        IGridColumn<TModel> Add();
-        IGridColumn<TModel> Add<TKey>(Expression<Func<TModel, TKey>> constraint);
+        IGridColumn<TModel, String> Add();
+        IGridColumn<TModel, TKey> Add<TKey>(Expression<Func<TModel, TKey>> constraint);
     }
 }

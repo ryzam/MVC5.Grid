@@ -13,9 +13,7 @@ namespace NonFactors.Mvc.Grid.Tests.Helpers
             IViewDataContainer viewDataContainer = new ViewPage();
             viewDataContainer.ViewData = viewContext.ViewData;
 
-            HtmlHelper html = new HtmlHelper(viewContext, viewDataContainer);
-
-            return html;
+            return new HtmlHelper(viewContext, viewDataContainer);
         }
 
         private static ControllerContext CreateControllerContext()

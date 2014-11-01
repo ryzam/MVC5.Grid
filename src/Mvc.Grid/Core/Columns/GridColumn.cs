@@ -4,9 +4,10 @@ using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridColumn<TModel, TValue> : IGridColumn<TModel> where TModel : class
+    public class GridColumn<TModel, TValue> : IGridColumn<TModel, TValue> where TModel : class
     {
         public Func<TModel, TValue> Expression { get; private set; }
+
         public Boolean IsEncoded { get; private set; }
         public String CssClasses { get; private set; }
         public String Format { get; private set; }
@@ -21,25 +22,25 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
         }
 
-        public IGridColumn<TModel> Formatted(String format)
+        public IGridColumn<TModel, TValue> Formatted(String format)
         {
             Format = format;
 
             return this;
         }
-        public IGridColumn<TModel> Encoded(Boolean encode)
+        public IGridColumn<TModel, TValue> Encoded(Boolean encode)
         {
             IsEncoded = encode;
 
             return this;
         }
-        public IGridColumn<TModel> Css(String cssClasses)
+        public IGridColumn<TModel, TValue> Css(String cssClasses)
         {
             CssClasses = cssClasses;
 
             return this;
         }
-        public IGridColumn<TModel> Titled(String title)
+        public IGridColumn<TModel, TValue> Titled(String title)
         {
             Title = title;
 
