@@ -105,6 +105,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: Named(String name)
+
+        [Test]
+        public void Named_SetsName()
+        {
+            String actual = htmlGrid.Named("Name").Grid.Name;
+            String expected = "Name";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Named_ReturnsSameGrid()
+        {
+            IHtmlGrid<GridModel> actual = htmlGrid.Named("Name");
+            IHtmlGrid<GridModel> expected = htmlGrid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: WithPager(Action<IGridPager> builder)
 
         [Test]

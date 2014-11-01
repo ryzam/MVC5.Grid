@@ -6,6 +6,7 @@ namespace NonFactors.Mvc.Grid
     public interface IGrid
     {
         String EmptyText { get; set; }
+        String Name { get; set; }
 
         IGridColumns Columns { get; }
         IGridRows Rows { get; }

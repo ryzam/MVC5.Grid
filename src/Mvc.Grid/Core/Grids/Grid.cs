@@ -14,6 +14,7 @@ namespace NonFactors.Mvc.Grid
         public IGridPager Pager { get; set; }
 
         public String EmptyText { get; set; }
+        public String Name { get; set; }
 
         public Grid(IEnumerable<TModel> source)
         {

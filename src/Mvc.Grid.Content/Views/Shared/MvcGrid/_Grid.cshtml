@@ -2,7 +2,7 @@
 @model IGrid
 
 <div class="mvc-grid">
-    <table class="table mvc-grid-table">
+    <table class="table mvc-grid-table" data-name="@Model.Name">
         <thead>
             <tr>
                 @foreach (IGridColumn column in Model.Columns)

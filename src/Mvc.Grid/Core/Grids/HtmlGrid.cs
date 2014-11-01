@@ -29,6 +29,12 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public IHtmlGrid<TModel> Named(String name)
+        {
+            Grid.Name = name;
+
+            return this;
+        }
 
         public IHtmlGrid<TModel> WithPager(Action<IGridPager> builder)
         {

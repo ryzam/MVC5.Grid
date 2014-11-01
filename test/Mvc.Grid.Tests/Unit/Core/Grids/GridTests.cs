@@ -69,6 +69,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.IsNull(grid.EmptyText);
         }
 
+        [Test]
+        public void Grid_SetsNameToNull()
+        {
+            Grid<GridModel> grid = new Grid<GridModel>(null);
+
+            Assert.IsNull(grid.Name);
+        }
+
         #endregion
     }
 }
