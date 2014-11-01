@@ -24,6 +24,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: Grid(IEnumerable<TModel> source)
 
         [Test]
+        public void Grid_CreatesEmptyProcessors()
+        {
+            Grid<GridModel> grid = new Grid<GridModel>(null);
+
+            CollectionAssert.IsEmpty(grid.Processors);
+        }
+
+        [Test]
         public void Grid_SetsSource()
         {
             IEnumerable<GridModel> expected = new GridModel[2];
@@ -35,9 +43,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Grid_CreatesEmptyColumns()
         {
-            IGridColumns<GridModel> columns = new Grid<GridModel>(null).Columns;
+            Grid<GridModel> grid = new Grid<GridModel>(null);
 
-            CollectionAssert.IsEmpty(columns);
+            CollectionAssert.IsEmpty(grid.Columns);
         }
 
         [Test]

@@ -5,6 +5,7 @@ namespace NonFactors.Mvc.Grid
 {
     public class Grid<TModel> : IGrid<TModel> where TModel : class
     {
+        public IEnumerable<IGridProcessor<TModel>> Processors { get; protected set; }
         public IEnumerable<TModel> Source { get; protected set; }
 
         public IGridColumns<TModel> Columns { get; protected set; }
@@ -18,6 +19,7 @@ namespace NonFactors.Mvc.Grid
 
         public Grid(IEnumerable<TModel> source)
         {
+            Processors = new List<IGridProcessor<TModel>>();
             Source = source;
 
             Columns = new GridColumns<TModel>();

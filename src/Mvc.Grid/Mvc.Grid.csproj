@@ -43,6 +43,8 @@
     <Compile Include="Core\Grids\IHtmlGrid.cs" />
     <Compile Include="Core\Paging\GridPager.cs" />
     <Compile Include="Core\Paging\IGridPager.cs" />
+    <Compile Include="Core\Processors\GridProcessorType.cs" />
+    <Compile Include="Core\Processors\IGridProcessor.cs" />
     <Compile Include="Core\Rows\GridRow.cs" />
     <Compile Include="Core\Rows\GridRows.cs" />
     <Compile Include="Core\Grids\IGrid.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="Html\GridHtmlExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
