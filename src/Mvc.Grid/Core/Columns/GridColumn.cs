@@ -6,13 +6,13 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumn<TModel, TValue> : IGridColumn<TModel, TValue> where TModel : class
     {
-        public Func<TModel, TValue> Expression { get; private set; }
+        public Func<TModel, TValue> Expression { get; set; }
 
-        public Boolean? IsSortable { get; private set; }
-        public Boolean IsEncoded { get; private set; }
-        public String CssClasses { get; private set; }
-        public String Format { get; private set; }
-        public String Title { get; private set; }
+        public Boolean? IsSortable { get; set; }
+        public Boolean IsEncoded { get; set; }
+        public String CssClasses { get; set; }
+        public String Format { get; set; }
+        public String Title { get; set; }
 
         public GridColumn() : this(null)
         {

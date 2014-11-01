@@ -19,6 +19,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[8]);
             HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper();
             requestContext = html.ViewContext.RequestContext;
+            grid.Columns.Add(model => model.Name);
+            grid.Columns.Add(model => model.Sum);
 
             htmlGrid = new HtmlGrid<GridModel>(html, grid);
         }
@@ -74,6 +76,41 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Build_ReturnsSameGrid()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Build(columns => { });
+            IHtmlGrid<GridModel> expected = htmlGrid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
+        #region Method: Sortable(Boolean enabled)
+
+        [Test]
+        [TestCase(null, null, null)]
+        [TestCase(null, false, false)]
+        [TestCase(null, true, true)]
+        [TestCase(false, null, false)]
+        [TestCase(false, false, false)]
+        [TestCase(false, true, false)]
+        [TestCase(true, null, true)]
+        [TestCase(true, false, true)]
+        [TestCase(true, true, true)]
+        public void Sortable_SetsSortable(Boolean? isColumnSortable, Boolean? isGridSortable, Boolean? expectedIsSortable)
+        {
+            foreach (IGridColumn column in htmlGrid.Grid.Columns)
+                column.IsSortable = isColumnSortable;
+
+            if (isGridSortable.HasValue)
+                htmlGrid.Sortable(isGridSortable.Value);
+
+            foreach (IGridColumn actual in htmlGrid.Grid.Columns)
+                Assert.AreEqual(expectedIsSortable, actual.IsSortable);
+        }
+
+        [Test]
+        public void Sortable_ReturnsSameGrid()
+        {
+            IHtmlGrid<GridModel> actual = htmlGrid.Sortable(true);
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);

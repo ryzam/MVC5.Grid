@@ -23,6 +23,14 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public IHtmlGrid<TModel> Sortable(Boolean enabled)
+        {
+            foreach (IGridColumn column in Grid.Columns)
+                if (column.IsSortable == null)
+                    column.IsSortable = enabled;
+
+            return this;
+        }
         public IHtmlGrid<TModel> Empty(String text)
         {
             Grid.EmptyText = text;

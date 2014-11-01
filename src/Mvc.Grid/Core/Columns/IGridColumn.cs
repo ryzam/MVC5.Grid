@@ -5,18 +5,18 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGridColumn
     {
-        Boolean? IsSortable { get; }
-        Boolean IsEncoded { get; }
-        String CssClasses { get; }
-        String Format { get; }
-        String Title { get; }
+        Boolean? IsSortable { get; set; }
+        Boolean IsEncoded { get; set; }
+        String CssClasses { get; set; }
+        String Format { get; set; }
+        String Title { get; set; }
 
         IHtmlString ValueFor(IGridRow row);
     }
 
     public interface IGridColumn<TModel, TValue> : IGridColumn where TModel : class
     {
-        Func<TModel, TValue> Expression { get; }
+        Func<TModel, TValue> Expression { get; set; }
 
         IGridColumn<TModel, TValue> Sortable(Boolean enabled);
         IGridColumn<TModel, TValue> Formatted(String format);
