@@ -9,11 +9,11 @@
                 {
                     if (String.IsNullOrWhiteSpace(column.CssClasses))
                     {
-                        <th>@column.Title</th>
+                        <th data-sort="@(column.IsSortable == true)">@column.Title</th>
                     }
                     else
                     {
-                        <th class="@column.CssClasses">@column.Title</th>
+                        <th class="@column.CssClasses" data-sort="@(column.IsSortable == true)">@column.Title</th>
                     }
                 }
             </tr>

@@ -5,6 +5,7 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGridColumn
     {
+        Boolean? IsSortable { get; }
         Boolean IsEncoded { get; }
         String CssClasses { get; }
         String Format { get; }
@@ -17,6 +18,7 @@ namespace NonFactors.Mvc.Grid
     {
         Func<TModel, TValue> Expression { get; }
 
+        IGridColumn<TModel, TValue> Sortable(Boolean enabled);
         IGridColumn<TModel, TValue> Formatted(String format);
         IGridColumn<TModel, TValue> Encoded(Boolean encode);
         IGridColumn<TModel, TValue> Css(String cssClasses);

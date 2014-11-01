@@ -1,5 +1,4 @@
-﻿using NonFactors.Mvc.Grid.Tests.Objects;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Linq;
@@ -40,6 +39,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>();
 
             Assert.AreEqual(expected.Expression, actual.Expression);
+            Assert.AreEqual(expected.IsSortable, actual.IsSortable);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
             Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
             Assert.AreEqual(expected.Format, actual.Format);
@@ -68,6 +68,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(actual.Expression);
 
             Assert.AreEqual(expected.Expression, actual.Expression);
+            Assert.AreEqual(expected.IsSortable, actual.IsSortable);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
             Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
             Assert.AreEqual(expected.Format, actual.Format);

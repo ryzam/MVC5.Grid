@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NonFactors.Mvc.Grid.Tests.Objects
+namespace NonFactors.Mvc.Grid.Tests
 {
     public class GridModel
     {

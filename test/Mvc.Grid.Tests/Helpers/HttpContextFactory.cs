@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace NonFactors.Mvc.Grid.Tests.Helpers
+namespace NonFactors.Mvc.Grid.Tests
 {
     public class HttpContextFactory
     {

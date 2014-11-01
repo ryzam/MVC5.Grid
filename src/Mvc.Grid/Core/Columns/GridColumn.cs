@@ -8,6 +8,7 @@ namespace NonFactors.Mvc.Grid
     {
         public Func<TModel, TValue> Expression { get; private set; }
 
+        public Boolean? IsSortable { get; private set; }
         public Boolean IsEncoded { get; private set; }
         public String CssClasses { get; private set; }
         public String Format { get; private set; }
@@ -22,6 +23,12 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
         }
 
+        public IGridColumn<TModel, TValue> Sortable(Boolean enabled)
+        {
+            IsSortable = enabled;
+
+            return this;
+        }
         public IGridColumn<TModel, TValue> Formatted(String format)
         {
             Format = format;

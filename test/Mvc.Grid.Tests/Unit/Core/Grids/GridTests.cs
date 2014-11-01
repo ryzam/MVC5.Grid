@@ -1,5 +1,4 @@
-﻿using NonFactors.Mvc.Grid.Tests.Objects;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit

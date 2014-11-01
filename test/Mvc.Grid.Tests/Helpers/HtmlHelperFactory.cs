@@ -3,7 +3,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 
-namespace NonFactors.Mvc.Grid.Tests.Helpers
+namespace NonFactors.Mvc.Grid.Tests
 {
     public class HtmlHelperFactory
     {

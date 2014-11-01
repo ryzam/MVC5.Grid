@@ -1,5 +1,4 @@
-﻿using NonFactors.Mvc.Grid.Tests.Objects;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Net;
 
@@ -32,6 +31,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column = new GridColumn<GridModel, Object>();
 
             Assert.IsNull(column.CssClasses);
+        }
+
+        [Test]
+        public void GridColumn_SetsIsSortableToNull()
+        {
+            column = new GridColumn<GridModel, Object>();
+
+            Assert.IsNull(column.IsSortable);
         }
 
         [Test]
@@ -82,6 +89,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void GridColumn_Expression_SetsIsSortableToNull()
+        {
+            column = new GridColumn<GridModel, Object>(model => model.Name);
+
+            Assert.IsNull(column.IsSortable);
+        }
+
+        [Test]
         public void GridColumn_Expression_SetsIsEncodedToTrue()
         {
             column = new GridColumn<GridModel, Object>(model => model.Name);
@@ -103,6 +118,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column = new GridColumn<GridModel, Object>(model => model.Name);
 
             Assert.IsNull(column.Title);
+        }
+
+        #endregion
+
+        #region Method: Sortable(Boolean enabled)
+
+        [Test]
+        public void Sortable_SetsIsSortable()
+        {
+            Boolean? actual = column.Sortable(true).IsSortable;
+            Boolean? expected = true;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Sortable_ReturnsSameGrid()
+        {
+            IGridColumn actual = column.Sortable(false);
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
         }
 
         #endregion
