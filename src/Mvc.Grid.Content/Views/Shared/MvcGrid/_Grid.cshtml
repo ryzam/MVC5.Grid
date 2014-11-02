@@ -46,5 +46,8 @@
             }
         </tbody>
     </table>
-    @Html.Partial(Model.Pager.PartialViewName, Model.Pager)
+    @if (Model.Pager != null)
+    {
+        @Html.Partial(Model.Pager.PartialViewName, Model.Pager)
+    }
 </div>
