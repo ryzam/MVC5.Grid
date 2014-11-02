@@ -26,43 +26,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_SetsCssClassesToNull()
-        {
-            column = new GridColumn<GridModel, Object>();
-
-            Assert.IsNull(column.CssClasses);
-        }
-
-        [Test]
-        public void GridColumn_SetsIsSortableToNull()
-        {
-            column = new GridColumn<GridModel, Object>();
-
-            Assert.IsNull(column.IsSortable);
-        }
-
-        [Test]
         public void GridColumn_SetsIsEncodedToTrue()
         {
             column = new GridColumn<GridModel, Object>();
 
             Assert.IsTrue(column.IsEncoded);
-        }
-
-        [Test]
-        public void GridColumn_SetsFormatToNull()
-        {
-            column = new GridColumn<GridModel, Object>();
-
-            Assert.IsNull(column.Format);
-        }
-
-        [Test]
-        public void GridColumn_SetsTitleToNull()
-        {
-            column = new GridColumn<GridModel, Object>();
-
-            Assert.IsNull(column.Title);
         }
 
         #endregion
@@ -81,43 +49,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_Expression_SetsCssClassesToNull()
-        {
-            column = new GridColumn<GridModel, Object>(model => model.Name);
-
-            Assert.IsNull(column.CssClasses);
-        }
-
-        [Test]
-        public void GridColumn_Expression_SetsIsSortableToNull()
-        {
-            column = new GridColumn<GridModel, Object>(model => model.Name);
-
-            Assert.IsNull(column.IsSortable);
-        }
-
-        [Test]
         public void GridColumn_Expression_SetsIsEncodedToTrue()
         {
             column = new GridColumn<GridModel, Object>(model => model.Name);
 
             Assert.IsTrue(column.IsEncoded);
-        }
-
-        [Test]
-        public void GridColumn_Expression_SetsFormatToNull()
-        {
-            column = new GridColumn<GridModel, Object>(model => model.Name);
-
-            Assert.IsNull(column.Format);
-        }
-
-        [Test]
-        public void GridColumn_Expression_SetsTitleToNull()
-        {
-            column = new GridColumn<GridModel, Object>(model => model.Name);
-
-            Assert.IsNull(column.Title);
         }
 
         #endregion

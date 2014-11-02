@@ -299,7 +299,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.IsNull(previousPager);
         }
 
-
         [Test]
         public void WithPager_AddsGridProcessor()
         {

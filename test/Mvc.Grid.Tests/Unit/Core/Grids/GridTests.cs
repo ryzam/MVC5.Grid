@@ -70,30 +70,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreSame(actual.Grid, actual.Grid);
         }
 
-        [Test]
-        public void Grid_SetsPagerToNull()
-        {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
-
-            Assert.IsNull(grid.Pager);
-        }
-
-        [Test]
-        public void Grid_SetsEmptyTextToNull()
-        {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
-
-            Assert.IsNull(grid.EmptyText);
-        }
-
-        [Test]
-        public void Grid_SetsNameToNull()
-        {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
-
-            Assert.IsNull(grid.Name);
-        }
-
         #endregion
     }
 }
