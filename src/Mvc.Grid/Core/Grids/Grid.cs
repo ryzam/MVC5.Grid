@@ -22,7 +22,7 @@ namespace NonFactors.Mvc.Grid
             Processors = new List<IGridProcessor<TModel>>();
             Source = source;
 
-            Columns = new GridColumns<TModel>();
+            Columns = new GridColumns<TModel>(this);
             Rows = new GridRows<TModel>(this);
         }
     }

@@ -13,7 +13,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            columns = new GridColumns<GridModel>();
+            columns = new GridColumns<GridModel>(null);
         }
 
         #region Constructor: GridColumns()
@@ -21,9 +21,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridColumns_AreEmpty()
         {
-            columns = new GridColumns<GridModel>();
+            columns = new GridColumns<GridModel>(null);
 
             CollectionAssert.IsEmpty(columns);
+        }
+
+        [Test]
+        public void GridColumns_SetsGrid()
+        {
+            IGrid<GridModel> grid = new Grid<GridModel>(null);
+            columns = new GridColumns<GridModel>(grid);
+
+            IGrid<GridModel> actual = columns.Grid;
+            IGrid<GridModel> expected = grid;
+
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion

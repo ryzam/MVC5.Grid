@@ -7,11 +7,13 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumns<TModel> : IGridColumns<TModel> where TModel : class
     {
-        protected List<IGridColumn> Columns { get; set; }
+        protected IList<IGridColumn> Columns { get; private set; }
+        public IGrid<TModel> Grid { get; private set; }
 
-        public GridColumns()
+        public GridColumns(IGrid<TModel> grid)
         {
             Columns = new List<IGridColumn>();
+            Grid = grid;
         }
 
         public IGridColumn<TModel, String> Add()

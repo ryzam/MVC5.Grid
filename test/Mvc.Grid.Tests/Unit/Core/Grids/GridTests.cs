@@ -49,7 +49,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void Grid_CreatesRows()
+        public void Grid_CreatesColumnsWithGrid()
+        {
+            Grid<GridModel> grid = new Grid<GridModel>(null);
+
+            GridColumns<GridModel> actual = grid.Columns as GridColumns<GridModel>;
+            GridColumns<GridModel> expected = new GridColumns<GridModel>(grid);
+
+            Assert.AreSame(actual.Grid, actual.Grid);
+        }
+
+        [Test]
+        public void Grid_CreatesRowsWithGrid()
         {
             Grid<GridModel> grid = new Grid<GridModel>(null);
 
