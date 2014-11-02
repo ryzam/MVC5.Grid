@@ -23,31 +23,31 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
         }
 
-        public IGridColumn<TModel, TValue> Sortable(Boolean enabled)
+        public IGridColumn Sortable(Boolean enabled)
         {
             IsSortable = enabled;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Formatted(String format)
+        public IGridColumn Formatted(String format)
         {
             Format = format;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Encoded(Boolean encode)
+        public IGridColumn Encoded(Boolean encode)
         {
             IsEncoded = encode;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Css(String cssClasses)
+        public IGridColumn Css(String cssClasses)
         {
             CssClasses = cssClasses;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Titled(String title)
+        public IGridColumn Titled(String title)
         {
             Title = title;
 

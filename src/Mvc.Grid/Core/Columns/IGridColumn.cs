@@ -11,17 +11,17 @@ namespace NonFactors.Mvc.Grid
         String Format { get; set; }
         String Title { get; set; }
 
+        IGridColumn Sortable(Boolean enabled);
+        IGridColumn Formatted(String format);
+        IGridColumn Encoded(Boolean encode);
+        IGridColumn Css(String cssClasses);
+        IGridColumn Titled(String title);
+
         IHtmlString ValueFor(IGridRow row);
     }
 
     public interface IGridColumn<TModel, TValue> : IGridColumn where TModel : class
     {
         Func<TModel, TValue> Expression { get; set; }
-
-        IGridColumn<TModel, TValue> Sortable(Boolean enabled);
-        IGridColumn<TModel, TValue> Formatted(String format);
-        IGridColumn<TModel, TValue> Encoded(Boolean encode);
-        IGridColumn<TModel, TValue> Css(String cssClasses);
-        IGridColumn<TModel, TValue> Titled(String title);
     }
 }
