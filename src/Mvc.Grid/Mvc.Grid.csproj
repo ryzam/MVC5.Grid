@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="Core\Columns\BaseGridColumn.cs" />
     <Compile Include="Core\Columns\GridColumn.cs" />
+    <Compile Include="Core\Columns\ISortableColumn.cs" />
     <Compile Include="Core\Grids\Grid.cs" />
     <Compile Include="Core\Columns\GridColumns.cs" />
     <Compile Include="Core\Grids\HtmlGrid.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Core\Columns\IGridColumns.cs" />
     <Compile Include="Core\Rows\IGridRow.cs" />
     <Compile Include="Core\Rows\IGridRows.cs" />
+    <Compile Include="Core\Sorting\GridSortOrder.cs" />
     <Compile Include="Html\GridHtmlExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

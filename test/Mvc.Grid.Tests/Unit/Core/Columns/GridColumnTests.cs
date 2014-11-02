@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
@@ -7,7 +9,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridColumnTests
     {
-        private IGridColumn<GridModel, Object> column;
+        private GridColumn<GridModel, Object> column;
 
         [SetUp]
         public void SetUp()
@@ -16,6 +18,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         #region Constructor: GridColumn()
+
+        [Test]
+        public void GridColumn_SetsTypeAsPreProcessor()
+        {
+            GridProcessorType actual = new GridColumn<GridModel, Object>().Type;
+            GridProcessorType expected = GridProcessorType.Pre;
+
+            Assert.AreEqual(expected, actual);
+        }
 
         [Test]
         public void GridColumn_SetsExpressionToNull()
@@ -38,6 +49,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: GridColumn(Func<TModel, TValue> expression)
 
         [Test]
+        public void GridColumn_Expression_SetsTypeAsPreProcessor()
+        {
+            GridProcessorType actual = new GridColumn<GridModel, Object>(model => model.Name).Type;
+            GridProcessorType expected = GridProcessorType.Pre;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void GridColumn_Expression_SetsExpression()
         {
             Func<GridModel, String> expression = (model) => model.Name;
@@ -54,6 +74,90 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column = new GridColumn<GridModel, Object>(model => model.Name);
 
             Assert.IsTrue(column.IsEncoded);
+        }
+
+        #endregion
+
+        #region Method: Process(IEnumerable<TModel> items)
+
+        [Test]
+        public void Process_OnExpressionNullReturnsSameItems()
+        {
+            column.Expression = null;
+            column.IsSortable = true;
+            column.SortOrder = GridSortOrder.Asc;
+
+            IEnumerable<GridModel> expected = new GridModel[2];
+            IEnumerable<GridModel> actual = column.Process(expected);
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Process_OnIsSortableNullReturnsSameItems()
+        {
+            column.IsSortable = null;
+            column.SortOrder = GridSortOrder.Desc;
+            column.Expression = (model) => model.Name;
+
+            IEnumerable<GridModel> expected = new GridModel[2];
+            IEnumerable<GridModel> actual = column.Process(expected);
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Process_OnIsSortableFalseReturnsSameItems()
+        {
+            column.IsSortable = false;
+            column.SortOrder = GridSortOrder.Desc;
+            column.Expression = (model) => model.Name;
+
+            IEnumerable<GridModel> expected = new GridModel[2];
+            IEnumerable<GridModel> actual = column.Process(expected);
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Process_OnSortOrderNullReturnsSameItems()
+        {
+            column.SortOrder = null;
+            column.IsSortable = true;
+            column.Expression = (model) => model.Name;
+
+            IEnumerable<GridModel> expected = new GridModel[2];
+            IEnumerable<GridModel> actual = column.Process(expected);
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Process_ReturnsItemsSortedByAscendingOrder()
+        {
+            column.IsSortable = true;
+            column.SortOrder = GridSortOrder.Asc;
+            column.Expression = (model) => model.Name;
+            GridModel[] models = { new GridModel { Name = "B" }, new GridModel { Name = "A" }};
+
+            IEnumerable<GridModel> expected = models.OrderBy(model => model.Name);
+            IEnumerable<GridModel> actual = column.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Process_ReturnsItemsSortedByDescendingOrder()
+        {
+            column.IsSortable = true;
+            column.SortOrder = GridSortOrder.Desc;
+            column.Expression = (model) => model.Name;
+            GridModel[] models = { new GridModel { Name = "A" }, new GridModel { Name = "B" } };
+
+            IEnumerable<GridModel> expected = models.OrderByDescending(model => model.Name);
+            IEnumerable<GridModel> actual = column.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         #endregion

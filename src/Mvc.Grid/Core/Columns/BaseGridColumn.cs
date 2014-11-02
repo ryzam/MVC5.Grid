@@ -5,7 +5,9 @@ namespace NonFactors.Mvc.Grid
 {
     public abstract class BaseGridColumn : IGridColumn
     {
+        public GridSortOrder? SortOrder { get; set; }
         public Boolean? IsSortable { get; set; }
+        
         public Boolean IsEncoded { get; set; }
         public String CssClasses { get; set; }
         public String Format { get; set; }
@@ -17,6 +19,7 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        
         public IGridColumn Formatted(String format)
         {
             Format = format;
