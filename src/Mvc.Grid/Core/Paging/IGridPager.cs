@@ -14,4 +14,8 @@ namespace NonFactors.Mvc.Grid
 
         String LinkForPage(Int32 page);
     }
+
+    public interface IGridPager<TModel> : IGridProcessor<TModel>, IGridPager where TModel : class
+    {
+    }
 }

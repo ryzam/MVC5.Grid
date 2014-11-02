@@ -21,6 +21,36 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Property: IGrid.Rows
+
+        [Test]
+        public void IGridRows_ReturnsSameRows()
+        {
+            Grid<GridModel> grid = new Grid<GridModel>(null);
+
+            IGridRows actual = (grid as IGrid).Rows;
+            IGridRows expected = grid.Rows;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
+        #region Property: IGrid.Pager
+
+        [Test]
+        public void IGridPager_ReturnsSamePager()
+        {
+            Grid<GridModel> grid = new Grid<GridModel>(null);
+
+            IGridPager actual = (grid as IGrid).Pager;
+            IGridPager expected = grid.Pager;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Constructor: Grid(IEnumerable<TModel> source)
 
         [Test]

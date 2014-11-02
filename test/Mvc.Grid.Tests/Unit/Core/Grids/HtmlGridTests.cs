@@ -49,8 +49,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void HtmlGrid_SetsGrid()
         {
-            Grid<GridModel> actual = new HtmlGrid<GridModel>(null, htmlGrid.Grid).Grid;
-            Grid<GridModel> expected = htmlGrid.Grid;
+            IGrid<GridModel> actual = new HtmlGrid<GridModel>(null, htmlGrid.Grid).Grid;
+            IGrid<GridModel> expected = htmlGrid.Grid;
 
             Assert.AreSame(expected, actual);
         }
@@ -168,7 +168,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_DoesNotChangeExistingPager()
         {
-            IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            IGridPager<GridModel> pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
             htmlGrid.Grid.Pager = pager;
 
             htmlGrid.WithPager(gridPager => { });
@@ -240,20 +240,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_Builder_DoesNotAddNonGridProcessor()
-        {
-            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
-            htmlGrid.Grid.Pager = Substitute.For<IGridPager>();
-
-            htmlGrid.WithPager(pager => { });
-
-            CollectionAssert.IsEmpty(htmlGrid.Grid.Processors);
-        }
-
-        [Test]
         public void WithPager_Builder_ReturnsSameGrid()
         {
-            IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            IGridPager<GridModel> pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
             htmlGrid.Grid.Pager = pager;
 
             IHtmlGrid<GridModel> actual = htmlGrid.WithPager(gridPager => { });
@@ -269,7 +258,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_DoesNotChangeExistingPager()
         {
-            IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            IGridPager<GridModel> pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
             htmlGrid.Grid.Pager = pager;
 
             htmlGrid.WithPager();
@@ -300,7 +289,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_AddsGridProcessor()
+        public void WithPager_AddsGridPagerProcessor()
         {
             Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
 
@@ -327,20 +316,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_DoesNotAddNonGridProcessor()
-        {
-            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
-            htmlGrid.Grid.Pager = Substitute.For<IGridPager>();
-
-            htmlGrid.WithPager();
-
-            CollectionAssert.IsEmpty(htmlGrid.Grid.Processors);
-        }
-
-        [Test]
         public void WithPager_ReturnsSameGrid()
         {
-            IGridPager pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            IGridPager<GridModel> pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
             htmlGrid.Grid.Pager = pager;
 
             IHtmlGrid<GridModel> actual = htmlGrid.WithPager();

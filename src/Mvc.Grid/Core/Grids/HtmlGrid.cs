@@ -7,10 +7,10 @@ namespace NonFactors.Mvc.Grid
     public class HtmlGrid<TModel> : IHtmlGrid<TModel> where TModel : class
     {
         public String PartialViewName { get; set; }
-        public Grid<TModel> Grid { get; set; }
+        public IGrid<TModel> Grid { get; set; }
         public HtmlHelper Html { get; set; }
 
-        public HtmlGrid(HtmlHelper html, Grid<TModel> grid)
+        public HtmlGrid(HtmlHelper html, IGrid<TModel> grid)
         {
             PartialViewName = "MvcGrid/_Grid";
             Html = html;
@@ -44,14 +44,13 @@ namespace NonFactors.Mvc.Grid
             return this;
         }
 
-        public IHtmlGrid<TModel> WithPager(Action<IGridPager> builder)
+        public IHtmlGrid<TModel> WithPager(Action<IGridPager<TModel>> builder)
         {
             Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Html.ViewContext.RequestContext, Grid.Source);
             builder(Grid.Pager);
 
-            IGridProcessor<TModel> processor = Grid.Pager as IGridProcessor<TModel>;
-            if (processor != null && !Grid.Processors.Contains(processor))
-                Grid.Processors.Add(processor);
+            if (!Grid.Processors.Contains(Grid.Pager))
+                Grid.Processors.Add(Grid.Pager);
 
             return this;
         }

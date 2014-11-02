@@ -7,7 +7,7 @@ using System.Web.Routing;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridPager<TModel> : IGridProcessor<TModel>, IGridPager where TModel : class
+    public class GridPager<TModel> : IGridPager<TModel> where TModel : class
     {
         public RequestContext RequestContext { get; private set; }
         public String PartialViewName { get; set; }

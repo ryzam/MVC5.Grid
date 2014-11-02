@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridRows<TModel> : IGridRows where TModel : class
+    public class GridRows<TModel> : IGridRows<TModel> where TModel : class
     {
         public IGrid<TModel> Grid { get; private set; }
 

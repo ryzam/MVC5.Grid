@@ -18,5 +18,10 @@ namespace NonFactors.Mvc.Grid
     {
         IList<IGridProcessor<TModel>> Processors { get; }
         IEnumerable<TModel> Source { get; }
+
+        new IGridColumns<TModel> Columns { get; }
+        new IGridRows<TModel> Rows { get; }
+
+        new IGridPager<TModel> Pager { get; set; }
     }
 }

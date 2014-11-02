@@ -10,9 +10,12 @@ namespace NonFactors.Mvc.Grid
 
         public IGridColumns<TModel> Columns { get; protected set; }
         IGridColumns IGrid.Columns { get { return Columns; } }
-        public IGridRows Rows { get; protected set; }
 
-        public IGridPager Pager { get; set; }
+        public IGridRows<TModel> Rows { get; protected set; }
+        IGridRows IGrid.Rows { get { return Rows; } }
+
+        IGridPager IGrid.Pager { get { return Pager; } }
+        public IGridPager<TModel> Pager { get; set; }
 
         public String EmptyText { get; set; }
         public String Name { get; set; }
