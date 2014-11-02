@@ -46,7 +46,7 @@ namespace NonFactors.Mvc.Grid
             Int32 currentPage = 0;
 
             Int32.TryParse(RequestContext.HttpContext.Request.QueryString["grid-page"], out currentPage);
-            Type = GridProcessorType.Pre;
+            Type = GridProcessorType.Post;
             TotalRows = source.Count();
             CurrentPage = currentPage;
             PagesToDisplay = 5;

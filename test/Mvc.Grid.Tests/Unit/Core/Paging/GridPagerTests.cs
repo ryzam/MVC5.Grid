@@ -121,10 +121,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridPager_SetsTypeAsPreProcessor()
+        public void GridPager_SetsTypeAsPostProcessor()
         {
             GridProcessorType actual = new GridPager<GridModel>(requestContext, new GridModel[0]).Type;
-            GridProcessorType expected = GridProcessorType.Pre;
+            GridProcessorType expected = GridProcessorType.Post;
 
             Assert.AreEqual(expected, actual);
         }
