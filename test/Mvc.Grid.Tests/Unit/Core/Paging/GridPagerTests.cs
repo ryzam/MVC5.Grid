@@ -101,7 +101,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridPager_SetsCurrentPageToZero()
         {
-            requestContext = HttpContextFactory.CreateHttpContext("grid-page=1a").Request.RequestContext;
+            requestContext = HttpContextFactory.CreateHttpContext("MG-Page=1a").Request.RequestContext;
 
             Int32 actual = new GridPager<GridModel>(requestContext, new GridModel[0]).CurrentPage;
             Int32 expected = 0;
@@ -112,7 +112,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridPager_SetsCurrentPageFromRequestContext()
         {
-            requestContext = HttpContextFactory.CreateHttpContext("grid-page=4").Request.RequestContext;
+            requestContext = HttpContextFactory.CreateHttpContext("MG-Page=4").Request.RequestContext;
 
             Int32 actual = new GridPager<GridModel>(requestContext, new GridModel[0]).CurrentPage;
             Int32 expected = 4;
@@ -186,7 +186,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             String currentAction = requestContext.RouteData.Values["action"] as String;
             RouteValueDictionary routeValues = new RouteValueDictionary();
             UrlHelper urlHelper = new UrlHelper(requestContext);
-            routeValues["grid-page"] = 2;
+            routeValues["MG-Page"] = 2;
 
             String actual = new GridPager<GridModel>(requestContext, new GridModel[0]).LinkForPage(2);
             String expected = urlHelper.Action(currentAction, routeValues);
@@ -197,11 +197,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void LinkForPage_GeneratesLinkForPageByOverwritingQueryString()
         {
-            requestContext = HttpContextFactory.CreateHttpContext("grid-page=44").Request.RequestContext;
+            requestContext = HttpContextFactory.CreateHttpContext("MG-Page=44").Request.RequestContext;
             String currentAction = requestContext.RouteData.Values["action"] as String;
             RouteValueDictionary routeValues = new RouteValueDictionary();
             UrlHelper urlHelper = new UrlHelper(requestContext);
-            routeValues["grid-page"] = 2;
+            routeValues["MG-Page"] = 2;
 
             String actual = new GridPager<GridModel>(requestContext, new GridModel[0]).LinkForPage(2);
             String expected = urlHelper.Action(currentAction, routeValues);

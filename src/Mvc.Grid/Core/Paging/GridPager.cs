@@ -45,7 +45,7 @@ namespace NonFactors.Mvc.Grid
             RequestContext = requestContext;
             Int32 currentPage = 0;
 
-            Int32.TryParse(RequestContext.HttpContext.Request.QueryString["grid-page"], out currentPage);
+            Int32.TryParse(RequestContext.HttpContext.Request.QueryString["MG-Page"], out currentPage);
             Type = GridProcessorType.Post;
             TotalRows = source.Count();
             CurrentPage = currentPage;
@@ -67,7 +67,7 @@ namespace NonFactors.Mvc.Grid
             foreach (String parameter in query)
                 routeValues[parameter] = query[parameter];
 
-            routeValues["grid-page"] = page;
+            routeValues["MG-Page"] = page;
 
             return urlHelper.Action(routeValues["action"] as String, routeValues);
         }
