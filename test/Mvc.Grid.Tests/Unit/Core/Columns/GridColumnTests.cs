@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
+using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -17,10 +19,33 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column = new GridColumn<GridModel, Object>(model => model.Name);
         }
 
-        #region Constructor: GridColumn(Func<TModel, TValue> expression)
+        #region Constructor: GridColumn(Expression<Func<TModel, TKey>> expression)
 
         [Test]
-        public void GridColumn_Expression_SetsTypeAsPreProcessor()
+        public void GridColumn_SetsExpression()
+        {
+            Expression<Func<GridModel, String>> expression = (model) => model.Name;
+            GridModel gridModel = new GridModel { Name = "Saiwai" };
+
+            String actual = new GridColumn<GridModel, String>(expression).Expression(gridModel);
+            String expected = expression.Compile()(gridModel);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsName()
+        {
+            Expression<Func<GridModel, String>> expression = (model) => model.Name;
+
+            String actual = new GridColumn<GridModel, String>(expression).Name;
+            String expected = ExpressionHelper.GetExpressionText(expression);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsTypeAsPreProcessor()
         {
             GridProcessorType actual = new GridColumn<GridModel, Object>(model => model.Name).Type;
             GridProcessorType expected = GridProcessorType.Pre;
@@ -29,18 +54,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_Expression_SetsExpression()
-        {
-            Func<GridModel, String> expression = (model) => model.Name;
-
-            Func<GridModel, String> actual = new GridColumn<GridModel, String>(expression).Expression;
-            Func<GridModel, String> expected = expression;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        [Test]
-        public void GridColumn_Expression_SetsIsEncodedToTrue()
+        public void GridColumn_SetsIsEncodedToTrue()
         {
             column = new GridColumn<GridModel, Object>(model => model.Name);
 

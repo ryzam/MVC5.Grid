@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -48,29 +47,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Add_AddsColumn()
         {
             columns.Add<String>(model => model.Name);
-
-            GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
-            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(actual.Expression);
-
-            Assert.AreEqual(expected.Expression, actual.Expression);
-            Assert.AreEqual(expected.IsSortable, actual.IsSortable);
-            Assert.AreEqual(expected.CssClasses, actual.CssClasses);
-            Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
-            Assert.AreEqual(expected.Format, actual.Format);
-            Assert.AreEqual(expected.Title, actual.Title);
-        }
-
-        [Test]
-        public void Add_NamesColumnWithExpressionText()
-        {
+            GridModel gridModel = new GridModel { Name = "Kokoye" };
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
-            columns.Add<String>(expression);
 
             GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
-            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(actual.Expression);
-            expected.Named(ExpressionHelper.GetExpressionText(expression));
+            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(model => model.Name);
 
-            Assert.AreEqual(expected.Expression, actual.Expression);
+            Assert.AreEqual(expected.Expression(gridModel), actual.Expression(gridModel));
             Assert.AreEqual(expected.IsSortable, actual.IsSortable);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
             Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);

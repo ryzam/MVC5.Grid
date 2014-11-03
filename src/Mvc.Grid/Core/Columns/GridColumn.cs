@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
+using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -11,10 +13,11 @@ namespace NonFactors.Mvc.Grid
         public Func<TModel, TValue> Expression { get; set; }
         public GridProcessorType Type { get; set; }
 
-        public GridColumn(Func<TModel, TValue> expression)
+        public GridColumn(Expression<Func<TModel, TValue>> expression)
         {
+            Name = ExpressionHelper.GetExpressionText(expression);
+            Expression = expression.Compile();
             Type = GridProcessorType.Pre;
-            Expression = expression;
             IsEncoded = true;
         }
 

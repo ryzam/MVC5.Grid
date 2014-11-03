@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -19,8 +18,7 @@ namespace NonFactors.Mvc.Grid
 
         public IGridColumn<TModel, TKey> Add<TKey>(Expression<Func<TModel, TKey>> expression)
         {
-            IGridColumn<TModel, TKey> column = new GridColumn<TModel, TKey>(expression.Compile());
-            column.Named(ExpressionHelper.GetExpressionText(expression));
+            IGridColumn<TModel, TKey> column = new GridColumn<TModel, TKey>(expression);
             Columns.Add(column);
 
             return column;
