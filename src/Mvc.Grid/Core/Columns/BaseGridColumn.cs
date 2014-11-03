@@ -12,6 +12,7 @@ namespace NonFactors.Mvc.Grid
         public String CssClasses { get; set; }
         public String Format { get; set; }
         public String Title { get; set; }
+        public String Name { get; set; }
 
         public IGridColumn Sortable(Boolean enabled)
         {
@@ -41,6 +42,12 @@ namespace NonFactors.Mvc.Grid
         public IGridColumn Titled(String title)
         {
             Title = title;
+
+            return this;
+        }
+        public IGridColumn Named(String name)
+        {
+            Name = name.ToLower();
 
             return this;
         }

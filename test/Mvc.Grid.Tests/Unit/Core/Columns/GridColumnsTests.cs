@@ -56,6 +56,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
+            Assert.AreEqual(expected.Name, actual.Name);
         }
 
         [Test]
@@ -85,6 +86,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
+            Assert.AreEqual(expected.Name, actual.Name);
         }
 
         [Test]

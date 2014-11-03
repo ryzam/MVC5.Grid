@@ -9,11 +9,13 @@ namespace NonFactors.Mvc.Grid
         String CssClasses { get; set; }
         String Format { get; set; }
         String Title { get; set; }
+        String Name { get; set; }
 
         IGridColumn Formatted(String format);
         IGridColumn Encoded(Boolean encode);
         IGridColumn Css(String cssClasses);
         IGridColumn Titled(String title);
+        IGridColumn Named(String name);
 
         IHtmlString ValueFor(IGridRow row);
     }
