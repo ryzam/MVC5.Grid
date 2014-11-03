@@ -7,14 +7,12 @@
             <tr>
                 @foreach (IGridColumn column in Model.Columns)
                 {
-                    if (String.IsNullOrWhiteSpace(column.CssClasses))
-                    {
-                        <th data-sort="@(column.IsSortable == true)">@column.Title</th>
-                    }
-                    else
-                    {
-                        <th class="@column.CssClasses" data-sort="@(column.IsSortable == true)">@column.Title</th>
-                    }
+                    <th class="@column.CssClasses"
+                        data-name="@column.Name"
+                        data-sort="@(column.IsSortable == true)"
+                        data-sort-order="@column.SortOrder">
+                        @column.Title
+                    </th>
                 }
             </tr>
         </thead>
@@ -26,14 +24,7 @@
                     <tr>
                         @foreach (IGridColumn column in Model.Columns)
                         {
-                            if (String.IsNullOrWhiteSpace(column.CssClasses))
-                            {
-                                <td>@column.ValueFor(row)</td>
-                            }
-                            else
-                            {
-                                <td class="@column.CssClasses">@column.ValueFor(row)</td>
-                            }
+                            <td class="@column.CssClasses">@column.ValueFor(row)</td>
                         }
                     </tr>
                 }
@@ -41,7 +32,9 @@
             else
             {
                 <tr>
-                    <td class="mvc-grid-table-empty" colspan="@Model.Columns.Count()">@Model.EmptyText</td>
+                    <td class="mvc-grid-table-empty" colspan="@Model.Columns.Count()">
+                        @Model.EmptyText
+                    </td>
                 </tr>
             }
         </tbody>

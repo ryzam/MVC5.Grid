@@ -128,10 +128,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Named(String name)
 
         [Test]
-        public void Named_SetsNameInLowerCase()
+        public void Named_SetsName()
         {
             String actual = column.Named("Name").Name;
-            String expected = "name";
+            String expected = "Name";
 
             Assert.AreEqual(expected, actual);
         }

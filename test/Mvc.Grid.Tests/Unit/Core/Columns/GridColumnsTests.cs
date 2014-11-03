@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -43,7 +45,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Add<TKey>(Expression<Func<TModel, TKey>> expression)
 
         [Test]
-        public void Add_AddsColumnWithExpression()
+        public void Add_AddsColumn()
         {
             columns.Add<String>(model => model.Name);
 
@@ -56,11 +58,29 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
+        }
+
+        [Test]
+        public void Add_NamesColumnWithExpressionText()
+        {
+            Expression<Func<GridModel, String>> expression = (model) => model.Name;
+            columns.Add<String>(expression);
+
+            GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
+            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(actual.Expression);
+            expected.Named(ExpressionHelper.GetExpressionText(expression));
+
+            Assert.AreEqual(expected.Expression, actual.Expression);
+            Assert.AreEqual(expected.IsSortable, actual.IsSortable);
+            Assert.AreEqual(expected.CssClasses, actual.CssClasses);
+            Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
+            Assert.AreEqual(expected.Format, actual.Format);
+            Assert.AreEqual(expected.Title, actual.Title);
             Assert.AreEqual(expected.Name, actual.Name);
         }
 
         [Test]
-        public void Add_ReturnsAddedColumnWithExpression()
+        public void Add_ReturnsAddedColumn()
         {
             IGridColumn actual = columns.Add(model => model.Name);
             IGridColumn expected = columns.Single();

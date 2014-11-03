@@ -47,7 +47,7 @@ namespace NonFactors.Mvc.Grid
         }
         public IGridColumn Named(String name)
         {
-            Name = name.ToLower();
+            Name = name;
 
             return this;
         }
