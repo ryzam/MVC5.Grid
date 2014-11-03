@@ -14,37 +14,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            column = new GridColumn<GridModel, Object>();
+            column = new GridColumn<GridModel, Object>(model => model.Name);
         }
-
-        #region Constructor: GridColumn()
-
-        [Test]
-        public void GridColumn_SetsTypeAsPreProcessor()
-        {
-            GridProcessorType actual = new GridColumn<GridModel, Object>().Type;
-            GridProcessorType expected = GridProcessorType.Pre;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GridColumn_SetsExpressionToNull()
-        {
-            column = new GridColumn<GridModel, Object>();
-
-            Assert.IsNull(column.Expression);
-        }
-
-        [Test]
-        public void GridColumn_SetsIsEncodedToTrue()
-        {
-            column = new GridColumn<GridModel, Object>();
-
-            Assert.IsTrue(column.IsEncoded);
-        }
-
-        #endregion
 
         #region Constructor: GridColumn(Func<TModel, TValue> expression)
 

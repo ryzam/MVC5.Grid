@@ -40,36 +40,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Add()
-
-        [Test]
-        public void Add_AddsEmptyColumn()
-        {
-            columns.Add();
-
-            GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
-            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>();
-
-            Assert.AreEqual(expected.Expression, actual.Expression);
-            Assert.AreEqual(expected.IsSortable, actual.IsSortable);
-            Assert.AreEqual(expected.CssClasses, actual.CssClasses);
-            Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
-            Assert.AreEqual(expected.Format, actual.Format);
-            Assert.AreEqual(expected.Title, actual.Title);
-            Assert.AreEqual(expected.Name, actual.Name);
-        }
-
-        [Test]
-        public void Add_ReturnsAddedColumn()
-        {
-            IGridColumn actual = columns.Add();
-            IGridColumn expected = columns.Single();
-
-            Assert.AreSame(expected, actual);
-        }
-
-        #endregion
-
         #region Method: Add<TKey>(Expression<Func<TModel, TKey>> expression)
 
         [Test]
@@ -105,7 +75,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumarator_ReturnsColumns()
         {
-            IGridColumn[] addedColumns = { columns.Add(), columns.Add() };
+            IGridColumn[] addedColumns = { columns.Add(model => model.Name), columns.Add(model => model.Name) };
 
             IEnumerable actual = columns.ToList();
             IEnumerable expected = addedColumns;
@@ -116,7 +86,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumerator_ReturnsSameColumns()
         {
-            IGridColumn[] addedColumns = { columns.Add(), columns.Add() };
+            IGridColumn[] addedColumns = { columns.Add(model => model.Name), columns.Add(model => model.Name) };
 
             IEnumerable expected = columns.ToList();
             IEnumerable actual = columns;

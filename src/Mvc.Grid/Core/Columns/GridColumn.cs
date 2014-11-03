@@ -11,9 +11,6 @@ namespace NonFactors.Mvc.Grid
         public Func<TModel, TValue> Expression { get; set; }
         public GridProcessorType Type { get; set; }
 
-        public GridColumn() : this(null)
-        {
-        }
         public GridColumn(Func<TModel, TValue> expression)
         {
             Type = GridProcessorType.Pre;

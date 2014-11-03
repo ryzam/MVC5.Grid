@@ -12,7 +12,6 @@ namespace NonFactors.Mvc.Grid
     {
         IGrid<TModel> Grid { get; }
 
-        IGridColumn<TModel, String> Add();
         IGridColumn<TModel, TKey> Add<TKey>(Expression<Func<TModel, TKey>> constraint);
     }
 }

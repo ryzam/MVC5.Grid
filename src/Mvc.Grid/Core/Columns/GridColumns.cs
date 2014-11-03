@@ -16,13 +16,6 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
         }
 
-        public IGridColumn<TModel, String> Add()
-        {
-            IGridColumn<TModel, String> column = new GridColumn<TModel, String>();
-            Columns.Add(column);
-
-            return column;
-        }
         public IGridColumn<TModel, TKey> Add<TKey>(Expression<Func<TModel, TKey>> expression)
         {
             IGridColumn<TModel, TKey> column = new GridColumn<TModel, TKey>(expression.Compile());
