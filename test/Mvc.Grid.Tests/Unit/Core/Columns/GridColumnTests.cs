@@ -52,24 +52,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Process(IEnumerable<TModel> items)
 
         [Test]
-        public void Process_OnExpressionNullReturnsSameItems()
-        {
-            column.Expression = null;
-            column.IsSortable = true;
-            column.SortOrder = GridSortOrder.Asc;
-
-            IEnumerable<GridModel> expected = new GridModel[2];
-            IEnumerable<GridModel> actual = column.Process(expected);
-
-            Assert.AreSame(expected, actual);
-        }
-
-        [Test]
         public void Process_OnIsSortableNullReturnsSameItems()
         {
             column.IsSortable = null;
             column.SortOrder = GridSortOrder.Desc;
-            column.Expression = (model) => model.Name;
 
             IEnumerable<GridModel> expected = new GridModel[2];
             IEnumerable<GridModel> actual = column.Process(expected);
@@ -82,7 +68,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             column.IsSortable = false;
             column.SortOrder = GridSortOrder.Desc;
-            column.Expression = (model) => model.Name;
 
             IEnumerable<GridModel> expected = new GridModel[2];
             IEnumerable<GridModel> actual = column.Process(expected);
@@ -95,7 +80,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             column.SortOrder = null;
             column.IsSortable = true;
-            column.Expression = (model) => model.Name;
 
             IEnumerable<GridModel> expected = new GridModel[2];
             IEnumerable<GridModel> actual = column.Process(expected);
@@ -108,7 +92,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             column.IsSortable = true;
             column.SortOrder = GridSortOrder.Asc;
-            column.Expression = (model) => model.Name;
             GridModel[] models = { new GridModel { Name = "B" }, new GridModel { Name = "A" }};
 
             IEnumerable<GridModel> expected = models.OrderBy(model => model.Name);
@@ -122,7 +105,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             column.IsSortable = true;
             column.SortOrder = GridSortOrder.Desc;
-            column.Expression = (model) => model.Name;
             GridModel[] models = { new GridModel { Name = "A" }, new GridModel { Name = "B" } };
 
             IEnumerable<GridModel> expected = models.OrderByDescending(model => model.Name);
@@ -159,17 +141,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             String expected = WebUtility.HtmlEncode(String.Format("<script value='{0:C2}' />", 100));
             String actual = column.ValueFor(row).ToString();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void ValueFor_OnNullExpressionReturnsEmpty()
-        {
-            column = new GridColumn<GridModel, Object>(null);
-
-            String actual = column.ValueFor(null).ToString();
-            String expected = String.Empty;
 
             Assert.AreEqual(expected, actual);
         }

@@ -20,9 +20,6 @@ namespace NonFactors.Mvc.Grid
 
         public IEnumerable<TModel> Process(IEnumerable<TModel> items)
         {
-            if (Expression == null)
-                return items;
-
             if (IsSortable != true)
                 return items;
 
@@ -45,9 +42,6 @@ namespace NonFactors.Mvc.Grid
 
         private String GetRawValueFor(IGridRow row)
         {
-            if (Expression == null)
-                return String.Empty;
-
             TValue value = Expression(row.Model as TModel);
             if (value == null)
                 return String.Empty;
