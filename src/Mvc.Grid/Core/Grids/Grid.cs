@@ -7,6 +7,10 @@ namespace NonFactors.Mvc.Grid
     {
         public IList<IGridProcessor<TModel>> Processors { get; protected set; }
         public IEnumerable<TModel> Source { get; protected set; }
+        public IGridQuery Query { get; set; }
+
+        public String EmptyText { get; set; }
+        public String Name { get; set; }
 
         public IGridColumns<TModel> Columns { get; protected set; }
         IGridColumns IGrid.Columns { get { return Columns; } }
@@ -16,9 +20,6 @@ namespace NonFactors.Mvc.Grid
 
         IGridPager IGrid.Pager { get { return Pager; } }
         public IGridPager<TModel> Pager { get; set; }
-
-        public String EmptyText { get; set; }
-        public String Name { get; set; }
 
         public Grid(IEnumerable<TModel> source)
         {

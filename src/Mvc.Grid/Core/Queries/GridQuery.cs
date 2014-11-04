@@ -5,10 +5,12 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridQuery : IGridQuery
     {
+        public IGrid Grid { get; set; }
         public NameValueCollection Query { get; set; }
 
-        public GridQuery(HttpContextBase httpContext)
+        public GridQuery(IGrid grid, HttpContextBase httpContext)
         {
+            Grid = grid;
             Query = httpContext.Request.QueryString;
         }
     }
