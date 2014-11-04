@@ -24,9 +24,9 @@ namespace NonFactors.Mvc.Grid.Tests
 
             return context;
         }
-        public static HttpContextBase CreateHttpContextBase()
+        public static HttpContextBase CreateHttpContextBase(String queryString = null)
         {
-            return new HttpContextWrapper(CreateHttpContext());
+            return new HttpContextWrapper(CreateHttpContext(queryString));
         }
     }
 }

@@ -40,7 +40,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetSortingQuery_GetsGridSortingQuery()
         {
-            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase();
+            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase("MG-Sort-Column=Asc");
             GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), httpContext);
 
             GridSortingQuery actual = gridQuery.GetSortingQuery("Column") as GridSortingQuery;
@@ -48,6 +48,23 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             Assert.AreEqual(expected.ColumnName, actual.ColumnName);
             Assert.AreEqual(expected.SortOrder, actual.SortOrder);
+        }
+
+        #endregion
+
+        #region Method: GetPagingQuery()
+
+        [Test]
+        public void GetPagingQuery_GetsGridPagingQuery()
+        {
+            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase("MG-Page=11");
+            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), httpContext);
+
+            GridPagingQuery actual = gridQuery.GetPagingQuery() as GridPagingQuery;
+            GridPagingQuery expected = new GridPagingQuery(gridQuery);
+
+            Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
+            Assert.AreEqual(expected.GridName, actual.GridName);
         }
 
         #endregion

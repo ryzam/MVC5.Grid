@@ -65,6 +65,7 @@
     <Compile Include="Unit\Core\Grids\GridTests.cs" />
     <Compile Include="Unit\Core\Grids\HtmlGridTests.cs" />
     <Compile Include="Unit\Core\Paging\GridPagerTests.cs" />
+    <Compile Include="Unit\Core\Queries\GridPagingQueryTests.cs" />
     <Compile Include="Unit\Core\Queries\GridQueryTests.cs" />
     <Compile Include="Unit\Core\Queries\GridSortingQueryTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowsTests.cs" />

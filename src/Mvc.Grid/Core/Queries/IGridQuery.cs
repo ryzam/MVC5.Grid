@@ -9,5 +9,6 @@ namespace NonFactors.Mvc.Grid
         NameValueCollection Query { get; set; }
 
         IGridSortingQuery GetSortingQuery(String columnName);
+        IGridPagingQuery GetPagingQuery();
     }
 }

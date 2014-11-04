@@ -19,5 +19,9 @@ namespace NonFactors.Mvc.Grid
         {
             return new GridSortingQuery(this, columnName);
         }
+        public IGridPagingQuery GetPagingQuery()
+        {
+            return new GridPagingQuery(this);
+        }
     }
 }
