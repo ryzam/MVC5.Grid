@@ -47,6 +47,8 @@
     <Compile Include="Core\Paging\IGridPager.cs" />
     <Compile Include="Core\Processors\GridProcessorType.cs" />
     <Compile Include="Core\Processors\IGridProcessor.cs" />
+    <Compile Include="Core\Queries\GridQuery.cs" />
+    <Compile Include="Core\Queries\IGridQuery.cs" />
     <Compile Include="Core\Rows\GridRow.cs" />
     <Compile Include="Core\Rows\GridRows.cs" />
     <Compile Include="Core\Grids\IGrid.cs" />
