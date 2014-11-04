@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -6,5 +7,7 @@ namespace NonFactors.Mvc.Grid
     {
         IGrid Grid { get; }
         NameValueCollection Query { get; set; }
+
+        IGridSortingQuery GetSortingQuery(String columnName);
     }
 }

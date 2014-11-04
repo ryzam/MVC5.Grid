@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Web;
 
 namespace NonFactors.Mvc.Grid
@@ -12,6 +13,11 @@ namespace NonFactors.Mvc.Grid
         {
             Grid = grid;
             Query = httpContext.Request.QueryString;
+        }
+
+        public IGridSortingQuery GetSortingQuery(String columnName)
+        {
+            return new GridSortingQuery(this, columnName);
         }
     }
 }

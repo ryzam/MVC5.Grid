@@ -34,5 +34,22 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         #endregion
+
+        #region Method: GetSortingQuery(String columnName)
+
+        [Test]
+        public void GetSortingQuery_GetsGridSortingQuery()
+        {
+            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase();
+            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), httpContext);
+
+            GridSortingQuery actual = gridQuery.GetSortingQuery("Column") as GridSortingQuery;
+            GridSortingQuery expected = new GridSortingQuery(gridQuery, "Column");
+
+            Assert.AreEqual(expected.ColumnName, actual.ColumnName);
+            Assert.AreEqual(expected.SortOrder, actual.SortOrder);
+        }
+
+        #endregion
     }
 }
