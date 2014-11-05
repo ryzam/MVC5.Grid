@@ -17,6 +17,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void TestFixtureSetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
+            grid.Source.Returns(new GridModel[30].AsQueryable());
         }
 
         #region Property: StartingPage
@@ -42,7 +43,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(4, 5, 2)]
         public void StartingPage_GetsStartingPage(Int32 pagesToDisplay, Int32 currentPage, Int32 startingPage)
         {
-            grid.Source.Returns(new GridModel[6]);
+            grid.Source.Returns(new GridModel[6].AsQueryable());
 
             GridPager<GridModel> pager = new GridPager<GridModel>(grid, null);
             pager.PagesToDisplay = pagesToDisplay;
@@ -70,7 +71,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(41, 20, 3)]
         public void TotalPages_GetsTotalPages(Int32 itemsCount, Int32 rowsPerPage, Int32 totalPages)
         {
-            grid.Source.Returns(new GridModel[itemsCount]);
+            grid.Source.Returns(new GridModel[itemsCount].AsQueryable());
 
             GridPager<GridModel> pager = new GridPager<GridModel>(grid, null);
             pager.RowsPerPage = rowsPerPage;
@@ -117,10 +118,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridPager_SetsTotalRowsFromGridSource()
         {
-            grid.Source.Returns(new GridModel[2]);
-
             Int32 actual = new GridPager<GridModel>(grid, null).TotalRows;
-            Int32 expected = 2;
+            Int32 expected = grid.Source.Count();
 
             Assert.AreEqual(expected, actual);
         }
@@ -169,7 +168,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Process_ReturnsPagedItems()
         {
             GridModel[] models = { new GridModel(), new GridModel(), new GridModel() };
-            grid.Source.Returns(models);
+            grid.Source.Returns(models.AsQueryable());
 
             GridPager<GridModel> pager = new GridPager<GridModel>(grid, null);
             pager.CurrentPage = 1;

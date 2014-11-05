@@ -15,7 +15,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridRows_SetsGrid()
         {
-            IGrid<GridModel> expected = new Grid<GridModel>(null);
+            IGrid<GridModel> expected = new Grid<GridModel>(new GridModel[0]);
             IGrid<GridModel> actual = new GridRows<GridModel>(expected).Grid;
 
             Assert.AreSame(expected, actual);
@@ -28,9 +28,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumerator_ProcessesRows()
         {
+            IQueryable<GridModel> models = new[] { new GridModel(), new GridModel() }.AsQueryable();
             IGridProcessor<GridModel> postProcessor = Substitute.For<IGridProcessor<GridModel>>();
             IGridProcessor<GridModel> preProcessor = Substitute.For<IGridProcessor<GridModel>>();
-            GridModel[] models = { new GridModel(), new GridModel() };
             GridModel[] postProcessedModels = { new GridModel() };
             GridModel[] preProcessedModels = { new GridModel() };
             Grid<GridModel> grid = new Grid<GridModel>(models);

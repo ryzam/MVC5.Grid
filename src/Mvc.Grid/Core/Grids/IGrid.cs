@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -19,7 +20,7 @@ namespace NonFactors.Mvc.Grid
     public interface IGrid<TModel> : IGrid where TModel : class
     {
         IList<IGridProcessor<TModel>> Processors { get; }
-        IEnumerable<TModel> Source { get; }
+        IQueryable<TModel> Source { get; }
 
         new IGridColumns<TModel> Columns { get; }
         new IGridRows<TModel> Rows { get; }

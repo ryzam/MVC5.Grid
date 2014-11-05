@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void IGridColumns_ReturnsSameColumns()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             IGridColumns actual = (grid as IGrid).Columns;
             IGridColumns expected = grid.Columns;
@@ -26,7 +26,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void IGridRows_ReturnsSameRows()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             IGridRows actual = (grid as IGrid).Rows;
             IGridRows expected = grid.Rows;
@@ -41,7 +41,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void IGridPager_ReturnsSamePager()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             IGridPager actual = (grid as IGrid).Pager;
             IGridPager expected = grid.Pager;
@@ -56,7 +56,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Grid_CreatesEmptyProcessors()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             CollectionAssert.IsEmpty(grid.Processors);
         }
@@ -64,8 +64,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Grid_SetsSource()
         {
-            IEnumerable<GridModel> expected = new GridModel[2];
-            IEnumerable<GridModel> actual = new Grid<GridModel>(expected).Source;
+            IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
+            IQueryable<GridModel> actual = new Grid<GridModel>(expected).Source;
 
             Assert.AreSame(expected, actual);
         }
@@ -73,7 +73,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Grid_CreatesEmptyColumns()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             CollectionAssert.IsEmpty(grid.Columns);
         }
@@ -81,7 +81,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Grid_CreatesColumnsWithGrid()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             GridColumns<GridModel> actual = grid.Columns as GridColumns<GridModel>;
             GridColumns<GridModel> expected = new GridColumns<GridModel>(grid);
@@ -92,7 +92,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Grid_CreatesRowsWithGrid()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(null);
+            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             GridRows<GridModel> actual = grid.Rows as GridRows<GridModel>;
             GridRows<GridModel> expected = new GridRows<GridModel>(grid);

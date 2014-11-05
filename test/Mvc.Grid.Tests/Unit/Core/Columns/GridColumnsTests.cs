@@ -30,7 +30,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridColumns_SetsGrid()
         {
-            IGrid<GridModel> grid = new Grid<GridModel>(null);
+            IGrid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
             columns = new GridColumns<GridModel>(grid);
 
             IGrid<GridModel> actual = columns.Grid;

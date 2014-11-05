@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
     public class Grid<TModel> : IGrid<TModel> where TModel : class
     {
         public IList<IGridProcessor<TModel>> Processors { get; protected set; }
-        public IEnumerable<TModel> Source { get; protected set; }
+        public IQueryable<TModel> Source { get; protected set; }
         public IGridQuery Query { get; set; }
 
         public String EmptyText { get; set; }
@@ -24,7 +25,7 @@ namespace NonFactors.Mvc.Grid
         public Grid(IEnumerable<TModel> source)
         {
             Processors = new List<IGridProcessor<TModel>>();
-            Source = source;
+            Source = source.AsQueryable();
 
             Columns = new GridColumns<TModel>(this);
             Rows = new GridRows<TModel>(this);

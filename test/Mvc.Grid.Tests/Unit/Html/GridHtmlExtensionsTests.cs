@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit.Html
@@ -9,13 +10,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit.Html
     [TestFixture]
     public class GridHtmlExtensionsTests
     {
+        private HtmlHelper html;
+
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            html = HtmlHelperFactory.CreateHtmlHelper();
+        }
+
         #region Extension: Grid<TModel>(this HtmlHelper html, IEnumerable<TModel> source)
 
         [Test]
         public void Grid_CreatesHtmlGridWithHtml()
         {
-            HtmlHelper expected = HtmlHelperFactory.CreateHtmlHelper();
-            HtmlHelper actual = expected.Grid(new GridModel[0]).Html;
+            HtmlHelper actual = html.Grid(new GridModel[0]).Html;
+            HtmlHelper expected = html;
 
             Assert.AreSame(expected, actual);
         }
@@ -23,11 +32,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit.Html
         [Test]
         public void Grid_CreatesGridWithSource()
         {
-            HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper();
-            IEnumerable<GridModel> source = new GridModel[0];
-
-            IEnumerable<GridModel> actual = html.Grid(source).Grid.Source;
-            IEnumerable<GridModel> expected = source;
+            IEnumerable<GridModel> expected = new GridModel[0].AsQueryable();
+            IEnumerable<GridModel> actual = html.Grid(expected).Grid.Source;
 
             Assert.AreSame(expected, actual);
         }
@@ -39,8 +45,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit.Html
         [Test]
         public void Grid_PartialViewName_CreatesHtmlGridWithHtml()
         {
-            HtmlHelper expected = HtmlHelperFactory.CreateHtmlHelper();
-            HtmlHelper actual = expected.Grid("_Partial", new GridModel[0]).Html;
+            HtmlHelper actual = html.Grid("_Partial", new GridModel[0]).Html;
+            HtmlHelper expected = html;
 
             Assert.AreSame(expected, actual);
         }
@@ -48,8 +54,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit.Html
         [Test]
         public void Grid_PartialViewName_CreatesGridWithPartialViewName()
         {
-            HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper();
-
             String actual = html.Grid("_Partial", new GridModel[0]).PartialViewName;
             String expected = "_Partial";
 
@@ -59,11 +63,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit.Html
         [Test]
         public void Grid_PartialViewName_CreatesGridWithSource()
         {
-            HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper();
-            IEnumerable<GridModel> source = new GridModel[0];
-
-            IEnumerable<GridModel> actual = html.Grid("_Partial", source).Grid.Source;
-            IEnumerable<GridModel> expected = source;
+            IEnumerable<GridModel> expected = new GridModel[0].AsQueryable();
+            IEnumerable<GridModel> actual = html.Grid("_Partial", expected).Grid.Source;
 
             Assert.AreSame(expected, actual);
         }
