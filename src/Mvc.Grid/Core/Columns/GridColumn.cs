@@ -12,13 +12,16 @@ namespace NonFactors.Mvc.Grid
     {
         public Func<TModel, TValue> Expression { get; set; }
         public GridProcessorType Type { get; set; }
+        public IGrid<TModel> Grid { get; set; }
 
-        public GridColumn(Expression<Func<TModel, TValue>> expression)
+        public GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
         {
-            Name = ExpressionHelper.GetExpressionText(expression);
-            Expression = expression.Compile();
-            Type = GridProcessorType.Pre;
+            Grid = grid;
             IsEncoded = true;
+            Type = GridProcessorType.Pre;
+            Expression = expression.Compile();
+            Name = ExpressionHelper.GetExpressionText(expression);
+            SortOrder = grid.Query.GetSortingQuery(Name).SortOrder;
         }
 
         public IEnumerable<TModel> Process(IEnumerable<TModel> items)

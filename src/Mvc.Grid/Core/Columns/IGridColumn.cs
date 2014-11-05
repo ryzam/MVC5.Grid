@@ -23,5 +23,6 @@ namespace NonFactors.Mvc.Grid
     public interface IGridColumn<TModel, TValue> : ISortableColumn<TModel>, IGridColumn where TModel : class
     {
         Func<TModel, TValue> Expression { get; set; }
+        IGrid<TModel> Grid { get; set; }
     }
 }

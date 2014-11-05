@@ -20,10 +20,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[8]);
             HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper();
             requestContext = html.ViewContext.RequestContext;
-            grid.Columns.Add(model => model.Name);
-            grid.Columns.Add(model => model.Sum);
 
             htmlGrid = new HtmlGrid<GridModel>(html, grid);
+            grid.Columns.Add(model => model.Name);
+            grid.Columns.Add(model => model.Sum);
         }
 
         #region Constructor: HtmlGrid(HtmlHelper html, Grid<TModel> grid)

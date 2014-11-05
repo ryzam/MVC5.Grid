@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +13,42 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     public class GridColumnTests
     {
         private GridColumn<GridModel, Object> column;
+        private IGrid<GridModel> grid;
 
         [SetUp]
         public void SetUp()
         {
-            column = new GridColumn<GridModel, Object>(model => model.Name);
+            grid = Substitute.For<IGrid<GridModel>>();
+            column = new GridColumn<GridModel, Object>(grid, model => model.Name);
         }
 
         #region Constructor: GridColumn(Expression<Func<TModel, TKey>> expression)
+
+        [Test]
+        public void GridColumn_SetsGrid()
+        {
+            IGrid actual = new GridColumn<GridModel, Object>(grid, model => model.Name).Grid;
+            IGrid expected = grid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsIsEncodedToTrue()
+        {
+            column = new GridColumn<GridModel, Object>(grid, model => model.Name);
+
+            Assert.IsTrue(column.IsEncoded);
+        }
+
+        [Test]
+        public void GridColumn_SetsTypeAsPreProcessor()
+        {
+            GridProcessorType actual = new GridColumn<GridModel, Object>(grid, model => model.Name).Type;
+            GridProcessorType expected = GridProcessorType.Pre;
+
+            Assert.AreEqual(expected, actual);
+        }
 
         [Test]
         public void GridColumn_SetsExpression()
@@ -27,7 +56,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
             GridModel gridModel = new GridModel { Name = "Saiwai" };
 
-            String actual = new GridColumn<GridModel, String>(expression).Expression(gridModel);
+            String actual = new GridColumn<GridModel, String>(grid, expression).Expression(gridModel);
             String expected = expression.Compile()(gridModel);
 
             Assert.AreEqual(expected, actual);
@@ -38,27 +67,22 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
 
-            String actual = new GridColumn<GridModel, String>(expression).Name;
+            String actual = new GridColumn<GridModel, String>(grid, expression).Name;
             String expected = ExpressionHelper.GetExpressionText(expression);
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GridColumn_SetsTypeAsPreProcessor()
+        public void GridColumn_SetsSortOrderFromGridQuery()
         {
-            GridProcessorType actual = new GridColumn<GridModel, Object>(model => model.Name).Type;
-            GridProcessorType expected = GridProcessorType.Pre;
+            grid.Query.GetSortingQuery("Name").SortOrder.Returns(GridSortOrder.Desc);
+            Expression<Func<GridModel, String>> expression = (model) => model.Name;
+
+            GridSortOrder? actual = new GridColumn<GridModel, String>(grid, expression).SortOrder;
+            GridSortOrder? expected = GridSortOrder.Desc;
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GridColumn_SetsIsEncodedToTrue()
-        {
-            column = new GridColumn<GridModel, Object>(model => model.Name);
-
-            Assert.IsTrue(column.IsEncoded);
         }
 
         #endregion
@@ -135,7 +159,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void ValueFor_OnNullFormatReturnsEncodedValue()
         {
             IGridRow row = new GridRow(new GridModel { Name = "<script />" });
-            column = new GridColumn<GridModel, Object>(model => model.Name);
             column.Formatted(null);
             column.Encoded(true);
 
@@ -148,9 +171,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void ValueFor_ReturnsEncodedAndFormattedValue()
         {
-            column = new GridColumn<GridModel, Object>(model => model.Sum);
             IGridRow row = new GridRow(new GridModel { Sum = 100 });
             column.Formatted("<script value='{0:C2}' />");
+            column.Expression = (model) => model.Sum;
             column.Encoded(true);
 
             String expected = WebUtility.HtmlEncode(String.Format("<script value='{0:C2}' />", 100));
@@ -162,7 +185,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void ValueFor_OnNullValueReturnsEmpty()
         {
-            column = new GridColumn<GridModel, Object>(model => model.Name);
             IGridRow row = new GridRow(new GridModel { Name = null });
 
             String actual = column.ValueFor(row).ToString();
@@ -175,7 +197,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void ValueFor_OnNullFormatReturnsNotEncodedValue()
         {
             IGridRow row = new GridRow(new GridModel { Name = "<script />" });
-            column = new GridColumn<GridModel, Object>(model => model.Name);
             column.Formatted(null);
             column.Encoded(false);
 
@@ -188,9 +209,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void ValueFor_ReturnsNotEncodedButFormattedValue()
         {
-            column = new GridColumn<GridModel, Object>(model => model.Sum);
             IGridRow row = new GridRow(new GridModel { Sum = 100 });
             column.Formatted("<script value='{0:C2}' />");
+            column.Expression = (model) => model.Sum;
             column.Encoded(false);
 
             String expected = String.Format("<script value='{0:C2}' />", 100);

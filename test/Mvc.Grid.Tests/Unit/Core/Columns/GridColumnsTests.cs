@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            columns = new GridColumns<GridModel>(null);
+            columns = new GridColumns<GridModel>(Substitute.For<IGrid<GridModel>>());
         }
 
         #region Constructor: GridColumns()
@@ -50,8 +51,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridModel gridModel = new GridModel { Name = "Kokoye" };
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
 
+            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, model => model.Name);
             GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
-            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(model => model.Name);
 
             Assert.AreEqual(expected.Expression(gridModel), actual.Expression(gridModel));
             Assert.AreEqual(expected.IsSortable, actual.IsSortable);
