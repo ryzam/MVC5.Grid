@@ -15,21 +15,51 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column = Substitute.For<BaseGridColumn>();
         }
 
-        #region Method: Sortable(Boolean enabled)
+        #region Method: Sortable(Boolean isSortable)
 
         [Test]
-        public void Sortable_SetsIsSortable()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Sortable_SetsIsSortable(Boolean isSortable)
         {
-            Boolean? actual = column.Sortable(true).IsSortable;
-            Boolean? expected = true;
+            Boolean? actual = column.Sortable(isSortable).IsSortable;
+            Boolean? expected = isSortable;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Sortable_ReturnsSameGrid()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Sortable_ReturnsSameGrid(Boolean isSortable)
         {
-            IGridColumn actual = column.Sortable(false);
+            IGridColumn actual = column.Sortable(isSortable);
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
+        #region Method: Encoded(Boolean isEncoded)
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Encoded_SetsIsEncoded(Boolean isEncoded)
+        {
+            Boolean actual = column.Encoded(isEncoded).IsEncoded;
+            Boolean expected = isEncoded;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Encoded_ReturnsSameGrid(Boolean isEncoded)
+        {
+            IGridColumn actual = column.Encoded(isEncoded);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);
@@ -40,40 +70,24 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Formatted(String format)
 
         [Test]
-        public void Formatted_SetsFormat()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Format")]
+        public void Formatted_SetsFormat(String format)
         {
-            String actual = column.Formatted("Format").Format;
-            String expected = "Format";
+            String actual = column.Formatted(format).Format;
+            String expected = format;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Formatted_ReturnsSameGrid()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Format")]
+        public void Formatted_ReturnsSameGrid(String format)
         {
-            IGridColumn actual = column.Formatted("Format");
-            IGridColumn expected = column;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        #endregion
-
-        #region Method: Encoded(Boolean encode)
-
-        [Test]
-        public void Encoded_SetsIsEncoded()
-        {
-            Boolean actual = column.Encoded(false).IsEncoded;
-            Boolean expected = false;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void Encoded_ReturnsSameGrid()
-        {
-            IGridColumn actual = column.Encoded(false);
+            IGridColumn actual = column.Formatted(format);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);
@@ -84,18 +98,26 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Css(String cssClasses)
 
         [Test]
-        public void Css_SetsCssClasses()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("column-class")]
+        [TestCase("column-class text-column")]
+        public void Css_SetsCssClasses(String cssClasses)
         {
-            String actual = column.Css("column-class").CssClasses;
-            String expected = "column-class";
+            String actual = column.Css(cssClasses).CssClasses;
+            String expected = cssClasses;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Css_ReturnsSameGrid()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("column-class")]
+        [TestCase("column-class text-column")]
+        public void Css_ReturnsSameGrid(String cssClasses)
         {
-            IGridColumn actual = column.Css("column-class");
+            IGridColumn actual = column.Css(cssClasses);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);
@@ -106,18 +128,24 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Titled(String title)
 
         [Test]
-        public void Titled_SetsTitle()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Title")]
+        public void Titled_SetsTitle(String title)
         {
-            String actual = column.Titled("Title").Title;
-            String expected = "Title";
+            String actual = column.Titled(title).Title;
+            String expected = title;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Titled_ReturnsSameGrid()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Title")]
+        public void Titled_ReturnsSameGrid(String title)
         {
-            IGridColumn actual = column.Titled("Title");
+            IGridColumn actual = column.Titled(title);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);
@@ -128,18 +156,24 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Named(String name)
 
         [Test]
-        public void Named_SetsName()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Name")]
+        public void Named_SetsName(String name)
         {
-            String actual = column.Named("Name").Name;
-            String expected = "Name";
+            String actual = column.Named(name).Name;
+            String expected = name;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Named_ReturnsSameGrid()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Name")]
+        public void Named_ReturnsSameGrid(String name)
         {
-            IGridColumn actual = column.Named("Name");
+            IGridColumn actual = column.Named(name);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);

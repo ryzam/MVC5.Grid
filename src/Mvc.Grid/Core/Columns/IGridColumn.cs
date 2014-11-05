@@ -12,8 +12,8 @@ namespace NonFactors.Mvc.Grid
         String Title { get; set; }
         String Name { get; set; }
 
+        IGridColumn Encoded(Boolean isEncoded);
         IGridColumn Formatted(String format);
-        IGridColumn Encoded(Boolean encode);
         IGridColumn Css(String cssClasses);
         IGridColumn Titled(String title);
         IGridColumn Named(String name);

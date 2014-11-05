@@ -7,29 +7,29 @@ namespace NonFactors.Mvc.Grid
     {
         public GridSortOrder? SortOrder { get; set; }
         public Boolean? IsSortable { get; set; }
-        
+
         public Boolean IsEncoded { get; set; }
         public String CssClasses { get; set; }
         public String Format { get; set; }
         public String Title { get; set; }
         public String Name { get; set; }
 
-        public IGridColumn Sortable(Boolean enabled)
+        public IGridColumn Sortable(Boolean isSortable)
         {
-            IsSortable = enabled;
+            IsSortable = isSortable;
 
             return this;
         }
-        
+
+        public IGridColumn Encoded(Boolean isEncoded)
+        {
+            IsEncoded = isEncoded;
+
+            return this;
+        }
         public IGridColumn Formatted(String format)
         {
             Format = format;
-
-            return this;
-        }
-        public IGridColumn Encoded(Boolean encode)
-        {
-            IsEncoded = encode;
 
             return this;
         }

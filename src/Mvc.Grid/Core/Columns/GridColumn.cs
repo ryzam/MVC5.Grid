@@ -20,7 +20,7 @@ namespace NonFactors.Mvc.Grid
             Expression = expression;
             Type = GridProcessorType.Pre;
             Name = ExpressionHelper.GetExpressionText(expression);
-            SortOrder = grid.Query.GetSortingQuery(Name).SortOrder;
+            SortOrder = Grid.Query.GetSortingQuery(Name).SortOrder;
         }
 
         public IQueryable<TModel> Process(IQueryable<TModel> items)
@@ -33,7 +33,7 @@ namespace NonFactors.Mvc.Grid
 
             if (SortOrder == GridSortOrder.Asc)
                 return items.OrderBy(Expression);
-            
+
             return items.OrderByDescending(Expression);
         }
 

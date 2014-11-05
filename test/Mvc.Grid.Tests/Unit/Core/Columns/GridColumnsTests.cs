@@ -1,7 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -18,26 +17,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             columns = new GridColumns<GridModel>(Substitute.For<IGrid<GridModel>>());
         }
 
-        #region Constructor: GridColumns()
-
-        [Test]
-        public void GridColumns_AreEmpty()
-        {
-            columns = new GridColumns<GridModel>(null);
-
-            CollectionAssert.IsEmpty(columns);
-        }
+        #region Constructor: GridColumns(IGrid<TModel> grid)
 
         [Test]
         public void GridColumns_SetsGrid()
         {
-            IGrid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
-            columns = new GridColumns<GridModel>(grid);
+            IGrid expected = columns.Grid;
+            IGrid actual = new GridColumns<GridModel>(columns.Grid).Grid;
 
-            IGrid<GridModel> actual = columns.Grid;
-            IGrid<GridModel> expected = grid;
-
-            Assert.AreEqual(expected, actual);
+            Assert.AreSame(expected, actual);
         }
 
         #endregion
@@ -45,7 +33,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Add<TKey>(Expression<Func<TModel, TKey>> expression)
 
         [Test]
-        public void Add_AddsColumn()
+        public void Add_AddsGridColumn()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
             GridModel gridModel = new GridModel { Name = "Kokoye" };
@@ -70,32 +58,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridColumn expected = columns.Single();
 
             Assert.AreSame(expected, actual);
-        }
-
-        #endregion
-
-        #region Method: GetEnumerator()
-
-        [Test]
-        public void GetEnumarator_ReturnsColumns()
-        {
-            IGridColumn[] addedColumns = { columns.Add(model => model.Name), columns.Add(model => model.Name) };
-
-            IEnumerable actual = columns.ToList();
-            IEnumerable expected = addedColumns;
-
-            CollectionAssert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GetEnumerator_ReturnsSameColumns()
-        {
-            IGridColumn[] addedColumns = { columns.Add(model => model.Name), columns.Add(model => model.Name) };
-
-            IEnumerable expected = columns.ToList();
-            IEnumerable actual = columns;
-
-            CollectionAssert.AreEqual(expected, actual);
         }
 
         #endregion

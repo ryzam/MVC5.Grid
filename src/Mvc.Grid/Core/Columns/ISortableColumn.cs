@@ -7,7 +7,7 @@ namespace NonFactors.Mvc.Grid
         GridSortOrder? SortOrder { get; set; }
         Boolean? IsSortable { get; set; }
 
-        IGridColumn Sortable(Boolean enabled);
+        IGridColumn Sortable(Boolean isSortable);
     }
 
     public interface ISortableColumn<TModel> : IGridProcessor<TModel> where TModel : class
