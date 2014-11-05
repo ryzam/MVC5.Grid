@@ -11,6 +11,7 @@ namespace NonFactors.Mvc.Grid
     {
         public RequestContext RequestContext { get; private set; }
         public String PartialViewName { get; set; }
+        public IGrid<TModel> Grid { get; set; }
 
         public GridProcessorType Type { get; set; }
         public Int32 PagesToDisplay { get; set; }
@@ -49,6 +50,7 @@ namespace NonFactors.Mvc.Grid
             Type = GridProcessorType.Post;
             PagesToDisplay = 5;
             RowsPerPage = 20;
+            Grid = grid;
         }
 
         public IEnumerable<TModel> Process(IEnumerable<TModel> items)
@@ -65,8 +67,11 @@ namespace NonFactors.Mvc.Grid
             foreach (String parameter in query)
                 routeValues[parameter] = query[parameter];
 
-            routeValues["MG-Page"] = page;
-
+            if (String.IsNullOrWhiteSpace(Grid.Name))
+                routeValues["MG-Page"] = page;
+            else
+                routeValues["MG-Page-" + Grid.Name] = page;
+            
             return urlHelper.Action(routeValues["action"] as String, routeValues);
         }
     }

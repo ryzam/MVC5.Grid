@@ -152,6 +152,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void GridPager_SetsGrid()
+        {
+            IGrid actual = new GridPager<GridModel>(grid, null).Grid;
+            IGrid expected = grid;
+
+            Assert.AreSame(expected, actual);
+        }
+
         #endregion
 
         #region Method: Process(IEnumerable<TModel> items)
@@ -177,6 +186,22 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: LinkForPage(Int32 page)
 
         [Test]
+        public void LinkForPage_GeneratesLinkForPageUsingGridName()
+        {
+            RequestContext requestContext = HttpContextFactory.CreateHttpContext().Request.RequestContext;
+            String currentAction = requestContext.RouteData.Values["action"] as String;
+            RouteValueDictionary routeValues = new RouteValueDictionary();
+            UrlHelper urlHelper = new UrlHelper(requestContext);
+            routeValues["MG-Page-Grid"] = 2;
+            grid.Name = "Grid";
+
+            String actual = new GridPager<GridModel>(grid, requestContext).LinkForPage(2);
+            String expected = urlHelper.Action(currentAction, routeValues);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void LinkForPage_GeneratesLinkForPage()
         {
             RequestContext requestContext = HttpContextFactory.CreateHttpContext().Request.RequestContext;
@@ -184,6 +209,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             RouteValueDictionary routeValues = new RouteValueDictionary();
             UrlHelper urlHelper = new UrlHelper(requestContext);
             routeValues["MG-Page"] = 2;
+            grid.Name = String.Empty;
 
             String actual = new GridPager<GridModel>(grid, requestContext).LinkForPage(2);
             String expected = urlHelper.Action(currentAction, routeValues);
