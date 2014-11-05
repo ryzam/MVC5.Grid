@@ -39,16 +39,14 @@ namespace NonFactors.Mvc.Grid
             }
         }
 
-        public GridPager(RequestContext requestContext, IEnumerable<TModel> source)
+        public GridPager(IGrid<TModel> grid, RequestContext requestContext)
         {
             PartialViewName = "MvcGrid/_Pager";
             RequestContext = requestContext;
-            Int32 currentPage = 0;
 
-            Int32.TryParse(RequestContext.HttpContext.Request.QueryString["MG-Page"], out currentPage);
+            CurrentPage = grid.Query.GetPagingQuery().CurrentPage;
+            TotalRows = grid.Source.Count();
             Type = GridProcessorType.Post;
-            TotalRows = source.Count();
-            CurrentPage = currentPage;
             PagesToDisplay = 5;
             RowsPerPage = 20;
         }

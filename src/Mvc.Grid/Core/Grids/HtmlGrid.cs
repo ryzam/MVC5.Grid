@@ -47,7 +47,7 @@ namespace NonFactors.Mvc.Grid
 
         public IHtmlGrid<TModel> WithPager(Action<IGridPager<TModel>> builder)
         {
-            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Html.ViewContext.RequestContext, Grid.Source);
+            Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Grid, Html.ViewContext.RequestContext);
             builder(Grid.Pager);
 
             if (!Grid.Processors.Contains(Grid.Pager))

@@ -198,7 +198,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_DoesNotChangeExistingPager()
         {
-            IGridPager<GridModel> pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid, requestContext);
             htmlGrid.Grid.Pager = pager;
 
             htmlGrid.WithPager(gridPager => { });
@@ -216,7 +216,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             htmlGrid.WithPager(pager => { });
 
-            GridPager<GridModel> expected = new GridPager<GridModel>(requestContext, htmlGrid.Grid.Source);
+            GridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid, requestContext);
             GridPager<GridModel> actual = htmlGrid.Grid.Pager as GridPager<GridModel>;
 
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
@@ -272,7 +272,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_ReturnsSameGrid()
         {
-            IGridPager<GridModel> pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid, null);
             htmlGrid.Grid.Pager = pager;
 
             IHtmlGrid<GridModel> actual = htmlGrid.WithPager(gridPager => { });
@@ -288,7 +288,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_DoesNotChangeExistingPager()
         {
-            IGridPager<GridModel> pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid, null);
             htmlGrid.Grid.Pager = pager;
 
             htmlGrid.WithPager();
@@ -306,7 +306,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             htmlGrid.WithPager();
 
-            GridPager<GridModel> expected = new GridPager<GridModel>(requestContext, htmlGrid.Grid.Source);
+            GridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid, requestContext);
             GridPager<GridModel> actual = htmlGrid.Grid.Pager as GridPager<GridModel>;
 
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
@@ -348,7 +348,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_ReturnsSameGrid()
         {
-            IGridPager<GridModel> pager = new GridPager<GridModel>(requestContext, new GridModel[8]);
+            IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid, null);
             htmlGrid.Grid.Pager = pager;
 
             IHtmlGrid<GridModel> actual = htmlGrid.WithPager();
