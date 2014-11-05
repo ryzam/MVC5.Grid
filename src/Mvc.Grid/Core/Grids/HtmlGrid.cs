@@ -24,11 +24,11 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public IHtmlGrid<TModel> Sortable(Boolean enabled)
+        public IHtmlGrid<TModel> Sortable(Boolean isSortable)
         {
             foreach (IGridColumn column in Grid.Columns)
                 if (column.IsSortable == null)
-                    column.IsSortable = enabled;
+                    column.IsSortable = isSortable;
 
             return this;
         }

@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Grid
         IGrid<TModel> Grid { get; }
 
         IHtmlGrid<TModel> Build(Action<IGridColumns<TModel>> builder);
-        IHtmlGrid<TModel> Sortable(Boolean sortable);
+        IHtmlGrid<TModel> Sortable(Boolean isSortable);
         IHtmlGrid<TModel> Empty(String text);
         IHtmlGrid<TModel> Named(String name);
 

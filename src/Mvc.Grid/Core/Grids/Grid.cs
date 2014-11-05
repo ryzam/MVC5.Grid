@@ -6,8 +6,8 @@ namespace NonFactors.Mvc.Grid
 {
     public class Grid<TModel> : IGrid<TModel> where TModel : class
     {
-        public IList<IGridProcessor<TModel>> Processors { get; protected set; }
-        public IQueryable<TModel> Source { get; protected set; }
+        public IList<IGridProcessor<TModel>> Processors { get; set; }
+        public IQueryable<TModel> Source { get; set; }
         public IGridQuery Query { get; set; }
 
         public String EmptyText { get; set; }

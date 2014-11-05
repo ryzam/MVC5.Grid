@@ -19,8 +19,8 @@ namespace NonFactors.Mvc.Grid
 
     public interface IGrid<TModel> : IGrid where TModel : class
     {
-        IList<IGridProcessor<TModel>> Processors { get; }
-        IQueryable<TModel> Source { get; }
+        IList<IGridProcessor<TModel>> Processors { get; set; }
+        IQueryable<TModel> Source { get; set; }
 
         new IGridColumns<TModel> Columns { get; }
         new IGridRows<TModel> Rows { get; }

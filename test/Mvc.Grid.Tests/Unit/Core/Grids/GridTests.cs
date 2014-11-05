@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Property: IGrid.Columns
 
         [Test]
-        public void IGridColumns_ReturnsSameColumns()
+        public void IGridColumns_ReturnsColumns()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
@@ -24,7 +24,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Property: IGrid.Rows
 
         [Test]
-        public void IGridRows_ReturnsSameRows()
+        public void IGridRows_ReturnsRows()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
@@ -39,7 +39,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Property: IGrid.Pager
 
         [Test]
-        public void IGridPager_ReturnsSamePager()
+        public void IGridPager_ReturnsPager()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
@@ -54,7 +54,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: Grid(IEnumerable<TModel> source)
 
         [Test]
-        public void Grid_CreatesEmptyProcessors()
+        public void Grid_CreatesEmptyProcessorsList()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
@@ -71,32 +71,26 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void Grid_CreatesEmptyColumns()
-        {
-            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
-
-            CollectionAssert.IsEmpty(grid.Columns);
-        }
-
-        [Test]
-        public void Grid_CreatesColumnsWithGrid()
+        public void Grid_CreatesColumns()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             GridColumns<GridModel> actual = grid.Columns as GridColumns<GridModel>;
             GridColumns<GridModel> expected = new GridColumns<GridModel>(grid);
 
+            CollectionAssert.AreEqual(expected, actual);
             Assert.AreSame(actual.Grid, actual.Grid);
         }
 
         [Test]
-        public void Grid_CreatesRowsWithGrid()
+        public void Grid_CreatesRows()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
             GridRows<GridModel> actual = grid.Rows as GridRows<GridModel>;
             GridRows<GridModel> expected = new GridRows<GridModel>(grid);
 
+            CollectionAssert.AreEqual(expected, actual);
             Assert.AreSame(actual.Grid, actual.Grid);
         }
 

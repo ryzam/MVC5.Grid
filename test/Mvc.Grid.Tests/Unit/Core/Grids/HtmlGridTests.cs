@@ -13,42 +13,40 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     {
         private RequestContext requestContext;
         private HtmlGrid<GridModel> htmlGrid;
+        private IGrid<GridModel> grid;
 
         [SetUp]
         public void SetUp()
         {
-            Grid<GridModel> grid = new Grid<GridModel>(new GridModel[8]);
             HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper();
             requestContext = html.ViewContext.RequestContext;
+            grid = new Grid<GridModel>(new GridModel[8]);
 
             htmlGrid = new HtmlGrid<GridModel>(html, grid);
             grid.Columns.Add(model => model.Name);
             grid.Columns.Add(model => model.Sum);
         }
 
-        #region Constructor: HtmlGrid(HtmlHelper html, Grid<TModel> grid)
+        #region Constructor: HtmlGrid(HtmlHelper html, IGrid<TModel> grid)
 
         [Test]
-        public void HtmlGrid_DoesNotChangeGridQuery()
+        public void HtmlGrid_DoesNotChangeExistingQuery()
         {
-            IGrid<GridModel> grid = Substitute.For<IGrid<GridModel>>();
             grid.Query = Substitute.For<IGridQuery>();
 
             IGridQuery actual = new HtmlGrid<GridModel>(null, grid).Grid.Query;
             IGridQuery expected = grid.Query;
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreSame(expected, actual);
         }
 
         [Test]
-        public void HtmlGrid_OnNullGridQuerySetsGridQuery()
+        public void HtmlGrid_SetsGridQuery()
         {
-            IGrid<GridModel> grid = Substitute.For<IGrid<GridModel>>();
-            HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper();
             grid.Query = null;
 
-            GridQuery actual = new HtmlGrid<GridModel>(html, grid).Grid.Query as GridQuery;
-            GridQuery expected = new GridQuery(grid, html.ViewContext.HttpContext);
+            GridQuery actual = new HtmlGrid<GridModel>(htmlGrid.Html, grid).Grid.Query as GridQuery;
+            GridQuery expected = new GridQuery(grid, htmlGrid.Html.ViewContext.HttpContext);
 
             Assert.AreSame(expected.Query, actual.Query);
             Assert.AreSame(expected.Grid, actual.Grid);
@@ -57,8 +55,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void HtmlGrid_SetsDefaultPartialViewName()
         {
-            IGrid<GridModel> grid = Substitute.For<IGrid<GridModel>>();
-
             String actual = new HtmlGrid<GridModel>(null, grid).PartialViewName;
             String expected = "MvcGrid/_Grid";
 
@@ -66,10 +62,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void HtmlGrid_SetsHtmlHelper()
+        public void HtmlGrid_SetsHtml()
         {
-            IGrid<GridModel> grid = Substitute.For<IGrid<GridModel>>();
-
             HtmlHelper expected = HtmlHelperFactory.CreateHtmlHelper();
             HtmlHelper actual = new HtmlGrid<GridModel>(expected, grid).Html;
 
@@ -79,8 +73,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void HtmlGrid_SetsGrid()
         {
-            IGrid<GridModel> expected = Substitute.For<IGrid<GridModel>>();
-            IGrid<GridModel> actual = new HtmlGrid<GridModel>(null, expected).Grid;
+            IGrid<GridModel> actual = new HtmlGrid<GridModel>(null, grid).Grid;
+            IGrid<GridModel> expected = grid;
 
             Assert.AreSame(expected, actual);
         }
@@ -114,34 +108,39 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Sortable(Boolean enabled)
+        #region Method: Sortable(Boolean isSortable)
 
         [Test]
-        [TestCase(null, null, null)]
         [TestCase(null, false, false)]
         [TestCase(null, true, true)]
-        [TestCase(false, null, false)]
         [TestCase(false, false, false)]
         [TestCase(false, true, false)]
-        [TestCase(true, null, true)]
         [TestCase(true, false, true)]
         [TestCase(true, true, true)]
-        public void Sortable_SetsSortable(Boolean? isColumnSortable, Boolean? isGridSortable, Boolean? expectedIsSortable)
+        public void Sortable_SetsSortable(Boolean? isColumnSortable, Boolean isGridSortable, Boolean? expectedIsSortable)
         {
             foreach (IGridColumn column in htmlGrid.Grid.Columns)
                 column.IsSortable = isColumnSortable;
 
-            if (isGridSortable.HasValue)
-                htmlGrid.Sortable(isGridSortable.Value);
+            htmlGrid.Sortable(isGridSortable);
 
             foreach (IGridColumn actual in htmlGrid.Grid.Columns)
                 Assert.AreEqual(expectedIsSortable, actual.IsSortable);
         }
 
         [Test]
-        public void Sortable_ReturnsSameGrid()
+        [TestCase(null, false)]
+        [TestCase(null, true)]
+        [TestCase(false, false)]
+        [TestCase(false, true)]
+        [TestCase(true, false)]
+        [TestCase(true, true)]
+        public void Sortable_ReturnsSameGrid(Boolean? isColumnSortable, Boolean isGridSortable)
         {
-            IHtmlGrid<GridModel> actual = htmlGrid.Sortable(true);
+            foreach (IGridColumn column in htmlGrid.Grid.Columns)
+                column.IsSortable = isColumnSortable;
+
+            IHtmlGrid<GridModel> actual = htmlGrid.Sortable(isGridSortable);
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
@@ -152,18 +151,24 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Empty(String text)
 
         [Test]
-        public void Empty_SetsEmptyText()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Text")]
+        public void Empty_SetsEmptyText(String text)
         {
-            String actual = htmlGrid.Empty("Text").Grid.EmptyText;
-            String expected = "Text";
+            String actual = htmlGrid.Empty(text).Grid.EmptyText;
+            String expected = text;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Empty_ReturnsSameGrid()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Text")]
+        public void Empty_ReturnsSameGrid(String text)
         {
-            IHtmlGrid<GridModel> actual = htmlGrid.Empty("Text");
+            IHtmlGrid<GridModel> actual = htmlGrid.Empty(text);
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
@@ -174,18 +179,24 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Named(String name)
 
         [Test]
-        public void Named_SetsName()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Name")]
+        public void Named_SetsName(String name)
         {
-            String actual = htmlGrid.Named("Name").Grid.Name;
-            String expected = "Name";
+            String actual = htmlGrid.Named(name).Grid.Name;
+            String expected = name;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Named_ReturnsSameGrid()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Name")]
+        public void Named_ReturnsSameGrid(String name)
         {
-            IHtmlGrid<GridModel> actual = htmlGrid.Named("Name");
+            IHtmlGrid<GridModel> actual = htmlGrid.Named(name);
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
@@ -193,7 +204,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: WithPager(Action<IGridPager> builder)
+        #region Method: WithPager(Action<IGridPager<TModel>> builder)
 
         [Test]
         public void WithPager_Builder_DoesNotChangeExistingPager()
@@ -212,7 +223,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_CreatesGridPager()
         {
-            IGridPager previousPager = htmlGrid.Grid.Pager;
+            htmlGrid.Grid.Pager = null;
 
             htmlGrid.WithPager(pager => { });
 
@@ -220,12 +231,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridPager<GridModel> actual = htmlGrid.Grid.Pager as GridPager<GridModel>;
 
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
-            Assert.AreEqual(expected.RequestContext, actual.RequestContext);
             Assert.AreEqual(expected.PagesToDisplay, actual.PagesToDisplay);
+            Assert.AreSame(expected.RequestContext, actual.RequestContext);
+            Assert.AreEqual(expected.StartingPage, actual.StartingPage);
             Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
             Assert.AreEqual(expected.RowsPerPage, actual.RowsPerPage);
+            Assert.AreEqual(expected.TotalPages, actual.TotalPages);
             Assert.AreEqual(expected.TotalRows, actual.TotalRows);
-            Assert.IsNull(previousPager);
+            Assert.AreEqual(expected.Type, actual.Type);
+            Assert.AreSame(expected.Grid, actual.Grid);
         }
 
         [Test]
@@ -245,7 +259,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_AddsGridProcessor()
         {
-            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+            Assume.That(() => htmlGrid.Grid.Processors, Is.Empty);
 
             htmlGrid.WithPager(pager => { });
 
@@ -258,7 +272,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_DoesNotReaddGridProcessor()
         {
-            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+            Assume.That(() => htmlGrid.Grid.Processors, Is.Empty);
 
             htmlGrid.WithPager(pager => { });
             htmlGrid.WithPager(pager => { });
@@ -272,9 +286,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_ReturnsSameGrid()
         {
-            IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid, null);
-            htmlGrid.Grid.Pager = pager;
-
             IHtmlGrid<GridModel> actual = htmlGrid.WithPager(gridPager => { });
             IHtmlGrid<GridModel> expected = htmlGrid;
 
@@ -302,7 +313,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_CreatesGridPager()
         {
-            IGridPager previousPager = htmlGrid.Grid.Pager;
+            htmlGrid.Grid.Pager = null;
 
             htmlGrid.WithPager();
 
@@ -310,18 +321,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridPager<GridModel> actual = htmlGrid.Grid.Pager as GridPager<GridModel>;
 
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
-            Assert.AreEqual(expected.RequestContext, actual.RequestContext);
             Assert.AreEqual(expected.PagesToDisplay, actual.PagesToDisplay);
+            Assert.AreSame(expected.RequestContext, actual.RequestContext);
+            Assert.AreEqual(expected.StartingPage, actual.StartingPage);
             Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
             Assert.AreEqual(expected.RowsPerPage, actual.RowsPerPage);
+            Assert.AreEqual(expected.TotalPages, actual.TotalPages);
             Assert.AreEqual(expected.TotalRows, actual.TotalRows);
-            Assert.IsNull(previousPager);
+            Assert.AreEqual(expected.Type, actual.Type);
+            Assert.AreSame(expected.Grid, actual.Grid);
         }
 
         [Test]
         public void WithPager_AddsGridPagerProcessor()
         {
-            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+            Assume.That(() => htmlGrid.Grid.Processors, Is.Empty);
 
             htmlGrid.WithPager();
 
@@ -334,7 +348,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_DoesNotReaddGridProcessor()
         {
-            Assume.That(() => htmlGrid.Grid.Processors.Count, Is.EqualTo(0));
+            Assume.That(() => htmlGrid.Grid.Processors, Is.Empty);
 
             htmlGrid.WithPager();
             htmlGrid.WithPager();
@@ -348,9 +362,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_ReturnsSameGrid()
         {
-            IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid, null);
-            htmlGrid.Grid.Pager = pager;
-
             IHtmlGrid<GridModel> actual = htmlGrid.WithPager();
             IHtmlGrid<GridModel> expected = htmlGrid;
 
