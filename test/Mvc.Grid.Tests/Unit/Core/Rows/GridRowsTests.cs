@@ -31,8 +31,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable<GridModel> models = new[] { new GridModel(), new GridModel() }.AsQueryable();
             IGridProcessor<GridModel> postProcessor = Substitute.For<IGridProcessor<GridModel>>();
             IGridProcessor<GridModel> preProcessor = Substitute.For<IGridProcessor<GridModel>>();
-            GridModel[] postProcessedModels = { new GridModel() };
-            GridModel[] preProcessedModels = { new GridModel() };
+            IQueryable<GridModel> postProcessedModels = new[] { new GridModel() }.AsQueryable();
+            IQueryable<GridModel> preProcessedModels = new[] { new GridModel() }.AsQueryable();
             Grid<GridModel> grid = new Grid<GridModel>(models);
             postProcessor.Type = GridProcessorType.Post;
             preProcessor.Type = GridProcessorType.Pre;

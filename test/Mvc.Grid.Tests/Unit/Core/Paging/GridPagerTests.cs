@@ -174,8 +174,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             pager.CurrentPage = 1;
             pager.RowsPerPage = 1;
 
+            IEnumerable<GridModel> actual = pager.Process(models.AsQueryable());
             IEnumerable<GridModel> expected = models.Skip(1).Take(1);
-            IEnumerable<GridModel> actual = pager.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);
         }

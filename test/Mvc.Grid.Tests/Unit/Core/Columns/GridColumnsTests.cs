@@ -47,14 +47,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Add_AddsColumn()
         {
-            columns.Add<String>(model => model.Name);
-            GridModel gridModel = new GridModel { Name = "Kokoye" };
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
+            GridModel gridModel = new GridModel { Name = "Kokoye" };
+            columns.Add<String>(expression);
 
-            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, model => model.Name);
+            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, expression);
             GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
 
-            Assert.AreEqual(expected.Expression(gridModel), actual.Expression(gridModel));
+            Assert.AreEqual(expected.Expression, actual.Expression);
             Assert.AreEqual(expected.IsSortable, actual.IsSortable);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
             Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);

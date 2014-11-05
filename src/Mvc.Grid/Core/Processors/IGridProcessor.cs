@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -6,6 +6,6 @@ namespace NonFactors.Mvc.Grid
     {
         GridProcessorType Type { get; set; }
 
-        IEnumerable<T> Process(IEnumerable<T> items);
+        IQueryable<T> Process(IQueryable<T> items);
     }
 }

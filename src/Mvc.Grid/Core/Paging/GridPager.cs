@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web.Mvc;
@@ -53,7 +52,7 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
         }
 
-        public IEnumerable<TModel> Process(IEnumerable<TModel> items)
+        public IQueryable<TModel> Process(IQueryable<TModel> items)
         {
             return items.Skip(CurrentPage * RowsPerPage).Take(RowsPerPage);
         }

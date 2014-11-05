@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Web;
 
 namespace NonFactors.Mvc.Grid
@@ -22,7 +23,7 @@ namespace NonFactors.Mvc.Grid
 
     public interface IGridColumn<TModel, TValue> : ISortableColumn<TModel>, IGridColumn where TModel : class
     {
-        Func<TModel, TValue> Expression { get; set; }
+        Expression<Func<TModel, TValue>> Expression { get; set; }
         IGrid<TModel> Grid { get; set; }
     }
 }

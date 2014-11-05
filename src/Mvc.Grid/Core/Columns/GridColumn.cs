@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -10,7 +9,7 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumn<TModel, TValue> : BaseGridColumn, IGridColumn<TModel, TValue> where TModel : class
     {
-        public Func<TModel, TValue> Expression { get; set; }
+        public Expression<Func<TModel, TValue>> Expression { get; set; }
         public GridProcessorType Type { get; set; }
         public IGrid<TModel> Grid { get; set; }
 
@@ -18,13 +17,13 @@ namespace NonFactors.Mvc.Grid
         {
             Grid = grid;
             IsEncoded = true;
+            Expression = expression;
             Type = GridProcessorType.Pre;
-            Expression = expression.Compile();
             Name = ExpressionHelper.GetExpressionText(expression);
             SortOrder = grid.Query.GetSortingQuery(Name).SortOrder;
         }
 
-        public IEnumerable<TModel> Process(IEnumerable<TModel> items)
+        public IQueryable<TModel> Process(IQueryable<TModel> items)
         {
             if (IsSortable != true)
                 return items;
@@ -48,7 +47,7 @@ namespace NonFactors.Mvc.Grid
 
         private String GetRawValueFor(IGridRow row)
         {
-            TValue value = Expression(row.Model as TModel);
+            TValue value = Expression.Compile()(row.Model as TModel);
             if (value == null)
                 return String.Empty;
 

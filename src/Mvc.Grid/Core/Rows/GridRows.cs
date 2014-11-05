@@ -15,7 +15,7 @@ namespace NonFactors.Mvc.Grid
 
         public IEnumerator<IGridRow> GetEnumerator()
         {
-            IEnumerable<TModel> items = Grid.Source;
+            IQueryable<TModel> items = Grid.Source;
             foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.Type == GridProcessorType.Pre))
                 items = processor.Process(items);
 

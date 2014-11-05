@@ -56,10 +56,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
             GridModel gridModel = new GridModel { Name = "Saiwai" };
 
-            String actual = new GridColumn<GridModel, String>(grid, expression).Expression(gridModel);
-            String expected = expression.Compile()(gridModel);
+            Expression actual = new GridColumn<GridModel, String>(grid, expression).Expression;
+            Expression expected = expression;
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreSame(expected, actual);
         }
 
         [Test]
@@ -95,8 +95,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.IsSortable = null;
             column.SortOrder = GridSortOrder.Desc;
 
-            IEnumerable<GridModel> expected = new GridModel[2];
-            IEnumerable<GridModel> actual = column.Process(expected);
+            IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
+            IQueryable<GridModel> actual = column.Process(expected);
 
             Assert.AreSame(expected, actual);
         }
@@ -107,8 +107,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.IsSortable = false;
             column.SortOrder = GridSortOrder.Desc;
 
-            IEnumerable<GridModel> expected = new GridModel[2];
-            IEnumerable<GridModel> actual = column.Process(expected);
+            IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
+            IQueryable<GridModel> actual = column.Process(expected);
 
             Assert.AreSame(expected, actual);
         }
@@ -119,8 +119,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.SortOrder = null;
             column.IsSortable = true;
 
-            IEnumerable<GridModel> expected = new GridModel[2];
-            IEnumerable<GridModel> actual = column.Process(expected);
+            IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
+            IQueryable<GridModel> actual = column.Process(expected);
 
             Assert.AreSame(expected, actual);
         }
@@ -133,7 +133,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridModel[] models = { new GridModel { Name = "B" }, new GridModel { Name = "A" }};
 
             IEnumerable<GridModel> expected = models.OrderBy(model => model.Name);
-            IEnumerable<GridModel> actual = column.Process(models);
+            IEnumerable<GridModel> actual = column.Process(models.AsQueryable());
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -146,7 +146,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridModel[] models = { new GridModel { Name = "A" }, new GridModel { Name = "B" } };
 
             IEnumerable<GridModel> expected = models.OrderByDescending(model => model.Name);
-            IEnumerable<GridModel> actual = column.Process(models);
+            IEnumerable<GridModel> actual = column.Process(models.AsQueryable());
 
             CollectionAssert.AreEqual(expected, actual);
         }
