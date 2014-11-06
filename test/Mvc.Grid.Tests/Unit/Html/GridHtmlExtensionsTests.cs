@@ -52,19 +52,19 @@ namespace NonFactors.Mvc.Grid.Tests.Unit.Html
         }
 
         [Test]
-        public void Grid_PartialViewName_CreatesGridWithPartialViewName()
+        public void Grid_PartialViewName_CreatesGridWithSource()
         {
-            String actual = html.Grid("_Partial", new GridModel[0]).PartialViewName;
-            String expected = "_Partial";
+            IEnumerable<GridModel> expected = new GridModel[0].AsQueryable();
+            IEnumerable<GridModel> actual = html.Grid("_Partial", expected).Grid.Source;
 
             Assert.AreSame(expected, actual);
         }
 
         [Test]
-        public void Grid_PartialViewName_CreatesGridWithSource()
+        public void Grid_PartialViewName_CreatesGridWithPartialViewName()
         {
-            IEnumerable<GridModel> expected = new GridModel[0].AsQueryable();
-            IEnumerable<GridModel> actual = html.Grid("_Partial", expected).Grid.Source;
+            String actual = html.Grid("_Partial", new GridModel[0]).PartialViewName;
+            String expected = "_Partial";
 
             Assert.AreSame(expected, actual);
         }
