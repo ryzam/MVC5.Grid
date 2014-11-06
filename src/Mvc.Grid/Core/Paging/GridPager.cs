@@ -70,7 +70,7 @@ namespace NonFactors.Mvc.Grid
                 routeValues["MG-Page"] = page;
             else
                 routeValues["MG-Page-" + Grid.Name] = page;
-            
+
             return urlHelper.Action(routeValues["action"] as String, routeValues);
         }
     }

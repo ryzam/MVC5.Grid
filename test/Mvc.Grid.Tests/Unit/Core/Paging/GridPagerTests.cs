@@ -11,13 +11,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridPagerTests
     {
+        private RequestContext requestContext;
+        private GridPager<GridModel> pager;
         private IGrid<GridModel> grid;
 
         [TestFixtureSetUp]
         public void TestFixtureSetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Source.Returns(new GridModel[30].AsQueryable());
+            grid.Source.Returns(new GridModel[6].AsQueryable());
+            requestContext = HttpContextFactory.CreateHttpContext().Request.RequestContext;
+
+            pager = new GridPager<GridModel>(grid, requestContext);
         }
 
         #region Property: StartingPage
@@ -43,9 +48,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(4, 5, 2)]
         public void StartingPage_GetsStartingPage(Int32 pagesToDisplay, Int32 currentPage, Int32 startingPage)
         {
-            grid.Source.Returns(new GridModel[6].AsQueryable());
-
-            GridPager<GridModel> pager = new GridPager<GridModel>(grid, null);
             pager.PagesToDisplay = pagesToDisplay;
             pager.CurrentPage = currentPage;
             pager.RowsPerPage = 1;
@@ -105,7 +107,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridPager_SetsCurrentPage()
+        public void GridPager_SetsCurrentPageFromQuery()
         {
             grid.Query.GetPagingQuery().CurrentPage.Returns(15);
 
@@ -134,19 +136,19 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridPager_SetsRowsPerPageTo20()
+        public void GridPager_SetsPagesToDisplay()
         {
-            Int32 actual = new GridPager<GridModel>(grid, null).RowsPerPage;
-            Int32 expected = 20;
+            Int32 actual = new GridPager<GridModel>(grid, null).PagesToDisplay;
+            Int32 expected = 5;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GridPager_SetsPagesToDisplayTo5()
+        public void GridPager_SetsRowsPerPage()
         {
-            Int32 actual = new GridPager<GridModel>(grid, null).PagesToDisplay;
-            Int32 expected = 5;
+            Int32 actual = new GridPager<GridModel>(grid, null).RowsPerPage;
+            Int32 expected = 20;
 
             Assert.AreEqual(expected, actual);
         }
@@ -162,20 +164,16 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Process(IEnumerable<TModel> items)
+        #region Method: Process(IQueryable<TModel> items)
 
         [Test]
         public void Process_ReturnsPagedItems()
         {
-            GridModel[] models = { new GridModel(), new GridModel(), new GridModel() };
-            grid.Source.Returns(models.AsQueryable());
-
-            GridPager<GridModel> pager = new GridPager<GridModel>(grid, null);
             pager.CurrentPage = 1;
             pager.RowsPerPage = 1;
 
-            IEnumerable<GridModel> actual = pager.Process(models.AsQueryable());
-            IEnumerable<GridModel> expected = models.Skip(1).Take(1);
+            IEnumerable<GridModel> expected = grid.Source.Skip(1).Take(1);
+            IEnumerable<GridModel> actual = pager.Process(grid.Source);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -185,47 +183,39 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: LinkForPage(Int32 page)
 
         [Test]
-        public void LinkForPage_GeneratesLinkForPageUsingGridName()
+        [TestCase("", "", 0)]
+        [TestCase("", null, 0)]
+        [TestCase("", "MG-Page=", 0)]
+        [TestCase("", "MG-Page=0", 0)]
+        [TestCase("", "MG-Page=10", 0)]
+        [TestCase("", "", 1)]
+        [TestCase("", null, 1)]
+        [TestCase("", "MG-Page=", 1)]
+        [TestCase("", "MG-Page=1", 1)]
+        [TestCase("", "MG-Page=10", 1)]
+        [TestCase("Grid", "", 0)]
+        [TestCase("Grid", null, 0)]
+        [TestCase("Grid", "MG-Page-Grid=", 0)]
+        [TestCase("Grid", "MG-Page-Grid=0", 0)]
+        [TestCase("Grid", "MG-Page-Grid=10", 0)]
+        [TestCase("Grid", "", 1)]
+        [TestCase("Grid", null, 1)]
+        [TestCase("Grid", "MG-Page-Grid=", 1)]
+        [TestCase("Grid", "MG-Page-Grid=1", 1)]
+        [TestCase("Grid", "MG-Page-Grid=10", 1)]
+        public void LinkForPage_GeneratesLinkForPage(String gridName, String queryString, Int32 page)
         {
-            RequestContext requestContext = HttpContextFactory.CreateHttpContext().Request.RequestContext;
+            RequestContext requestContext = HttpContextFactory.CreateHttpContext(queryString).Request.RequestContext;
             String currentAction = requestContext.RouteData.Values["action"] as String;
             RouteValueDictionary routeValues = new RouteValueDictionary();
             UrlHelper urlHelper = new UrlHelper(requestContext);
-            routeValues["MG-Page-Grid"] = 2;
-            grid.Name = "Grid";
+            if (!String.IsNullOrWhiteSpace(gridName))
+                routeValues["MG-Page-" + gridName] = page;
+            else
+                routeValues["MG-Page"] = page;
+            grid.Name = gridName;
 
-            String actual = new GridPager<GridModel>(grid, requestContext).LinkForPage(2);
-            String expected = urlHelper.Action(currentAction, routeValues);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void LinkForPage_GeneratesLinkForPage()
-        {
-            RequestContext requestContext = HttpContextFactory.CreateHttpContext().Request.RequestContext;
-            String currentAction = requestContext.RouteData.Values["action"] as String;
-            RouteValueDictionary routeValues = new RouteValueDictionary();
-            UrlHelper urlHelper = new UrlHelper(requestContext);
-            routeValues["MG-Page"] = 2;
-            grid.Name = String.Empty;
-
-            String actual = new GridPager<GridModel>(grid, requestContext).LinkForPage(2);
-            String expected = urlHelper.Action(currentAction, routeValues);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void LinkForPage_GeneratesLinkForPageByOverwritingQueryString()
-        {
-            RequestContext requestContext = HttpContextFactory.CreateHttpContext("MG-Page=44").Request.RequestContext;
-            String currentAction = requestContext.RouteData.Values["action"] as String;
-            RouteValueDictionary routeValues = new RouteValueDictionary();
-            UrlHelper urlHelper = new UrlHelper(requestContext);
-            routeValues["MG-Page"] = 2;
-
-            String actual = new GridPager<GridModel>(grid, requestContext).LinkForPage(2);
+            String actual = new GridPager<GridModel>(grid, requestContext).LinkForPage(page);
             String expected = urlHelper.Action(currentAction, routeValues);
 
             Assert.AreEqual(expected, actual);
