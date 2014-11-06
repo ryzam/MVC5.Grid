@@ -11,12 +11,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: GridPagingQuery(IGridQuery query)
 
         [Test]
+        [TestCase("", "MG-Page", "", 0)]
+        [TestCase("", "MG-Page", "5", 5)]
         [TestCase(null, "MG-Page", "", 0)]
         [TestCase(null, "MG-Page", "1", 1)]
-
         [TestCase("  ", "MG-Page", "", 0)]
         [TestCase("  ", "MG-Page", "5", 5)]
-
         [TestCase("Grid", "MG-Page-Grid", "", 0)]
         [TestCase("Grid", "MG-Page-Grid", "10", 10)]
         public void GridSortingQuery_SetsCurrentPage(String gridName, String queryKey, String queryVal, Int32 currentPage)
@@ -33,14 +33,17 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridSortingQuery_SetsGridName()
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("Grid")]
+        public void GridSortingQuery_SetsGridName(String gridName)
         {
             IGridQuery gridQuery = Substitute.For<IGridQuery>();
             gridQuery.Query = new NameValueCollection();
-            gridQuery.Grid.Name = "GridName";
+            gridQuery.Grid.Name = gridName;
 
             String actual = new GridPagingQuery(gridQuery).GridName;
-            String expected = "GridName";
+            String expected = gridName;
 
             Assert.AreEqual(expected, actual);
         }

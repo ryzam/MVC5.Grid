@@ -8,7 +8,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridQueryTests
     {
-        #region Constructor: GridQuery(HttpContextBase httpContext)
+        #region Constructor: GridQuery(IGrid grid, HttpContextBase httpContext)
 
         [Test]
         public void GridQuery_SetsGrid()
