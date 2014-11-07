@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -259,7 +260,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_AddsGridProcessor()
         {
-            Assume.That(() => htmlGrid.Grid.Processors, Is.Empty);
+            htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
             htmlGrid.WithPager(pager => { });
 
@@ -272,7 +273,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_DoesNotReaddGridProcessor()
         {
-            Assume.That(() => htmlGrid.Grid.Processors, Is.Empty);
+            htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
             htmlGrid.WithPager(pager => { });
             htmlGrid.WithPager(pager => { });
@@ -335,7 +336,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_AddsGridPagerProcessor()
         {
-            Assume.That(() => htmlGrid.Grid.Processors, Is.Empty);
+            htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
             htmlGrid.WithPager();
 
@@ -348,7 +349,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_DoesNotReaddGridProcessor()
         {
-            Assume.That(() => htmlGrid.Grid.Processors, Is.Empty);
+            htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
             htmlGrid.WithPager();
             htmlGrid.WithPager();
