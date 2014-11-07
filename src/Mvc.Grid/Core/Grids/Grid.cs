@@ -10,6 +10,7 @@ namespace NonFactors.Mvc.Grid
         public IQueryable<TModel> Source { get; set; }
         public IGridQuery Query { get; set; }
 
+        public String CssClasses { get; set; }
         public String EmptyText { get; set; }
         public String Name { get; set; }
 

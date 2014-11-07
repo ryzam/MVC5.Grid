@@ -32,6 +32,12 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public IHtmlGrid<TModel> Css(String cssClasses)
+        {
+            Grid.CssClasses = cssClasses;
+
+            return this;
+        }
         public IHtmlGrid<TModel> Empty(String text)
         {
             Grid.EmptyText = text;

@@ -149,6 +149,34 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: Css(String cssClasses)
+
+        [Test]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("table")]
+        public void Css_SetsCssClasses(String css)
+        {
+            String actual = htmlGrid.Css(css).Grid.CssClasses;
+            String expected = css;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("table")]
+        public void Css_ReturnsSameGrid(String css)
+        {
+            IHtmlGrid<GridModel> actual = htmlGrid.Css(css);
+            IHtmlGrid<GridModel> expected = htmlGrid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: Empty(String text)
 
         [Test]

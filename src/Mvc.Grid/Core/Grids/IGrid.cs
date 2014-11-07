@@ -8,6 +8,7 @@ namespace NonFactors.Mvc.Grid
     {
         IGridQuery Query { get; set; }
 
+        String CssClasses { get; set; }
         String EmptyText { get; set; }
         String Name { get; set; }
 

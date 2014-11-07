@@ -10,6 +10,7 @@ namespace NonFactors.Mvc.Grid
 
         IHtmlGrid<TModel> Build(Action<IGridColumns<TModel>> builder);
         IHtmlGrid<TModel> Sortable(Boolean isSortable);
+        IHtmlGrid<TModel> Css(String cssClasses);
         IHtmlGrid<TModel> Empty(String text);
         IHtmlGrid<TModel> Named(String name);
 
