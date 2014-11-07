@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -15,6 +16,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SetUp()
         {
             columns = new GridColumns<GridModel>(Substitute.For<IGrid<GridModel>>());
+            columns.Grid.Processors = new List<IGridProcessor<GridModel>>();
         }
 
         #region Constructor: GridColumns(IGrid<TModel> grid)
@@ -49,6 +51,17 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
             Assert.AreEqual(expected.Name, actual.Name);
+        }
+
+        [Test]
+        public void Add_AddsGridColumnProcessor()
+        {
+            columns.Add<String>(model => model.Name);
+
+            Object actual = columns.Grid.Processors.Single();
+            Object expected = columns.Single();
+
+            Assert.AreSame(expected, actual);
         }
 
         [Test]
