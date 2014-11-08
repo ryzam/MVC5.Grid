@@ -15,9 +15,6 @@ namespace NonFactors.Mvc.Grid
 
         private String GetSortKey(IGrid grid)
         {
-            if (String.IsNullOrEmpty(grid.Name))
-                return "MG-Page";
-
             return String.Format("MG-Page-{0}", grid.Name);
         }
         private Int32 GetPageValue(IGridQuery gridQuery)

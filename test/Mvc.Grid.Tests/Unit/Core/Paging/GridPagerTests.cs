@@ -181,15 +181,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: LinkForPage(Int32 page)
 
         [Test]
-        [TestCase("", "?Id=4&On=true", 1, "?Id=4&On=true&MG-Page=1")]
-        [TestCase("", "?Id=4&MG-Page=10&On=true", 1, "?Id=4&MG-Page=1&On=true")]
-        [TestCase(null, "?Id=4&On=true", 1, "?Id=4&On=true&MG-Page=1")]
-        [TestCase(null, "?Id=4&MG-Page=10&On=true", 1, "?Id=4&MG-Page=1&On=true")]
-        [TestCase("Grid ", "?Id=4&On=true", 1, "?Id=4&On=true&MG-Page-Grid%20=1")]
-        [TestCase("Grid ", "?Id=4&MG-Page-Grid =10&On=true", 1, "?Id=4&MG-Page-Grid%20=1&On=true")]
-        public void LinkForPage_GeneratesLinkForPage(String gridName, String queryString, Int32 page, String expected)
+        [TestCase("?Id=4&On=true", 1, "?Id=4&On=true&MG-Page-Grid%20=1")]
+        [TestCase("?Id=4&MG-Page-Grid =10&On=true", 1, "?Id=4&MG-Page-Grid%20=1&On=true")]
+        public void LinkForPage_GeneratesLinkForPage(String queryString, Int32 page, String expected)
         {
-            grid.Name = gridName;
+            grid.Name = "Grid ";
             grid.Query.Query = HttpUtility.ParseQueryString(queryString);
 
             String actual = new GridPager<GridModel>(grid).LinkForPage(page);

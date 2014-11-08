@@ -184,6 +184,17 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Named(String name)
 
         [Test]
+        [TestCase("")]
+        [TestCase(null)]
+        public void Named_OnNullOrEmptyThrows(String name)
+        {
+            Exception actual = Assert.Throws<ArgumentException>(() => htmlGrid.Named(name));
+            String expectedMessage = "Grid name can not be null or empty.";
+
+            Assert.AreEqual(expectedMessage, actual.Message);
+        }
+
+        [Test]
         public void Named_SetsName()
         {
             String actual = htmlGrid.Named("Name").Grid.Name;

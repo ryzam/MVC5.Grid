@@ -28,6 +28,8 @@ namespace NonFactors.Mvc.Grid
             Processors = new List<IGridProcessor<TModel>>();
             Source = source.AsQueryable();
 
+            Name = "Grid";
+
             Columns = new GridColumns<TModel>(this);
             Rows = new GridRows<TModel>(this);
         }

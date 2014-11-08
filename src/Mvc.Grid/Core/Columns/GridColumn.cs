@@ -64,19 +64,16 @@ namespace NonFactors.Mvc.Grid
             if (!(IsSortable == true))
                 return "#";
 
-            String sortKeyPrefix = "MG-Sort";
-            if (!String.IsNullOrEmpty(Grid.Name))
-                sortKeyPrefix += "-" + Grid.Name;
-
-            Regex gridSort = new Regex(sortKeyPrefix + "-" + "[^-]*$");
+            String sortKey = "MG-Sort-" + Grid.Name;
+            Regex gridSort = new Regex(sortKey + "-" + "[^-]*$");
             NameValueCollection query = new NameValueCollection(Grid.Query.Query);
-            foreach (String sortKey in query.AllKeys.Where(key => gridSort.IsMatch(key)))
-                query.Remove(sortKey);
+            foreach (String key in query.AllKeys.Where(key => gridSort.IsMatch(key)))
+                query.Remove(key);
 
             if (SortOrder == GridSortOrder.Asc)
-                query[sortKeyPrefix + "-" + Name] = GridSortOrder.Desc.ToString();
+                query[sortKey + "-" + Name] = GridSortOrder.Desc.ToString();
             else
-                query[sortKeyPrefix + "-" + Name] = GridSortOrder.Asc.ToString();
+                query[sortKey + "-" + Name] = GridSortOrder.Asc.ToString();
 
             return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlPathEncode(key + "=" + query[key])));
         }

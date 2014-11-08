@@ -46,6 +46,9 @@ namespace NonFactors.Mvc.Grid
         }
         public IHtmlGrid<TModel> Named(String name)
         {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentException("Grid name can not be null or empty.");
+
             Grid.Name = name;
 
             return this;

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
@@ -68,6 +69,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable<GridModel> actual = new Grid<GridModel>(expected).Source;
 
             Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Grid_SetsName()
+        {
+            String actual = new Grid<GridModel>(new GridModel[0]).Name;
+            String expected = "Grid";
+
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
