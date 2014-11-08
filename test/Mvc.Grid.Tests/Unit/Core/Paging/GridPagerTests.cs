@@ -171,13 +171,30 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: LinkForPage(Int32 page)
 
         [Test]
-        [TestCase("", "", 1, "?MG-Page=1")]
+        [TestCase(null, "", 1, "?MG-Page=1")]
+        [TestCase(null, "?MG-Page=", 1, "?MG-Page=1")]
+        [TestCase(null, "?MG-Page=1", 1, "?MG-Page=1")]
+        [TestCase(null, "?MG-Page=10", 1, "?MG-Page=1")]
+        [TestCase(null, "?Id=400", 1, "?Id=400&MG-Page=1")]
+        [TestCase(null, "?Id=4&MG-Page=10", 1, "?Id=4&MG-Page=1")]
+        [TestCase(null, "?Id=4&MG-Page=10&On=true", 1, "?Id=4&MG-Page=1&On=true")]
+        [TestCase(null, "", 1, "?MG-Page=1")]
+
         [TestCase("", "?MG-Page=", 1, "?MG-Page=1")]
         [TestCase("", "?MG-Page=1", 1, "?MG-Page=1")]
         [TestCase("", "?MG-Page=10", 1, "?MG-Page=1")]
         [TestCase("", "?Id=400", 1, "?Id=400&MG-Page=1")]
         [TestCase("", "?Id=4&MG-Page=10", 1, "?Id=4&MG-Page=1")]
         [TestCase("", "?Id=4&MG-Page=10&On=true", 1, "?Id=4&MG-Page=1&On=true")]
+
+        [TestCase("  ", "", 1, "?MG-Page-%20%20=1")]
+        [TestCase("  ", "?Id=400", 1, "?Id=400&MG-Page-%20%20=1")]
+        [TestCase("  ", "?MG-Page-  =", 1, "?MG-Page-%20%20=1")]
+        [TestCase("  ", "?MG-Page-  =1", 1, "?MG-Page-%20%20=1")]
+        [TestCase("  ", "?MG-Page-  =10", 1, "?MG-Page-%20%20=1")]
+        [TestCase("  ", "?Id=4&MG-Page-  =10", 1, "?Id=4&MG-Page-%20%20=1")]
+        [TestCase("  ", "?Id=4&MG-Page-  =10&On=true", 1, "?Id=4&MG-Page-%20%20=1&On=true")]
+
         [TestCase("Grid", "", 1, "?MG-Page-Grid=1")]
         [TestCase("Grid", "?Id=400", 1, "?Id=400&MG-Page-Grid=1")]
         [TestCase("Grid", "?MG-Page-Grid=", 1, "?MG-Page-Grid=1")]

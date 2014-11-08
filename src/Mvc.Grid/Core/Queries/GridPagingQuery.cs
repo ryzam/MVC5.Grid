@@ -15,10 +15,10 @@ namespace NonFactors.Mvc.Grid
 
         private String GetSortKey(IGrid grid)
         {
-            if (!String.IsNullOrWhiteSpace(grid.Name))
-                return String.Format("MG-Page-{0}", grid.Name);
+            if (String.IsNullOrEmpty(grid.Name))
+                return "MG-Page";
 
-            return "MG-Page";
+            return String.Format("MG-Page-{0}", grid.Name);
         }
         private Int32 GetPageValue(IGridQuery gridQuery)
         {

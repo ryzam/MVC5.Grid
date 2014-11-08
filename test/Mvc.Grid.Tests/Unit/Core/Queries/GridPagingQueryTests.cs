@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Specialized;
+using System.Web;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -11,19 +12,22 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: GridPagingQuery(IGridQuery query)
 
         [Test]
-        [TestCase("", "MG-Page", "", 0)]
-        [TestCase("", "MG-Page", "5", 5)]
-        [TestCase(null, "MG-Page", "", 0)]
-        [TestCase(null, "MG-Page", "1", 1)]
-        [TestCase("  ", "MG-Page", "", 0)]
-        [TestCase("  ", "MG-Page", "5", 5)]
-        [TestCase("Grid", "MG-Page-Grid", "", 0)]
-        [TestCase("Grid", "MG-Page-Grid", "10", 10)]
-        public void GridSortingQuery_SetsCurrentPage(String gridName, String queryKey, String queryVal, Int32 currentPage)
+        [TestCase("", "Page=1", 0)]
+        [TestCase("", "MG-Page=", 0)]
+        [TestCase("", "MG-Page=5", 5)]
+        [TestCase(null, "Page=1", 0)]
+        [TestCase(null, "MG-Page=", 0)]
+        [TestCase(null, "MG-Page=1", 1)]
+        [TestCase("  ", "Page=1", 0)]
+        [TestCase("  ", "MG-Page-  =", 0)]
+        [TestCase("  ", "MG-Page-  =5", 5)]
+        [TestCase("Grid", "MG-Page=1", 0)]
+        [TestCase("Grid", "MG-Page-Grid=", 0)]
+        [TestCase("Grid", "MG-Page-Grid=10", 10)]
+        public void GridSortingQuery_SetsCurrentPage(String gridName, String query, Int32 currentPage)
         {
             IGridQuery gridQuery = Substitute.For<IGridQuery>();
-            gridQuery.Query = new NameValueCollection();
-            gridQuery.Query[queryKey] = queryVal;
+            gridQuery.Query = HttpUtility.ParseQueryString(query);
             gridQuery.Grid.Name = gridName;
 
             Int32 actual = new GridPagingQuery(gridQuery).CurrentPage;

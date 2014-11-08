@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -56,12 +57,12 @@ namespace NonFactors.Mvc.Grid
         public String LinkForPage(Int32 page)
         {
             NameValueCollection query = new NameValueCollection(Grid.Query.Query);
-            if (String.IsNullOrWhiteSpace(Grid.Name))
+            if (String.IsNullOrEmpty(Grid.Name))
                 query["MG-Page"] = page.ToString();
             else
                 query["MG-Page-" + Grid.Name] = page.ToString();
 
-            return "?" + String.Join("&", query.AllKeys.Select(key => key + "=" + query[key]));
+            return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlPathEncode(key + "=" + query[key])));
         }
     }
 }
