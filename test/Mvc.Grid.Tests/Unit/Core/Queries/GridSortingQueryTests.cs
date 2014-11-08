@@ -12,10 +12,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: GridSortingQuery(IGridQuery query, String columnName)
 
         [Test]
-        [TestCase("Column", "MG-Sort-Column=Asc", null)]
-        [TestCase("Column", "MG-Sort-Grid -Column=", null)]
-        [TestCase("Column", "MG-Sort-Grid -Column=Asc", GridSortOrder.Asc)]
-        [TestCase("Column", "MG-Sort-Grid -Column=Desc", GridSortOrder.Desc)]
+        [TestCase("Column", "Sort-Column=Asc", null)]
+        [TestCase("Column", "Sort-Grid -Column=", null)]
+        [TestCase("Column", "Sort-Grid -Column=Asc", GridSortOrder.Asc)]
+        [TestCase("Column", "Sort-Grid -Column=Desc", GridSortOrder.Desc)]
         public void GridSortingQuery_SetsSortOrder(String columnName, String query, GridSortOrder? expected)
         {
             IGridQuery gridQuery = Substitute.For<IGridQuery>();

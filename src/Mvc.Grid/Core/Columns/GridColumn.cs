@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -64,16 +63,15 @@ namespace NonFactors.Mvc.Grid
             if (!(IsSortable == true))
                 return "#";
 
-            String sortKey = "MG-Sort-" + Grid.Name;
-            Regex gridSort = new Regex(sortKey + "-" + "[^-]*$");
+            String sortKey = "Sort-" + Grid.Name + "-";
             NameValueCollection query = new NameValueCollection(Grid.Query.Query);
-            foreach (String key in query.AllKeys.Where(key => gridSort.IsMatch(key)))
+            foreach (String key in query.AllKeys.Where(key => key.StartsWith(sortKey)))
                 query.Remove(key);
 
             if (SortOrder == GridSortOrder.Asc)
-                query[sortKey + "-" + Name] = GridSortOrder.Desc.ToString();
+                query[sortKey + Name] = GridSortOrder.Desc.ToString();
             else
-                query[sortKey + "-" + Name] = GridSortOrder.Asc.ToString();
+                query[sortKey + Name] = GridSortOrder.Asc.ToString();
 
             return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlPathEncode(key + "=" + query[key])));
         }

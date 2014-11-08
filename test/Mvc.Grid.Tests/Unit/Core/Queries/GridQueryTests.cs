@@ -40,7 +40,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetSortingQuery_GetsGridSortingQuery()
         {
-            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase("MG-Sort-Column=Asc");
+            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase("Sort-Grid-Column=Asc");
             GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), httpContext);
 
             GridSortingQuery actual = gridQuery.GetSortingQuery("Column") as GridSortingQuery;
@@ -57,7 +57,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetPagingQuery_GetsGridPagingQuery()
         {
-            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase("MG-Page=11");
+            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase("Grid-Page=11");
             GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), httpContext);
 
             GridPagingQuery actual = gridQuery.GetPagingQuery() as GridPagingQuery;

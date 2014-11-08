@@ -15,7 +15,7 @@ namespace NonFactors.Mvc.Grid
 
         private String GetSortKey(IGrid grid, String columnName)
         {
-            return String.Format("MG-Sort-{0}-{1}", grid.Name, columnName);
+            return String.Format("Sort-{0}-{1}", grid.Name, columnName);
         }
         private GridSortOrder? GetSortValue(IGridQuery gridQuery, String columnName)
         {
