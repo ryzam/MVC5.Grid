@@ -3,15 +3,13 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
-using System.Web.Routing;
+using System.Web;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
     [TestFixture]
     public class GridPagerTests
     {
-        private RequestContext requestContext;
         private GridPager<GridModel> pager;
         private IGrid<GridModel> grid;
 
@@ -20,9 +18,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid = Substitute.For<IGrid<GridModel>>();
             grid.Source.Returns(new GridModel[6].AsQueryable());
-            requestContext = HttpContextFactory.CreateHttpContext().Request.RequestContext;
 
-            pager = new GridPager<GridModel>(grid, requestContext);
+            pager = new GridPager<GridModel>(grid);
         }
 
         #region Property: StartingPage
@@ -75,7 +72,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid.Source.Returns(new GridModel[itemsCount].AsQueryable());
 
-            GridPager<GridModel> pager = new GridPager<GridModel>(grid, null);
+            GridPager<GridModel> pager = new GridPager<GridModel>(grid);
             pager.RowsPerPage = rowsPerPage;
 
             Int32 actual = pager.TotalPages;
@@ -86,24 +83,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Constructor: GridPager(IGrid<TModel> grid, RequestContext requestContext)
+        #region Constructor: GridPager(IGrid<TModel> grid)
 
         [Test]
         public void GridPager_SetsDefaultPartialViewName()
         {
-            String actual = new GridPager<GridModel>(grid, null).PartialViewName;
+            String actual = new GridPager<GridModel>(grid).PartialViewName;
             String expected = "MvcGrid/_Pager";
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GridPager_SetsRequestContext()
-        {
-            RequestContext expected = HttpContextFactory.CreateHttpContext().Request.RequestContext;
-            RequestContext actual = new GridPager<GridModel>(grid, expected).RequestContext;
-
-            Assert.AreSame(expected, actual);
         }
 
         [Test]
@@ -111,7 +99,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid.Query.GetPagingQuery().CurrentPage.Returns(15);
 
-            Int32 actual = new GridPager<GridModel>(grid, null).CurrentPage;
+            Int32 actual = new GridPager<GridModel>(grid).CurrentPage;
             Int32 expected = 15;
 
             Assert.AreEqual(expected, actual);
@@ -120,7 +108,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridPager_SetsTotalRowsFromGridSource()
         {
-            Int32 actual = new GridPager<GridModel>(grid, null).TotalRows;
+            Int32 actual = new GridPager<GridModel>(grid).TotalRows;
             Int32 expected = grid.Source.Count();
 
             Assert.AreEqual(expected, actual);
@@ -129,7 +117,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridPager_SetsTypeAsPostProcessor()
         {
-            GridProcessorType actual = new GridPager<GridModel>(grid, null).Type;
+            GridProcessorType actual = new GridPager<GridModel>(grid).Type;
             GridProcessorType expected = GridProcessorType.Post;
 
             Assert.AreEqual(expected, actual);
@@ -138,7 +126,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridPager_SetsPagesToDisplay()
         {
-            Int32 actual = new GridPager<GridModel>(grid, null).PagesToDisplay;
+            Int32 actual = new GridPager<GridModel>(grid).PagesToDisplay;
             Int32 expected = 5;
 
             Assert.AreEqual(expected, actual);
@@ -147,7 +135,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridPager_SetsRowsPerPage()
         {
-            Int32 actual = new GridPager<GridModel>(grid, null).RowsPerPage;
+            Int32 actual = new GridPager<GridModel>(grid).RowsPerPage;
             Int32 expected = 20;
 
             Assert.AreEqual(expected, actual);
@@ -156,7 +144,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridPager_SetsGrid()
         {
-            IGrid actual = new GridPager<GridModel>(grid, null).Grid;
+            IGrid actual = new GridPager<GridModel>(grid).Grid;
             IGrid expected = grid;
 
             Assert.AreSame(expected, actual);
@@ -183,40 +171,27 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: LinkForPage(Int32 page)
 
         [Test]
-        [TestCase("", "", 0)]
-        [TestCase("", null, 0)]
-        [TestCase("", "MG-Page=", 0)]
-        [TestCase("", "MG-Page=0", 0)]
-        [TestCase("", "MG-Page=10", 0)]
-        [TestCase("", "", 1)]
-        [TestCase("", null, 1)]
-        [TestCase("", "MG-Page=", 1)]
-        [TestCase("", "MG-Page=1", 1)]
-        [TestCase("", "MG-Page=10", 1)]
-        [TestCase("Grid", "", 0)]
-        [TestCase("Grid", null, 0)]
-        [TestCase("Grid", "MG-Page-Grid=", 0)]
-        [TestCase("Grid", "MG-Page-Grid=0", 0)]
-        [TestCase("Grid", "MG-Page-Grid=10", 0)]
-        [TestCase("Grid", "", 1)]
-        [TestCase("Grid", null, 1)]
-        [TestCase("Grid", "MG-Page-Grid=", 1)]
-        [TestCase("Grid", "MG-Page-Grid=1", 1)]
-        [TestCase("Grid", "MG-Page-Grid=10", 1)]
-        public void LinkForPage_GeneratesLinkForPage(String gridName, String queryString, Int32 page)
+        [TestCase("", "", 1, "?MG-Page=1")]
+        [TestCase("", "?MG-Page=", 1, "?MG-Page=1")]
+        [TestCase("", "?MG-Page=1", 1, "?MG-Page=1")]
+        [TestCase("", "?MG-Page=10", 1, "?MG-Page=1")]
+        [TestCase("", "?Id=400", 1, "?Id=400&MG-Page=1")]
+        [TestCase("", "?Id=4&MG-Page=10", 1, "?Id=4&MG-Page=1")]
+        [TestCase("", "?Id=4&MG-Page=10&On=true", 1, "?Id=4&MG-Page=1&On=true")]
+        [TestCase("Grid", "", 1, "?MG-Page-Grid=1")]
+        [TestCase("Grid", "?Id=400", 1, "?Id=400&MG-Page-Grid=1")]
+        [TestCase("Grid", "?MG-Page-Grid=", 1, "?MG-Page-Grid=1")]
+        [TestCase("Grid", "?MG-Page-Grid=1", 1, "?MG-Page-Grid=1")]
+        [TestCase("Grid", "?MG-Page-Grid=10", 1, "?MG-Page-Grid=1")]
+        [TestCase("Grid", "?Id=4&MG-Page-Grid=10", 1, "?Id=4&MG-Page-Grid=1")]
+        [TestCase("Grid", "?Id=4&MG-Page-Grid=10&On=true", 1, "?Id=4&MG-Page-Grid=1&On=true")]
+        public void LinkForPage_GeneratesLinkForPage(String gridName, String queryString, Int32 page, String pageLink)
         {
-            RequestContext requestContext = HttpContextFactory.CreateHttpContext(queryString).Request.RequestContext;
-            String currentAction = requestContext.RouteData.Values["action"] as String;
-            RouteValueDictionary routeValues = new RouteValueDictionary();
-            UrlHelper urlHelper = new UrlHelper(requestContext);
-            if (!String.IsNullOrWhiteSpace(gridName))
-                routeValues["MG-Page-" + gridName] = page;
-            else
-                routeValues["MG-Page"] = page;
+            grid.Query.Query.Returns(HttpUtility.ParseQueryString(queryString));
             grid.Name = gridName;
 
-            String actual = new GridPager<GridModel>(grid, requestContext).LinkForPage(page);
-            String expected = urlHelper.Action(currentAction, routeValues);
+            String actual = new GridPager<GridModel>(grid).LinkForPage(page);
+            String expected = pageLink;
 
             Assert.AreEqual(expected, actual);
         }

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Web.Mvc;
-using System.Web.Routing;
 
 namespace NonFactors.Mvc.Grid
 {
     public class GridPager<TModel> : IGridPager<TModel> where TModel : class
     {
-        public RequestContext RequestContext { get; private set; }
         public String PartialViewName { get; set; }
         public IGrid<TModel> Grid { get; set; }
 
@@ -39,10 +36,9 @@ namespace NonFactors.Mvc.Grid
             }
         }
 
-        public GridPager(IGrid<TModel> grid, RequestContext requestContext)
+        public GridPager(IGrid<TModel> grid)
         {
             PartialViewName = "MvcGrid/_Pager";
-            RequestContext = requestContext;
 
             CurrentPage = grid.Query.GetPagingQuery().CurrentPage;
             TotalRows = grid.Source.Count();
@@ -59,19 +55,13 @@ namespace NonFactors.Mvc.Grid
 
         public String LinkForPage(Int32 page)
         {
-            RouteValueDictionary routeValues = new RouteValueDictionary(RequestContext.RouteData.Values);
-            NameValueCollection query = RequestContext.HttpContext.Request.QueryString;
-            UrlHelper urlHelper = new UrlHelper(RequestContext);
-
-            foreach (String parameter in query)
-                routeValues[parameter] = query[parameter];
-
+            NameValueCollection query = new NameValueCollection(Grid.Query.Query);
             if (String.IsNullOrWhiteSpace(Grid.Name))
-                routeValues["MG-Page"] = page;
+                query["MG-Page"] = page.ToString();
             else
-                routeValues["MG-Page-" + Grid.Name] = page;
+                query["MG-Page-" + Grid.Name] = page.ToString();
 
-            return urlHelper.Action(routeValues["action"] as String, routeValues);
+            return "?" + String.Join("&", query.AllKeys.Select(key => key + "=" + query[key]));
         }
     }
 }
