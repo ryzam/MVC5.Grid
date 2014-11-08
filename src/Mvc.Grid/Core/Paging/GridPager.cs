@@ -21,7 +21,7 @@ namespace NonFactors.Mvc.Grid
             {
                 Int32 middlePage = (PagesToDisplay / 2) + (PagesToDisplay % 2) - 1;
                 if (CurrentPage - middlePage + PagesToDisplay > TotalPages)
-                    return TotalPages - PagesToDisplay;
+                    return Math.Max(TotalPages - PagesToDisplay, 0);
 
                 if (CurrentPage < middlePage)
                     return 0;
