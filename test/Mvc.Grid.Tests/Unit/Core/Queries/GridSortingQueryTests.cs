@@ -22,23 +22,17 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(null, "Column", "MG-Sort-Column=Asc", GridSortOrder.Asc)]
         [TestCase(null, "Column", "MG-Sort-Column=Desc", GridSortOrder.Desc)]
 
-        [TestCase("  ", "Column", "Column=Asc", null)]
-        [TestCase("  ", "Column", "MG-Sort-  -Column=", null)]
-        [TestCase("  ", "Column", "MG-Sort-  -Column=Asc", GridSortOrder.Asc)]
-        [TestCase("  ", "Column", "MG-Sort-  -Column=Desc", GridSortOrder.Desc)]
-
         [TestCase("Grid", "Column", "MG-Sort-Column=Asc", null)]
         [TestCase("Grid", "Column", "MG-Sort-Grid-Column=", null)]
         [TestCase("Grid", "Column", "MG-Sort-Grid-Column=Asc", GridSortOrder.Asc)]
         [TestCase("Grid", "Column", "MG-Sort-Grid-Column=Desc", GridSortOrder.Desc)]
-        public void GridSortingQuery_SetsSortOrder(String gridName, String columnName, String query, GridSortOrder? order)
+        public void GridSortingQuery_SetsSortOrder(String gridName, String columnName, String query, GridSortOrder? expected)
         {
             IGridQuery gridQuery = Substitute.For<IGridQuery>();
             gridQuery.Query = HttpUtility.ParseQueryString(query);
             gridQuery.Grid.Name = gridName;
 
             GridSortOrder? actual = new GridSortingQuery(gridQuery, columnName).SortOrder;
-            GridSortOrder? expected = order;
 
             Assert.AreEqual(expected, actual);
         }

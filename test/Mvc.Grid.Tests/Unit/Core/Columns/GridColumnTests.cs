@@ -70,15 +70,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        [TestCase(null)]
-        [TestCase(GridSortOrder.Asc)]
-        [TestCase(GridSortOrder.Desc)]
-        public void GridColumn_SetsSortOrderFromGridQuery(GridSortOrder? order)
+        public void GridColumn_SetsSortOrderFromGridQuery()
         {
-            grid.Query.GetSortingQuery("Name").SortOrder.Returns(order);
+            grid.Query.GetSortingQuery("Name").SortOrder = GridSortOrder.Desc;
 
             GridSortOrder? actual = new GridColumn<GridModel, String>(grid, model => model.Name).SortOrder;
-            GridSortOrder? expected = order;
+            GridSortOrder? expected = GridSortOrder.Desc;
 
             Assert.AreEqual(expected, actual);
         }
@@ -88,16 +85,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Process(IEnumerable<TModel> items)
 
         [Test]
-        [TestCase(null, null)]
-        [TestCase(null, GridSortOrder.Asc)]
-        [TestCase(null, GridSortOrder.Desc)]
-        [TestCase(false, null)]
-        [TestCase(false, GridSortOrder.Asc)]
-        [TestCase(false, GridSortOrder.Desc)]
-        public void Process_IfNotSortableReturnsItems(Boolean? isSortable, GridSortOrder? order)
+        public void Process_IfNotSortableReturnsItems()
         {
-            column.IsSortable = isSortable;
-            column.SortOrder = order;
+            column.IsSortable = false;
+            column.SortOrder = GridSortOrder.Desc;
 
             IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
             IQueryable<GridModel> actual = column.Process(expected);
@@ -148,38 +139,19 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: ValueFor(IGridRow row)
 
         [Test]
-        [TestCase(null, null, false, "")]
-        [TestCase(null, null, true, "")]
-        [TestCase(null, "", false, "")]
-        [TestCase(null, "", true, "")]
-        [TestCase(null, "Format {0}", false, "")]
-        [TestCase(null, "Format {0}", true, "")]
-        [TestCase("", null, false, "")]
-        [TestCase("", null, true, "")]
-        [TestCase("", "", false, "")]
-        [TestCase("", "", true, "")]
-        [TestCase("", "Format {0}", false, "Format ")]
-        [TestCase("", "Format {0}", true, "Format ")]
-        [TestCase("name", null, false, "name")]
-        [TestCase("name", null, true, "name")]
-        [TestCase("name", "", false, "")]
-        [TestCase("name", "", true, "")]
-        [TestCase("name", "Format {0}", false, "Format name")]
-        [TestCase("name", "Format {0}", true, "Format name")]
+        [TestCase(null, "For {0}", true, "")]
+        [TestCase(null, "For {0}", false, "")]
         [TestCase("<name>", null, false, "<name>")]
         [TestCase("<name>", null, true, "&lt;name&gt;")]
-        [TestCase("<name>", "", false, "")]
-        [TestCase("<name>", "", true, "")]
-        [TestCase("<name>", "Format {0}", false, "Format <name>")]
-        [TestCase("<name>", "Format {0}", true, "Format &lt;name&gt;")]
-        public void ValueFor_GetsValue(String name, String format, Boolean isEncoded, String value)
+        [TestCase("<name>", "For <{0}>", false, "For <<name>>")]
+        [TestCase("<name>", "For <{0}>", true, "For &lt;&lt;name&gt;&gt;")]
+        public void ValueFor_GetsValue(String name, String format, Boolean isEncoded, String expected)
         {
             IGridRow row = new GridRow(new GridModel { Name = name });
             column.Encoded(isEncoded);
             column.Formatted(format);
 
             String actual = column.ValueFor(row).ToString();
-            String expected = value;
 
             Assert.AreEqual(expected, actual);
         }

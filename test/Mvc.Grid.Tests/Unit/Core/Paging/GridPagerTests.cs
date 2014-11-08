@@ -17,7 +17,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void TestFixtureSetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Source.Returns(new GridModel[6].AsQueryable());
+            grid.Source.Returns(new GridModel[5].AsQueryable());
 
             pager = new GridPager<GridModel>(grid);
         }
@@ -30,27 +30,38 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(1, 2, 2)]
         [TestCase(1, 3, 3)]
         [TestCase(1, 4, 4)]
-        [TestCase(1, 5, 5)]
+        [TestCase(2, 0, 0)]
+        [TestCase(2, 1, 1)]
+        [TestCase(2, 2, 2)]
+        [TestCase(2, 3, 3)]
+        [TestCase(2, 4, 3)]
         [TestCase(3, 0, 0)]
         [TestCase(3, 1, 0)]
         [TestCase(3, 2, 1)]
         [TestCase(3, 3, 2)]
-        [TestCase(3, 4, 3)]
-        [TestCase(3, 5, 3)]
+        [TestCase(3, 4, 2)]
         [TestCase(4, 0, 0)]
         [TestCase(4, 1, 0)]
         [TestCase(4, 2, 1)]
-        [TestCase(4, 3, 2)]
-        [TestCase(4, 4, 2)]
-        [TestCase(4, 5, 2)]
-        public void StartingPage_GetsStartingPage(Int32 pagesToDisplay, Int32 currentPage, Int32 startingPage)
+        [TestCase(4, 3, 1)]
+        [TestCase(4, 4, 1)]
+        [TestCase(5, 0, 0)]
+        [TestCase(5, 1, 0)]
+        [TestCase(5, 2, 0)]
+        [TestCase(5, 3, 0)]
+        [TestCase(5, 4, 0)]
+        [TestCase(6, 0, 0)]
+        [TestCase(6, 1, 0)]
+        [TestCase(6, 2, 0)]
+        [TestCase(6, 3, 0)]
+        [TestCase(6, 4, 0)]
+        public void StartingPage_GetsStartingPage(Int32 pagesToDisplay, Int32 currentPage, Int32 expected)
         {
             pager.PagesToDisplay = pagesToDisplay;
             pager.CurrentPage = currentPage;
             pager.RowsPerPage = 1;
 
             Int32 actual = pager.StartingPage;
-            Int32 expected = startingPage;
 
             Assert.AreEqual(expected, actual);
         }
@@ -68,7 +79,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(39, 20, 2)]
         [TestCase(40, 20, 2)]
         [TestCase(41, 20, 3)]
-        public void TotalPages_GetsTotalPages(Int32 itemsCount, Int32 rowsPerPage, Int32 totalPages)
+        public void TotalPages_GetsTotalPages(Int32 itemsCount, Int32 rowsPerPage, Int32 expected)
         {
             grid.Source.Returns(new GridModel[itemsCount].AsQueryable());
 
@@ -76,7 +87,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             pager.RowsPerPage = rowsPerPage;
 
             Int32 actual = pager.TotalPages;
-            Int32 expected = totalPages;
 
             Assert.AreEqual(expected, actual);
         }
@@ -171,44 +181,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: LinkForPage(Int32 page)
 
         [Test]
-        [TestCase(null, "", 1, "?MG-Page=1")]
-        [TestCase(null, "?MG-Page=", 1, "?MG-Page=1")]
-        [TestCase(null, "?MG-Page=1", 1, "?MG-Page=1")]
-        [TestCase(null, "?MG-Page=10", 1, "?MG-Page=1")]
-        [TestCase(null, "?Id=400", 1, "?Id=400&MG-Page=1")]
-        [TestCase(null, "?Id=4&MG-Page=10", 1, "?Id=4&MG-Page=1")]
-        [TestCase(null, "?Id=4&MG-Page=10&On=true", 1, "?Id=4&MG-Page=1&On=true")]
-        [TestCase(null, "", 1, "?MG-Page=1")]
-
-        [TestCase("", "?MG-Page=", 1, "?MG-Page=1")]
-        [TestCase("", "?MG-Page=1", 1, "?MG-Page=1")]
-        [TestCase("", "?MG-Page=10", 1, "?MG-Page=1")]
-        [TestCase("", "?Id=400", 1, "?Id=400&MG-Page=1")]
-        [TestCase("", "?Id=4&MG-Page=10", 1, "?Id=4&MG-Page=1")]
+        [TestCase("", "?Id=4&On=true", 1, "?Id=4&On=true&MG-Page=1")]
         [TestCase("", "?Id=4&MG-Page=10&On=true", 1, "?Id=4&MG-Page=1&On=true")]
-
-        [TestCase("  ", "", 1, "?MG-Page-%20%20=1")]
-        [TestCase("  ", "?Id=400", 1, "?Id=400&MG-Page-%20%20=1")]
-        [TestCase("  ", "?MG-Page-  =", 1, "?MG-Page-%20%20=1")]
-        [TestCase("  ", "?MG-Page-  =1", 1, "?MG-Page-%20%20=1")]
-        [TestCase("  ", "?MG-Page-  =10", 1, "?MG-Page-%20%20=1")]
-        [TestCase("  ", "?Id=4&MG-Page-  =10", 1, "?Id=4&MG-Page-%20%20=1")]
-        [TestCase("  ", "?Id=4&MG-Page-  =10&On=true", 1, "?Id=4&MG-Page-%20%20=1&On=true")]
-
-        [TestCase("Grid", "", 1, "?MG-Page-Grid=1")]
-        [TestCase("Grid", "?Id=400", 1, "?Id=400&MG-Page-Grid=1")]
-        [TestCase("Grid", "?MG-Page-Grid=", 1, "?MG-Page-Grid=1")]
-        [TestCase("Grid", "?MG-Page-Grid=1", 1, "?MG-Page-Grid=1")]
-        [TestCase("Grid", "?MG-Page-Grid=10", 1, "?MG-Page-Grid=1")]
-        [TestCase("Grid", "?Id=4&MG-Page-Grid=10", 1, "?Id=4&MG-Page-Grid=1")]
-        [TestCase("Grid", "?Id=4&MG-Page-Grid=10&On=true", 1, "?Id=4&MG-Page-Grid=1&On=true")]
-        public void LinkForPage_GeneratesLinkForPage(String gridName, String queryString, Int32 page, String pageLink)
+        [TestCase(null, "?Id=4&On=true", 1, "?Id=4&On=true&MG-Page=1")]
+        [TestCase(null, "?Id=4&MG-Page=10&On=true", 1, "?Id=4&MG-Page=1&On=true")]
+        [TestCase("Grid ", "?Id=4&On=true", 1, "?Id=4&On=true&MG-Page-Grid%20=1")]
+        [TestCase("Grid ", "?Id=4&MG-Page-Grid =10&On=true", 1, "?Id=4&MG-Page-Grid%20=1&On=true")]
+        public void LinkForPage_GeneratesLinkForPage(String gridName, String queryString, Int32 page, String expected)
         {
-            grid.Query.Query.Returns(HttpUtility.ParseQueryString(queryString));
             grid.Name = gridName;
+            grid.Query.Query = HttpUtility.ParseQueryString(queryString);
 
             String actual = new GridPager<GridModel>(grid).LinkForPage(page);
-            String expected = pageLink;
 
             Assert.AreEqual(expected, actual);
         }

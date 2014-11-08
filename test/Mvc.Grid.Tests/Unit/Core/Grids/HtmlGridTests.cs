@@ -127,18 +127,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        [TestCase(null, false)]
-        [TestCase(null, true)]
-        [TestCase(false, false)]
-        [TestCase(false, true)]
-        [TestCase(true, false)]
-        [TestCase(true, true)]
-        public void Sortable_ReturnsSameGrid(Boolean? isColumnSortable, Boolean isGridSortable)
+        public void Sortable_ReturnsSameGrid()
         {
-            foreach (IGridColumn column in htmlGrid.Grid.Columns)
-                column.IsSortable = isColumnSortable;
-
-            IHtmlGrid<GridModel> actual = htmlGrid.Sortable(isGridSortable);
+            IHtmlGrid<GridModel> actual = htmlGrid.Sortable(true);
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
@@ -149,24 +140,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Css(String cssClasses)
 
         [Test]
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase("table")]
-        public void Css_SetsCssClasses(String css)
+        public void Css_SetsCssClasses()
         {
-            String actual = htmlGrid.Css(css).Grid.CssClasses;
-            String expected = css;
+            String actual = htmlGrid.Css("table").Grid.CssClasses;
+            String expected = "table";
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase("table")]
-        public void Css_ReturnsSameGrid(String css)
+        public void Css_ReturnsSameGrid()
         {
-            IHtmlGrid<GridModel> actual = htmlGrid.Css(css);
+            IHtmlGrid<GridModel> actual = htmlGrid.Css("table");
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
@@ -177,24 +162,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Empty(String text)
 
         [Test]
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase("Text")]
-        public void Empty_SetsEmptyText(String text)
+        public void Empty_SetsEmptyText()
         {
-            String actual = htmlGrid.Empty(text).Grid.EmptyText;
-            String expected = text;
+            String actual = htmlGrid.Empty("Text").Grid.EmptyText;
+            String expected = "Text";
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase("Text")]
-        public void Empty_ReturnsSameGrid(String text)
+        public void Empty_ReturnsSameGrid()
         {
-            IHtmlGrid<GridModel> actual = htmlGrid.Empty(text);
+            IHtmlGrid<GridModel> actual = htmlGrid.Empty("Text");
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
@@ -205,24 +184,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Named(String name)
 
         [Test]
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase("Name")]
-        public void Named_SetsName(String name)
+        public void Named_SetsName()
         {
-            String actual = htmlGrid.Named(name).Grid.Name;
-            String expected = name;
+            String actual = htmlGrid.Named("Name").Grid.Name;
+            String expected = "Name";
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("")]
-        [TestCase(null)]
-        [TestCase("Name")]
-        public void Named_ReturnsSameGrid(String name)
+        public void Named_ReturnsSameGrid()
         {
-            IHtmlGrid<GridModel> actual = htmlGrid.Named(name);
+            IHtmlGrid<GridModel> actual = htmlGrid.Named("Name");
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
