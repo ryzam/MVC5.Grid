@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -55,6 +57,28 @@ namespace NonFactors.Mvc.Grid
                 return value.ToString();
 
             return String.Format(Format, value);
+        }
+
+        public override String LinkForSort()
+        {
+            if (!(IsSortable == true))
+                return "#";
+
+            String sortKeyPrefix = "MG-Sort";
+            if (!String.IsNullOrEmpty(Grid.Name))
+                sortKeyPrefix += "-" + Grid.Name;
+
+            Regex gridSort = new Regex(sortKeyPrefix + "-" + "[^-]*$");
+            NameValueCollection query = new NameValueCollection(Grid.Query.Query);
+            foreach (String sortKey in query.AllKeys.Where(key => gridSort.IsMatch(key)))
+                query.Remove(sortKey);
+
+            if (SortOrder == GridSortOrder.Asc)
+                query[sortKeyPrefix + "-" + Name] = GridSortOrder.Desc.ToString();
+            else
+                query[sortKeyPrefix + "-" + Name] = GridSortOrder.Asc.ToString();
+
+            return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlPathEncode(key + "=" + query[key])));
         }
     }
 }

@@ -8,10 +8,6 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-.mvc-grid-table th {
-    cursor: pointer;
-}
-
-.mvc-grid-table-empty {
-    text-align: center;
-}
+$(".mvc-grid-table th[data-sort='True']").on('click', function () {
+    window.location.href = $(this).data('sort-query');
+});

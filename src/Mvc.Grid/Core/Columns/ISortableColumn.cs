@@ -8,6 +8,8 @@ namespace NonFactors.Mvc.Grid
         Boolean? IsSortable { get; set; }
 
         IGridColumn Sortable(Boolean isSortable);
+
+        String LinkForSort();
     }
 
     public interface ISortableColumn<TModel> : IGridProcessor<TModel> where TModel : class

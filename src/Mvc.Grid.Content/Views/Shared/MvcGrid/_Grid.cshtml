@@ -10,7 +10,8 @@
                     <th class="@column.CssClasses"
                         data-name="@column.Name"
                         data-sort="@(column.IsSortable == true)"
-                        data-sort-order="@column.SortOrder">
+                        data-sort-order="@column.SortOrder"
+                        data-sort-query="@column.LinkForSort()">
                         @column.Title
                     </th>
                 }

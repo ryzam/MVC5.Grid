@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web;
 using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
@@ -152,6 +153,53 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.Formatted(format);
 
             String actual = column.ValueFor(row).ToString();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
+        #region Method: LinkForSort()
+
+        [Test]
+        [TestCase(null, "Grid", "", null, "#")]
+        [TestCase(false, "Grid", "", null, "#")]
+        [TestCase(true, null, "", null, "?MG-Sort-Name=Asc")]
+        [TestCase(true, null, "", GridSortOrder.Asc, "?MG-Sort-Name=Desc")]
+        [TestCase(true, null, "", GridSortOrder.Desc, "?MG-Sort-Name=Asc")]
+        [TestCase(true, null, "Id=4&On=true", null, "?Id=4&On=true&MG-Sort-Name=Asc")]
+        [TestCase(true, null, "Id=4&MG-Sort-Name=Asc", GridSortOrder.Asc, "?Id=4&MG-Sort-Name=Desc")]
+        [TestCase(true, null, "Id=4&MG-Sort-Grid-Name=Asc", GridSortOrder.Asc, "?Id=4&MG-Sort-Grid-Name=Asc&MG-Sort-Name=Desc")]
+        [TestCase(true, null, "Id=4&MG-Sort-Name=Desc", GridSortOrder.Desc, "?Id=4&MG-Sort-Name=Asc")]
+        [TestCase(true, null, "Id=4&MG-Sort-Grid-Name=Desc", GridSortOrder.Desc, "?Id=4&MG-Sort-Grid-Name=Desc&MG-Sort-Name=Asc")]
+        [TestCase(true, "", "", null, "?MG-Sort-Name=Asc")]
+        [TestCase(true, "", "", GridSortOrder.Asc, "?MG-Sort-Name=Desc")]
+        [TestCase(true, "", "", GridSortOrder.Desc, "?MG-Sort-Name=Asc")]
+        [TestCase(true, "", "Id=4&On=true", null, "?Id=4&On=true&MG-Sort-Name=Asc")]
+        [TestCase(true, "", "Id=4&MG-Sort-Name=Asc", GridSortOrder.Asc, "?Id=4&MG-Sort-Name=Desc")]
+        [TestCase(true, "", "Id=4&MG-Sort-Grid-Name=Asc", GridSortOrder.Asc, "?Id=4&MG-Sort-Grid-Name=Asc&MG-Sort-Name=Desc")]
+        [TestCase(true, "", "Id=4&MG-Sort-Name=Desc", GridSortOrder.Desc, "?Id=4&MG-Sort-Name=Asc")]
+        [TestCase(true, "", "Id=4&MG-Sort-Grid-Name=Desc", GridSortOrder.Desc, "?Id=4&MG-Sort-Grid-Name=Desc&MG-Sort-Name=Asc")]
+        [TestCase(true, "Grid ", "", null, "?MG-Sort-Grid%20-Name=Asc")]
+        [TestCase(true, "Grid ", "", GridSortOrder.Asc, "?MG-Sort-Grid%20-Name=Desc")]
+        [TestCase(true, "Grid ", "", GridSortOrder.Desc, "?MG-Sort-Grid%20-Name=Asc")]
+        [TestCase(true, "Grid ", "Id=4&On=true", null, "?Id=4&On=true&MG-Sort-Grid%20-Name=Asc")]
+        [TestCase(true, "Grid ", "Id=4&MG-Sort-Grid -Name=Asc", null, "?Id=4&MG-Sort-Grid%20-Name=Asc")]
+        [TestCase(true, "Grid ", "Id=4&MG-Sort-Name=Asc", null, "?Id=4&MG-Sort-Name=Asc&MG-Sort-Grid%20-Name=Asc")]
+        [TestCase(true, "Grid ", "Id=4&MG-Sort-Grid -Name=Desc", null, "?Id=4&MG-Sort-Grid%20-Name=Asc")]
+        [TestCase(true, "Grid ", "Id=4&MG-Sort-Name=Desc", null, "?Id=4&MG-Sort-Name=Desc&MG-Sort-Grid%20-Name=Asc")]
+        [TestCase(true, "Grid ", "Id=4&MG-Sort-Grid -Name=Asc", GridSortOrder.Asc, "?Id=4&MG-Sort-Grid%20-Name=Desc")]
+        [TestCase(true, "Grid ", "Id=4&MG-Sort-Name=Asc", GridSortOrder.Asc, "?Id=4&MG-Sort-Name=Asc&MG-Sort-Grid%20-Name=Desc")]
+        [TestCase(true, "Grid ", "Id=4&MG-Sort-Grid -Name=Desc", GridSortOrder.Desc, "?Id=4&MG-Sort-Grid%20-Name=Asc")]
+        [TestCase(true, "Grid ", "Id=4&MG-Sort-Name=Desc", GridSortOrder.Desc, "?Id=4&MG-Sort-Name=Desc&MG-Sort-Grid%20-Name=Asc")]
+        public void LinkForSort_GeneratesLinkForSort(Boolean? isSortable, String gridName, String query, GridSortOrder? order, String expected)
+        {
+            column.Grid.Query.Query = HttpUtility.ParseQueryString(query);
+            column.IsSortable = isSortable;
+            column.Grid.Name = gridName;
+            column.SortOrder = order;
+
+            String actual = column.LinkForSort();
 
             Assert.AreEqual(expected, actual);
         }

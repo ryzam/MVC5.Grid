@@ -53,5 +53,7 @@ namespace NonFactors.Mvc.Grid
         }
 
         public abstract IHtmlString ValueFor(IGridRow row);
+
+        public abstract String LinkForSort();
     }
 }
