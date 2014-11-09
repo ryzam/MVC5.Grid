@@ -12,9 +12,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: GridPagingQuery(IGridQuery query)
 
         [Test]
-        [TestCase("Page=", 0)]
-        [TestCase("Grid -Page=", 0)]
-        [TestCase("Grid -Page=1", 1)]
+        [TestCase("Page=", 1)]
+        [TestCase("Grid -Page=", 1)]
+        [TestCase("Grid -Page=2", 2)]
         public void GridSortingQuery_SetsCurrentPage(String query, Int32 expected)
         {
             IGridQuery gridQuery = Substitute.For<IGridQuery>();

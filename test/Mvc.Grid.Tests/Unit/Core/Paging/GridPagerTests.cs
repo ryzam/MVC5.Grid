@@ -1,7 +1,7 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Web;
 
@@ -17,7 +17,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void TestFixtureSetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Source.Returns(new GridModel[5].AsQueryable());
+            grid.Source.Returns(new GridModel[5]
+            {
+                new GridModel(),
+                new GridModel(),
+                new GridModel(),
+                new GridModel(),
+                new GridModel()
+            }.AsQueryable());
 
             pager = new GridPager<GridModel>(grid);
         }
@@ -25,36 +32,36 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Property: StartingPage
 
         [Test]
-        [TestCase(1, 0, 0)]
         [TestCase(1, 1, 1)]
         [TestCase(1, 2, 2)]
         [TestCase(1, 3, 3)]
         [TestCase(1, 4, 4)]
-        [TestCase(2, 0, 0)]
+        [TestCase(1, 5, 5)]
         [TestCase(2, 1, 1)]
         [TestCase(2, 2, 2)]
         [TestCase(2, 3, 3)]
-        [TestCase(2, 4, 3)]
-        [TestCase(3, 0, 0)]
-        [TestCase(3, 1, 0)]
+        [TestCase(2, 4, 4)]
+        [TestCase(2, 5, 4)]
+        [TestCase(3, 1, 1)]
         [TestCase(3, 2, 1)]
         [TestCase(3, 3, 2)]
-        [TestCase(3, 4, 2)]
-        [TestCase(4, 0, 0)]
-        [TestCase(4, 1, 0)]
+        [TestCase(3, 4, 3)]
+        [TestCase(3, 5, 3)]
+        [TestCase(4, 1, 1)]
         [TestCase(4, 2, 1)]
-        [TestCase(4, 3, 1)]
-        [TestCase(4, 4, 1)]
-        [TestCase(5, 0, 0)]
-        [TestCase(5, 1, 0)]
-        [TestCase(5, 2, 0)]
-        [TestCase(5, 3, 0)]
-        [TestCase(5, 4, 0)]
-        [TestCase(6, 0, 0)]
-        [TestCase(6, 1, 0)]
-        [TestCase(6, 2, 0)]
-        [TestCase(6, 3, 0)]
-        [TestCase(6, 4, 0)]
+        [TestCase(4, 3, 2)]
+        [TestCase(4, 4, 2)]
+        [TestCase(4, 5, 2)]
+        [TestCase(5, 1, 1)]
+        [TestCase(5, 2, 1)]
+        [TestCase(5, 3, 1)]
+        [TestCase(5, 4, 1)]
+        [TestCase(5, 5, 1)]
+        [TestCase(6, 1, 1)]
+        [TestCase(6, 2, 1)]
+        [TestCase(6, 3, 1)]
+        [TestCase(6, 4, 1)]
+        [TestCase(6, 5, 1)]
         public void StartingPage_GetsStartingPage(Int32 pagesToDisplay, Int32 currentPage, Int32 expected)
         {
             pager.PagesToDisplay = pagesToDisplay;
@@ -167,11 +174,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Process_ReturnsPagedItems()
         {
-            pager.CurrentPage = 1;
+            pager.CurrentPage = 2;
             pager.RowsPerPage = 1;
 
-            IEnumerable<GridModel> expected = grid.Source.Skip(1).Take(1);
-            IEnumerable<GridModel> actual = pager.Process(grid.Source);
+            IEnumerable expected = grid.Source.Skip(1).Take(1);
+            IEnumerable actual = pager.Process(grid.Source);
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -181,8 +188,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: LinkForPage(Int32 page)
 
         [Test]
-        [TestCase("?Id=4&On=true", 1, "?Id=4&On=true&Grid%20-Page=1")]
-        [TestCase("?Id=4&Grid -Page=10&On=true", 1, "?Id=4&Grid%20-Page=1&On=true")]
+        [TestCase("?Id=4&On=true", 3, "?Id=4&On=true&Grid%20-Page=3")]
+        [TestCase("?Id=4&Grid -Page=10&On=true", 3, "?Id=4&Grid%20-Page=3&On=true")]
         public void LinkForPage_GeneratesLinkForPage(String queryString, Int32 page, String expected)
         {
             grid.Name = "Grid ";

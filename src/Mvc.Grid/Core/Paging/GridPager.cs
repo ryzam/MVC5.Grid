@@ -19,14 +19,14 @@ namespace NonFactors.Mvc.Grid
         {
             get
             {
-                Int32 middlePage = (PagesToDisplay / 2) + (PagesToDisplay % 2) - 1;
-                if (CurrentPage - middlePage + PagesToDisplay > TotalPages)
-                    return Math.Max(TotalPages - PagesToDisplay, 0);
-
+                Int32 middlePage = (PagesToDisplay / 2) + (PagesToDisplay % 2);
                 if (CurrentPage < middlePage)
-                    return 0;
+                    return 1;
 
-                return CurrentPage - middlePage;
+                if (CurrentPage - middlePage + PagesToDisplay > TotalPages)
+                    return Math.Max(TotalPages - PagesToDisplay + 1, 1);
+
+                return CurrentPage - middlePage + 1;
             }
         }
         public Int32 TotalPages
@@ -51,7 +51,7 @@ namespace NonFactors.Mvc.Grid
 
         public IQueryable<TModel> Process(IQueryable<TModel> items)
         {
-            return items.Skip(CurrentPage * RowsPerPage).Take(RowsPerPage);
+            return items.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage);
         }
 
         public String LinkForPage(Int32 page)

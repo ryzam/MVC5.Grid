@@ -21,11 +21,12 @@ namespace NonFactors.Mvc.Grid
         {
             String key = GetSortKey(gridQuery.Grid);
             String value = gridQuery.Query[key];
-            Int32 page = 0;
+            Int32 page;
 
-            Int32.TryParse(value, out page);
+            if(Int32.TryParse(value, out page))
+                return page;
 
-            return page;
+            return 1;
         }
     }
 }
