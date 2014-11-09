@@ -59,7 +59,7 @@ namespace NonFactors.Mvc.Grid
             NameValueCollection query = new NameValueCollection(Grid.Query.Query);
             query[Grid.Name + "-Page"] = page.ToString();
 
-            return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlPathEncode(key + "=" + query[key])));
+            return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlEncode(key) + "=" + HttpUtility.UrlEncode(query[key])));
         }
     }
 }

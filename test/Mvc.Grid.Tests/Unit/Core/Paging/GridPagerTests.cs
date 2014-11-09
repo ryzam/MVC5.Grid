@@ -188,8 +188,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: LinkForPage(Int32 page)
 
         [Test]
-        [TestCase("?Id=4&On=true", 3, "?Id=4&On=true&Grid%20-Page=3")]
-        [TestCase("?Id=4&Grid -Page=10&On=true", 3, "?Id=4&Grid%20-Page=3&On=true")]
+        [TestCase("?Id=4&On=true", 3, "?Id=4&On=true&Grid+-Page=3")]
+        [TestCase("?Id=4&Grid -Page=10&On=true", 3, "?Id=4&Grid+-Page=3&On=true")]
         public void LinkForPage_GeneratesLinkForPage(String queryString, Int32 page, String expected)
         {
             grid.Name = "Grid ";

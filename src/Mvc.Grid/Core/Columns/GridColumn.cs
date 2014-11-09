@@ -73,7 +73,7 @@ namespace NonFactors.Mvc.Grid
             else
                 query[sortKey + Name] = GridSortOrder.Asc.ToString();
 
-            return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlPathEncode(key + "=" + query[key])));
+            return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlEncode(key) + "=" + HttpUtility.UrlEncode(query[key])));
         }
     }
 }
