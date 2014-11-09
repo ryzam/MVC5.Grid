@@ -13,9 +13,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         [Test]
         [TestCase("Column", "Sort-Column=Asc", null)]
-        [TestCase("Column", "Sort-Grid -Column=", null)]
-        [TestCase("Column", "Sort-Grid -Column=Asc", GridSortOrder.Asc)]
-        [TestCase("Column", "Sort-Grid -Column=Desc", GridSortOrder.Desc)]
+        [TestCase("Column", "Grid -Sort=Col&Grid -Order=", null)]
+        [TestCase("Column", "Grid -Sort=Column&Grid -Order=Asc", GridSortOrder.Asc)]
+        [TestCase("Column", "Grid -Sort=Column&Grid -Order=Desc", GridSortOrder.Desc)]
         public void GridSortingQuery_SetsSortOrder(String columnName, String query, GridSortOrder? expected)
         {
             IGridQuery gridQuery = Substitute.For<IGridQuery>();

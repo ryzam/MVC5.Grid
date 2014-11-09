@@ -13,19 +13,29 @@ namespace NonFactors.Mvc.Grid
             ColumnName = columnName;
         }
 
-        private String GetSortKey(IGrid grid, String columnName)
+        private String GetSortKey(IGrid grid)
         {
-            return String.Format("Sort-{0}-{1}", grid.Name, columnName);
+            return grid.Name + "-Sort";
+        }
+        private String GetOrderKey(IGrid grid)
+        {
+            return grid.Name + "-Order";
         }
         private GridSortOrder? GetSortValue(IGridQuery gridQuery, String columnName)
         {
-            String key = GetSortKey(gridQuery.Grid, columnName);
-            String value = gridQuery.Query[key];
-            GridSortOrder order;
+            String sortKey = GetSortKey(gridQuery.Grid);
+            String sortValue = gridQuery.Query[sortKey];
 
-            if (Enum.TryParse<GridSortOrder>(value, out order))
-                return order;
+            if (columnName == sortValue)
+            {
+                String orderKey = GetOrderKey(gridQuery.Grid);
+                String orderValue = gridQuery.Query[orderKey];
+                GridSortOrder order;
 
+                if (Enum.TryParse<GridSortOrder>(orderValue, out order))
+                    return order;
+            }
+            
             return null;
         }
     }

@@ -63,15 +63,13 @@ namespace NonFactors.Mvc.Grid
             if (!(IsSortable == true))
                 return "#";
 
-            String sortKey = "Sort-" + Grid.Name + "-";
             NameValueCollection query = new NameValueCollection(Grid.Query.Query);
-            foreach (String key in query.AllKeys.Where(key => key.StartsWith(sortKey)))
-                query.Remove(key);
+            query[Grid.Name + "-Sort"] = Name;
 
             if (SortOrder == GridSortOrder.Asc)
-                query[sortKey + Name] = GridSortOrder.Desc.ToString();
+                query[Grid.Name + "-Order"] = GridSortOrder.Desc.ToString();
             else
-                query[sortKey + Name] = GridSortOrder.Asc.ToString();
+                query[Grid.Name + "-Order"] = GridSortOrder.Asc.ToString();
 
             return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlEncode(key) + "=" + HttpUtility.UrlEncode(query[key])));
         }
