@@ -20,7 +20,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Query = new GridQuery(grid, new NameValueCollection());
+            grid.Query = new GridQuery(new NameValueCollection());
             column = new GridColumn<GridModel, Object>(grid, model => model.Name);
         }
 
@@ -82,7 +82,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void GridColumn_SetsSortOrderFromQuery(String query, GridSortOrder? expected)
         {
             grid.Name = "Grid";
-            grid.Query = new GridQuery(grid, HttpUtility.ParseQueryString(query));
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
 
             GridSortOrder? actual = new GridColumn<GridModel, String>(grid, model => model.Name).SortOrder;
 

@@ -1,5 +1,4 @@
-﻿using NSubstitute;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Specialized;
 using System.Web;
@@ -9,33 +8,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridQueryTests
     {
-        #region Constructor: GridQuery(IGrid grid, NameValueCollection query)
+        #region Constructor: GridQuery()
+
+        [Test]
+        public void GridQuery_CreateEmptyQuery()
+        {
+            CollectionAssert.IsEmpty(new GridQuery());
+        }
+
+        #endregion
+
+        #region Constructor: GridQuery(NameValueCollection query)
 
         [Test]
         public void GridQuery_CreateQueryFromCollection()
         {
-            NameValueCollection colection = new NameValueCollection();
-            colection["Keys"] = "Values";
-            colection["Key"] = "Value";
-
-            NameValueCollection actual = new GridQuery(null, colection);
-            NameValueCollection expected = colection;
+            NameValueCollection expected = HttpUtility.ParseQueryString("K=N&B=S");
+            NameValueCollection actual = new GridQuery(expected);
 
             foreach (String key in expected)
                 Assert.AreEqual(expected[key], actual[key]);
 
             CollectionAssert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GridQuery_SetsGrid()
-        {
-            IGrid grid = Substitute.For<IGrid>();
-
-            IGrid actual = new GridQuery(grid, new NameValueCollection()).Grid;
-            IGrid expected = grid;
-
-            Assert.AreSame(expected, actual);
         }
 
         #endregion
@@ -45,7 +39,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void ToString_FormsUrlEncodedQuery()
         {
-            GridQuery query = new GridQuery(null, HttpUtility.ParseQueryString("a=b%26%3d&c=%20&a=c&d="));
+            GridQuery query = new GridQuery(HttpUtility.ParseQueryString("a=b%26%3d&c=%20&a=c&d="));
 
             String expected = "?a=b%26%3d&a=c&c=+&d=";
             String actual = query.ToString();

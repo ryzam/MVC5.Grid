@@ -63,7 +63,7 @@ namespace NonFactors.Mvc.Grid
             if (!(IsSortable == true))
                 return "#";
 
-            GridQuery query = new GridQuery(Grid, Grid.Query);
+            GridQuery query = new GridQuery(Grid.Query);
             query[Grid.Name + "-Sort"] = Name;
 
             if (SortOrder == GridSortOrder.Asc)

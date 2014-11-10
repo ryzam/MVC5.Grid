@@ -7,11 +7,11 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridQuery : NameValueCollection
     {
-        public IGrid Grid { get; set; }
-
-        public GridQuery(IGrid grid, NameValueCollection query) : base(query)
+        public GridQuery() : base()
         {
-            Grid = grid;
+        }
+        public GridQuery(NameValueCollection query) : base(query)
+        {
         }
 
         public override String ToString()

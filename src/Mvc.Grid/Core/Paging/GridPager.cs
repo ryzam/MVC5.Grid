@@ -53,7 +53,7 @@ namespace NonFactors.Mvc.Grid
 
         public String LinkForPage(Int32 page)
         {
-            GridQuery query = new GridQuery(Grid, Grid.Query);
+            GridQuery query = new GridQuery(Grid.Query);
             query[Grid.Name + "-Page"] = page.ToString();
 
             return query.ToString();
