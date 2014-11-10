@@ -8,7 +8,7 @@ namespace NonFactors.Mvc.Grid
     {
         public IList<IGridProcessor<TModel>> Processors { get; set; }
         public IQueryable<TModel> Source { get; set; }
-        public IGridQuery Query { get; set; }
+        public GridQuery Query { get; set; }
 
         public String CssClasses { get; set; }
         public String EmptyText { get; set; }

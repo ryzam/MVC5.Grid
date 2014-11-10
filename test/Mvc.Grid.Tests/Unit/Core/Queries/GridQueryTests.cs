@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using System;
 using System.Collections.Specialized;
 using System.Web;
 
@@ -8,27 +9,31 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridQueryTests
     {
-        #region Constructor: GridQuery(IGrid grid, HttpContextBase httpContext)
+        #region Constructor: GridQuery(IGrid grid, NameValueCollection query)
+
+        [Test]
+        public void GridQuery_CreateQueryFromCollection()
+        {
+            NameValueCollection colection = new NameValueCollection();
+            colection["Keys"] = "Values";
+            colection["Key"] = "Value";
+
+            NameValueCollection actual = new GridQuery(Substitute.For<IGrid>(), colection);
+            NameValueCollection expected = colection;
+
+            foreach (String key in expected)
+                Assert.AreEqual(expected[key], actual[key]);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
 
         [Test]
         public void GridQuery_SetsGrid()
         {
-            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase();
             IGrid grid = Substitute.For<IGrid>();
 
-            IGrid actual = new GridQuery(grid, httpContext).Grid;
+            IGrid actual = new GridQuery(grid, new NameValueCollection()).Grid;
             IGrid expected = grid;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        [Test]
-        public void GridQuery_SetsQuery()
-        {
-            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase();
-
-            NameValueCollection actual = new GridQuery(null, httpContext).Query;
-            NameValueCollection expected = httpContext.Request.QueryString;
 
             Assert.AreSame(expected, actual);
         }
@@ -40,8 +45,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetSortingQuery_GetsGridSortingQuery()
         {
-            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase("Sort-Grid-Column=Asc");
-            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), httpContext);
+            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), HttpUtility.ParseQueryString("Sort-Grid-Column=Asc"));
 
             GridSortingQuery actual = gridQuery.GetSortingQuery("Column") as GridSortingQuery;
             GridSortingQuery expected = new GridSortingQuery(gridQuery, "Column");
@@ -57,8 +61,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetPagingQuery_GetsGridPagingQuery()
         {
-            HttpContextBase httpContext = HttpContextFactory.CreateHttpContextBase("Grid-Page=11");
-            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), httpContext);
+            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), HttpUtility.ParseQueryString("Grid-Page=11"));
 
             GridPagingQuery actual = gridQuery.GetPagingQuery() as GridPagingQuery;
             GridPagingQuery expected = new GridPagingQuery(gridQuery);

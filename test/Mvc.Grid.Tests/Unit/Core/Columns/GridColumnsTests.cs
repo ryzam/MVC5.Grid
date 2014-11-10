@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -16,6 +17,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SetUp()
         {
             columns = new GridColumns<GridModel>(Substitute.For<IGrid<GridModel>>());
+            columns.Grid.Query = Substitute.For<GridQuery>(columns.Grid, new NameValueCollection());
             columns.Grid.Processors = new List<IGridProcessor<GridModel>>();
         }
 
@@ -45,12 +47,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
 
             Assert.AreEqual(expected.Expression, actual.Expression);
-            Assert.AreEqual(expected.IsSortable, actual.IsSortable);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
+            Assert.AreEqual(expected.IsSortable, actual.IsSortable);
+            Assert.AreEqual(expected.IsSortable, actual.SortOrder);
             Assert.AreEqual(expected.IsEncoded, actual.IsEncoded);
             Assert.AreEqual(expected.Format, actual.Format);
             Assert.AreEqual(expected.Title, actual.Title);
             Assert.AreEqual(expected.Name, actual.Name);
+            Assert.AreEqual(expected.Grid, actual.Grid);
+            Assert.AreEqual(expected.Type, actual.Type);
         }
 
         [Test]

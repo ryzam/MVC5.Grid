@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 
@@ -56,7 +55,7 @@ namespace NonFactors.Mvc.Grid
 
         public String LinkForPage(Int32 page)
         {
-            NameValueCollection query = new NameValueCollection(Grid.Query.Query);
+            GridQuery query = new GridQuery(Grid, Grid.Query);
             query[Grid.Name + "-Page"] = page.ToString();
 
             return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlEncode(key) + "=" + HttpUtility.UrlEncode(query[key])));

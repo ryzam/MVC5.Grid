@@ -2,9 +2,9 @@
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
@@ -19,6 +19,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
+            grid.Query = Substitute.For<GridQuery>(grid, new NameValueCollection());
             column = new GridColumn<GridModel, Object>(grid, model => model.Name);
         }
 
@@ -168,7 +169,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(true, "", GridSortOrder.Asc, "?Grid+-Sort=Name&Grid+-Order=Desc")]
         public void LinkForSort_GeneratesLinkForSort(Boolean? isSortable, String query, GridSortOrder? order, String expected)
         {
-            column.Grid.Query.Query = HttpUtility.ParseQueryString(query);
             column.IsSortable = isSortable;
             column.Grid.Name = "Grid ";
             column.SortOrder = order;

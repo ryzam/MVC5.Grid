@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -63,7 +62,7 @@ namespace NonFactors.Mvc.Grid
             if (!(IsSortable == true))
                 return "#";
 
-            NameValueCollection query = new NameValueCollection(Grid.Query.Query);
+            GridQuery query = new GridQuery(Grid, Grid.Query);
             query[Grid.Name + "-Sort"] = Name;
 
             if (SortOrder == GridSortOrder.Asc)

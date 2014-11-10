@@ -7,7 +7,7 @@ namespace NonFactors.Mvc.Grid
         public GridSortOrder? SortOrder { get; set; }
         public String ColumnName { get; set; }
 
-        public GridSortingQuery(IGridQuery query, String columnName)
+        public GridSortingQuery(GridQuery query, String columnName)
         {
             SortOrder = GetSortValue(query, columnName);
             ColumnName = columnName;
@@ -21,21 +21,21 @@ namespace NonFactors.Mvc.Grid
         {
             return grid.Name + "-Order";
         }
-        private GridSortOrder? GetSortValue(IGridQuery gridQuery, String columnName)
+        private GridSortOrder? GetSortValue(GridQuery gridQuery, String columnName)
         {
             String sortKey = GetSortKey(gridQuery.Grid);
-            String sortValue = gridQuery.Query[sortKey];
+            String sortValue = gridQuery[sortKey];
 
             if (columnName == sortValue)
             {
                 String orderKey = GetOrderKey(gridQuery.Grid);
-                String orderValue = gridQuery.Query[orderKey];
+                String orderValue = gridQuery[orderKey];
                 GridSortOrder order;
 
                 if (Enum.TryParse<GridSortOrder>(orderValue, out order))
                     return order;
             }
-            
+
             return null;
         }
     }

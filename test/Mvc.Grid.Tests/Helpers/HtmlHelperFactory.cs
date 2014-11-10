@@ -1,4 +1,5 @@
 ﻿using NSubstitute;
+using System;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -7,18 +8,18 @@ namespace NonFactors.Mvc.Grid.Tests
 {
     public class HtmlHelperFactory
     {
-        public static HtmlHelper CreateHtmlHelper()
+        public static HtmlHelper CreateHtmlHelper(String queryString = null)
         {
-            ViewContext viewContext = CreateViewContext(CreateControllerContext());
+            ViewContext viewContext = CreateViewContext(CreateControllerContext(queryString));
             IViewDataContainer viewDataContainer = new ViewPage();
             viewDataContainer.ViewData = viewContext.ViewData;
 
             return new HtmlHelper(viewContext, viewDataContainer);
         }
 
-        private static ControllerContext CreateControllerContext()
+        private static ControllerContext CreateControllerContext(String queryString)
         {
-            HttpContextBase http = HttpContextFactory.CreateHttpContextBase();
+            HttpContextBase http = HttpContextFactory.CreateHttpContextBase(queryString);
 
             return new ControllerContext(http, http.Request.RequestContext.RouteData, Substitute.For<ControllerBase>());
         }

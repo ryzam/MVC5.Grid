@@ -6,7 +6,7 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGrid
     {
-        IGridQuery Query { get; set; }
+        GridQuery Query { get; set; }
 
         String CssClasses { get; set; }
         String EmptyText { get; set; }

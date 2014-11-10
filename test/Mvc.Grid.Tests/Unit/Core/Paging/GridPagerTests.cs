@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 
@@ -17,6 +18,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void TestFixtureSetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
+            grid.Query = Substitute.For<GridQuery>(grid, new NameValueCollection());
             grid.Source.Returns(new GridModel[5]
             {
                 new GridModel(),
@@ -193,7 +195,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void LinkForPage_GeneratesLinkForPage(String queryString, Int32 page, String expected)
         {
             grid.Name = "Grid ";
-            grid.Query.Query = HttpUtility.ParseQueryString(queryString);
+            grid.Query = new GridQuery(grid, HttpUtility.ParseQueryString(queryString));
 
             String actual = new GridPager<GridModel>(grid).LinkForPage(page);
 

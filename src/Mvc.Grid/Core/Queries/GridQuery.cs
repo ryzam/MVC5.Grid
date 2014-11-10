@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Collections.Specialized;
-using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridQuery : IGridQuery
+    public class GridQuery : NameValueCollection
     {
         public IGrid Grid { get; set; }
-        public NameValueCollection Query { get; set; }
 
-        public GridQuery(IGrid grid, HttpContextBase httpContext)
+        public GridQuery(IGrid grid, NameValueCollection query) : base(query)
         {
             Grid = grid;
-            Query = httpContext.Request.QueryString;
         }
 
-        public IGridSortingQuery GetSortingQuery(String columnName)
+        public virtual IGridSortingQuery GetSortingQuery(String columnName)
         {
             return new GridSortingQuery(this, columnName);
         }
-        public IGridPagingQuery GetPagingQuery()
+        public virtual IGridPagingQuery GetPagingQuery()
         {
             return new GridPagingQuery(this);
         }

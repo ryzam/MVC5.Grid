@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridPagingQueryTests
     {
-        #region Constructor: GridPagingQuery(IGridQuery query)
+        #region Constructor: GridPagingQuery(GridQuery query)
 
         [Test]
         [TestCase("Page=", 1)]
@@ -17,8 +17,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase("Grid -Page=2", 2)]
         public void GridSortingQuery_SetsCurrentPage(String query, Int32 expected)
         {
-            IGridQuery gridQuery = Substitute.For<IGridQuery>();
-            gridQuery.Query = HttpUtility.ParseQueryString(query);
+            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), HttpUtility.ParseQueryString(query));
             gridQuery.Grid.Name = "Grid ";
 
             Int32 actual = new GridPagingQuery(gridQuery).CurrentPage;
@@ -29,8 +28,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridSortingQuery_SetsGridName()
         {
-            IGridQuery gridQuery = Substitute.For<IGridQuery>();
-            gridQuery.Query = new NameValueCollection();
+            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), new NameValueCollection());
             gridQuery.Grid.Name = "Grid";
 
             String actual = new GridPagingQuery(gridQuery).GridName;
