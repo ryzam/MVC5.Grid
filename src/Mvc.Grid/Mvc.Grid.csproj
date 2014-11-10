@@ -49,8 +49,6 @@
     <Compile Include="Core\Processors\IGridProcessor.cs" />
     <Compile Include="Core\Queries\GridQuery.cs" />
     <Compile Include="Core\Queries\GridSortingQuery.cs" />
-    <Compile Include="Core\Queries\GridPagingQuery.cs" />
-    <Compile Include="Core\Queries\IGridPagingQuery.cs" />
     <Compile Include="Core\Queries\IGridSortingQuery.cs" />
     <Compile Include="Core\Rows\GridRow.cs" />
     <Compile Include="Core\Rows\GridRows.cs" />

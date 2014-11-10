@@ -37,14 +37,13 @@ namespace NonFactors.Mvc.Grid
 
         public GridPager(IGrid<TModel> grid)
         {
-            PartialViewName = "MvcGrid/_Pager";
-
-            CurrentPage = grid.Query.GetPagingQuery().CurrentPage;
-            TotalRows = grid.Source.Count();
-            Type = GridProcessorType.Post;
-            PagesToDisplay = 5;
-            RowsPerPage = 20;
             Grid = grid;
+            RowsPerPage = 20;
+            PagesToDisplay = 5;
+            Type = GridProcessorType.Post;
+            CurrentPage = GetCurrentPage();
+            TotalRows = Grid.Source.Count();
+            PartialViewName = "MvcGrid/_Pager";
         }
 
         public IQueryable<TModel> Process(IQueryable<TModel> items)
@@ -58,6 +57,18 @@ namespace NonFactors.Mvc.Grid
             query[Grid.Name + "-Page"] = page.ToString();
 
             return query.ToString();
+        }
+
+        private Int32 GetCurrentPage()
+        {
+            String key = Grid.Name + "-Page";
+            String value = Grid.Query[key];
+            Int32 page;
+
+            if (Int32.TryParse(value, out page))
+                return page;
+
+            return 1;
         }
     }
 }

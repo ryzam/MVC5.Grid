@@ -56,22 +56,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: GetPagingQuery()
-
-        [Test]
-        public void GetPagingQuery_GetsGridPagingQuery()
-        {
-            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), HttpUtility.ParseQueryString("Grid-Page=11"));
-
-            GridPagingQuery actual = gridQuery.GetPagingQuery() as GridPagingQuery;
-            GridPagingQuery expected = new GridPagingQuery(gridQuery);
-
-            Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
-            Assert.AreEqual(expected.GridName, actual.GridName);
-        }
-
-        #endregion
-
         #region Method: ToString()
 
         [Test]

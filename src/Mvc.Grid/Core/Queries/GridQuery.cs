@@ -18,10 +18,6 @@ namespace NonFactors.Mvc.Grid
         {
             return new GridSortingQuery(this, columnName);
         }
-        public virtual IGridPagingQuery GetPagingQuery()
-        {
-            return new GridPagingQuery(this);
-        }
 
         public override String ToString()
         {

@@ -18,7 +18,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void TestFixtureSetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Query = Substitute.For<GridQuery>(grid, new NameValueCollection());
+            grid.Query = new GridQuery(grid, new NameValueCollection());
             grid.Source.Returns(new GridModel[5]
             {
                 new GridModel(),
@@ -105,39 +105,19 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: GridPager(IGrid<TModel> grid)
 
         [Test]
-        public void GridPager_SetsDefaultPartialViewName()
+        public void GridPager_SetsGrid()
         {
-            String actual = new GridPager<GridModel>(grid).PartialViewName;
-            String expected = "MvcGrid/_Pager";
+            IGrid actual = new GridPager<GridModel>(grid).Grid;
+            IGrid expected = grid;
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreSame(expected, actual);
         }
 
         [Test]
-        public void GridPager_SetsCurrentPageFromQuery()
+        public void GridPager_SetsRowsPerPage()
         {
-            grid.Query.GetPagingQuery().CurrentPage.Returns(15);
-
-            Int32 actual = new GridPager<GridModel>(grid).CurrentPage;
-            Int32 expected = 15;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GridPager_SetsTotalRowsFromGridSource()
-        {
-            Int32 actual = new GridPager<GridModel>(grid).TotalRows;
-            Int32 expected = grid.Source.Count();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GridPager_SetsTypeAsPostProcessor()
-        {
-            GridProcessorType actual = new GridPager<GridModel>(grid).Type;
-            GridProcessorType expected = GridProcessorType.Post;
+            Int32 actual = new GridPager<GridModel>(grid).RowsPerPage;
+            Int32 expected = 20;
 
             Assert.AreEqual(expected, actual);
         }
@@ -152,21 +132,44 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridPager_SetsRowsPerPage()
+        public void GridPager_SetsTypeAsPostProcessor()
         {
-            Int32 actual = new GridPager<GridModel>(grid).RowsPerPage;
-            Int32 expected = 20;
+            GridProcessorType actual = new GridPager<GridModel>(grid).Type;
+            GridProcessorType expected = GridProcessorType.Post;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GridPager_SetsGrid()
+        [TestCase("Page=15", 1)]
+        [TestCase("Grid-Page=15", 15)]
+        [TestCase("Grid-Page=15a", 1)]
+        public void GridPager_SetsCurrentPageFromQuery(String query, Int32 expected)
         {
-            IGrid actual = new GridPager<GridModel>(grid).Grid;
-            IGrid expected = grid;
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(grid, HttpUtility.ParseQueryString(query));
 
-            Assert.AreSame(expected, actual);
+            Int32 actual = new GridPager<GridModel>(grid).CurrentPage;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridPager_SetsTotalRowsFromGridSource()
+        {
+            Int32 actual = new GridPager<GridModel>(grid).TotalRows;
+            Int32 expected = grid.Source.Count();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridPager_SetsDefaultPartialViewName()
+        {
+            String actual = new GridPager<GridModel>(grid).PartialViewName;
+            String expected = "MvcGrid/_Pager";
+
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion
