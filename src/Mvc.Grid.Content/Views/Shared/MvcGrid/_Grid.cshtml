@@ -11,7 +11,7 @@
                         data-name="@column.Name"
                         data-sort="@(column.IsSortable == true)"
                         data-sort-order="@column.SortOrder"
-                        data-sort-query="@column.LinkForSort()">
+                        data-sort-query="@column.GetSortingQuery()">
                         @column.Title
                     </th>
                 }

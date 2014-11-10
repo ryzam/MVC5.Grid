@@ -47,7 +47,7 @@ namespace NonFactors.Mvc.Grid
 
             return new HtmlString(value);
         }
-        public override String LinkForSort()
+        public override String GetSortingQuery()
         {
             if (!(IsSortable == true))
                 return "#";

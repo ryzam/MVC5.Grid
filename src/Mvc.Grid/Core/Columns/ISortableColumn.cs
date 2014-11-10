@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Grid
 
         IGridColumn Sortable(Boolean isSortable);
 
-        String LinkForSort();
+        String GetSortingQuery();
     }
 
     public interface ISortableColumn<TModel> : IGridProcessor<TModel> where TModel : class

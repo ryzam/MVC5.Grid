@@ -190,20 +190,20 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: LinkForSort()
+        #region Method: GetSortingQuery()
 
         [Test]
         [TestCase(null, "", null, "#")]
         [TestCase(false, "", null, "#")]
         [TestCase(true, "", null, "?Grid+-Sort=Name&Grid+-Order=Asc")]
         [TestCase(true, "", GridSortOrder.Asc, "?Grid+-Sort=Name&Grid+-Order=Desc")]
-        public void LinkForSort_GeneratesLinkForSort(Boolean? isSortable, String query, GridSortOrder? order, String expected)
+        public void GetSortingQuery_GeneratesSortingQuery(Boolean? isSortable, String query, GridSortOrder? order, String expected)
         {
             column.IsSortable = isSortable;
             column.Grid.Name = "Grid ";
             column.SortOrder = order;
 
-            String actual = column.LinkForSort();
+            String actual = column.GetSortingQuery();
 
             Assert.AreEqual(expected, actual);
         }

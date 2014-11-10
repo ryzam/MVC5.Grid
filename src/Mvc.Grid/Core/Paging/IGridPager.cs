@@ -12,7 +12,7 @@ namespace NonFactors.Mvc.Grid
         Int32 StartingPage { get; }
         Int32 TotalPages { get; }
 
-        String LinkForPage(Int32 page);
+        String GetPagingQuery(Int32 page);
     }
 
     public interface IGridPager<TModel> : IGridProcessor<TModel>, IGridPager where TModel : class

@@ -190,17 +190,17 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: LinkForPage(Int32 page)
+        #region Method: GetPagingQuery(Int32 page)
 
         [Test]
         [TestCase("?Id=4&On=true", 3, "?Id=4&On=true&Grid+-Page=3")]
         [TestCase("?Id=4&Grid -Page=10&On=true", 3, "?Id=4&Grid+-Page=3&On=true")]
-        public void LinkForPage_GeneratesLinkForPage(String queryString, Int32 page, String expected)
+        public void GetPagingQuery_GeneratesPagingQuery(String queryString, Int32 page, String expected)
         {
             grid.Name = "Grid ";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(queryString));
 
-            String actual = new GridPager<GridModel>(grid).LinkForPage(page);
+            String actual = new GridPager<GridModel>(grid).GetPagingQuery(page);
 
             Assert.AreEqual(expected, actual);
         }
