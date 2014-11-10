@@ -10,6 +10,8 @@ namespace NonFactors.Mvc.Grid
     public class GridColumn<TModel, TValue> : BaseGridColumn, IGridColumn<TModel, TValue> where TModel : class
     {
         public Expression<Func<TModel, TValue>> Expression { get; set; }
+        protected Func<TModel, TValue> CompiledExpression { get; set; }
+
         public GridProcessorType Type { get; set; }
         public IGrid<TModel> Grid { get; set; }
 
@@ -19,8 +21,8 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
             Expression = expression;
             Type = GridProcessorType.Pre;
+            CompiledExpression = expression.Compile();
             Name = ExpressionHelper.GetExpressionText(expression);
-
             SortOrder = GetSortOrder();
         }
 
@@ -45,19 +47,6 @@ namespace NonFactors.Mvc.Grid
 
             return new HtmlString(value);
         }
-
-        private String GetRawValueFor(IGridRow row)
-        {
-            TValue value = Expression.Compile()(row.Model as TModel);
-            if (value == null)
-                return String.Empty;
-
-            if (Format == null)
-                return value.ToString();
-
-            return String.Format(Format, value);
-        }
-
         public override String LinkForSort()
         {
             if (!(IsSortable == true))
@@ -74,6 +63,17 @@ namespace NonFactors.Mvc.Grid
             return query.ToString();
         }
 
+        private String GetRawValueFor(IGridRow row)
+        {
+            TValue value = CompiledExpression(row.Model as TModel);
+            if (value == null)
+                return String.Empty;
+
+            if (Format == null)
+                return value.ToString();
+
+            return String.Format(Format, value);
+        }
         private GridSortOrder? GetSortOrder()
         {
             if (Grid.Query[Grid.Name + "-Sort"] == Name)

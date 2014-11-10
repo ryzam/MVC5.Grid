@@ -13,7 +13,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridColumnTests
     {
-        private GridColumn<GridModel, Object> column;
+        private GridColumnProxy<GridModel, Object> column;
         private IGrid<GridModel> grid;
 
         [SetUp]
@@ -21,7 +21,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid = Substitute.For<IGrid<GridModel>>();
             grid.Query = new GridQuery(new NameValueCollection());
-            column = new GridColumn<GridModel, Object>(grid, model => model.Name);
+            column = new GridColumnProxy<GridModel, Object>(grid, model => model.Name);
         }
 
         #region Constructor: GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
@@ -38,7 +38,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridColumn_SetsIsEncodedToTrue()
         {
-            column = new GridColumn<GridModel, Object>(grid, model => model.Name);
+            column = new GridColumnProxy<GridModel, Object>(grid, model => model.Name);
 
             Assert.IsTrue(column.IsEncoded);
         }
@@ -57,6 +57,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             GridProcessorType actual = new GridColumn<GridModel, Object>(grid, model => model.Name).Type;
             GridProcessorType expected = GridProcessorType.Pre;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsCompiledExpression()
+        {
+            GridColumnProxy<GridModel, String> column = new GridColumnProxy<GridModel, String>(grid, model => model.Name);
+            GridModel gridModel = new GridModel { Name = "TestName" };
+
+            String actual = column.BaseCompiledExpression(gridModel);
+            String expected = "TestName";
 
             Assert.AreEqual(expected, actual);
         }
@@ -146,6 +158,17 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #endregion
 
         #region Method: ValueFor(IGridRow row)
+
+        [Test]
+        public void ValueFor_UsesCompiledExpressionToGetValue()
+        {
+            column.BaseCompiledExpression = (model) => "TestValue";
+
+            String actual = column.ValueFor(new GridRow(null)).ToString();
+            String expected = "TestValue";
+
+            Assert.AreEqual(expected, actual);
+        }
 
         [Test]
         [TestCase(null, "For {0}", true, "")]
