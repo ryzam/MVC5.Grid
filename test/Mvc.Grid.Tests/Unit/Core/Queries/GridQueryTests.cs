@@ -40,22 +40,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: GetSortingQuery(String columnName)
-
-        [Test]
-        public void GetSortingQuery_GetsGridSortingQuery()
-        {
-            GridQuery gridQuery = new GridQuery(Substitute.For<IGrid>(), HttpUtility.ParseQueryString("Sort-Grid-Column=Asc"));
-
-            GridSortingQuery actual = gridQuery.GetSortingQuery("Column") as GridSortingQuery;
-            GridSortingQuery expected = new GridSortingQuery(gridQuery, "Column");
-
-            Assert.AreEqual(expected.ColumnName, actual.ColumnName);
-            Assert.AreEqual(expected.SortOrder, actual.SortOrder);
-        }
-
-        #endregion
-
         #region Method: ToString()
 
         [Test]

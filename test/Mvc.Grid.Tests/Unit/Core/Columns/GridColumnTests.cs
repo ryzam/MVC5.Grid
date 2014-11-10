@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web;
 using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
@@ -19,7 +20,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Query = Substitute.For<GridQuery>(grid, new NameValueCollection());
+            grid.Query = new GridQuery(grid, new NameValueCollection());
             column = new GridColumn<GridModel, Object>(grid, model => model.Name);
         }
 
@@ -72,12 +73,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_SetsSortOrderFromGridQuery()
+        [TestCase("Sort=Name&Grid-Order=Desc", null)]
+        [TestCase("Grid-Sort=Sum&Grid-Order=Desc", null)]
+        [TestCase("Grid-Sort=Name&RGrid-Order=Asc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Dasc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Asc)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Desc)]
+        public void GridColumn_SetsSortOrderFromQuery(String query, GridSortOrder? expected)
         {
-            grid.Query.GetSortingQuery("Name").SortOrder = GridSortOrder.Desc;
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(grid, HttpUtility.ParseQueryString(query));
 
             GridSortOrder? actual = new GridColumn<GridModel, String>(grid, model => model.Name).SortOrder;
-            GridSortOrder? expected = GridSortOrder.Desc;
 
             Assert.AreEqual(expected, actual);
         }

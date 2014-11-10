@@ -14,11 +14,6 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
         }
 
-        public virtual IGridSortingQuery GetSortingQuery(String columnName)
-        {
-            return new GridSortingQuery(this, columnName);
-        }
-
         public override String ToString()
         {
             List<String> query = new List<String>();

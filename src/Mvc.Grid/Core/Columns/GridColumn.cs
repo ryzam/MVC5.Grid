@@ -20,7 +20,8 @@ namespace NonFactors.Mvc.Grid
             Expression = expression;
             Type = GridProcessorType.Pre;
             Name = ExpressionHelper.GetExpressionText(expression);
-            SortOrder = Grid.Query.GetSortingQuery(Name).SortOrder;
+
+            SortOrder = GetSortOrder();
         }
 
         public IQueryable<TModel> Process(IQueryable<TModel> items)
@@ -71,6 +72,20 @@ namespace NonFactors.Mvc.Grid
                 query[Grid.Name + "-Order"] = GridSortOrder.Asc.ToString();
 
             return query.ToString();
+        }
+
+        private GridSortOrder? GetSortOrder()
+        {
+            if (Grid.Query[Grid.Name + "-Sort"] == Name)
+            {
+                String orderValue = Grid.Query[Grid.Name + "-Order"];
+                GridSortOrder order;
+
+                if (Enum.TryParse<GridSortOrder>(orderValue, out order))
+                    return order;
+            }
+
+            return null;
         }
     }
 }
