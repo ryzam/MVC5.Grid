@@ -70,7 +70,7 @@ namespace NonFactors.Mvc.Grid
             else
                 query[Grid.Name + "-Order"] = GridSortOrder.Asc.ToString();
 
-            return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlEncode(key) + "=" + HttpUtility.UrlEncode(query[key])));
+            return query.ToString();
         }
     }
 }

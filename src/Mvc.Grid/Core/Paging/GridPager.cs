@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -58,7 +57,7 @@ namespace NonFactors.Mvc.Grid
             GridQuery query = new GridQuery(Grid, Grid.Query);
             query[Grid.Name + "-Page"] = page.ToString();
 
-            return "?" + String.Join("&", query.AllKeys.Select(key => HttpUtility.UrlEncode(key) + "=" + HttpUtility.UrlEncode(query[key])));
+            return query.ToString();
         }
     }
 }

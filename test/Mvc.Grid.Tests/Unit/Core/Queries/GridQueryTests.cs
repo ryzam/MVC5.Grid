@@ -18,7 +18,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             colection["Keys"] = "Values";
             colection["Key"] = "Value";
 
-            NameValueCollection actual = new GridQuery(Substitute.For<IGrid>(), colection);
+            NameValueCollection actual = new GridQuery(null, colection);
             NameValueCollection expected = colection;
 
             foreach (String key in expected)
@@ -68,6 +68,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
             Assert.AreEqual(expected.GridName, actual.GridName);
+        }
+
+        #endregion
+
+        #region Method: ToString()
+
+        [Test]
+        public void ToString_FormsUrlEncodedQuery()
+        {
+            GridQuery query = new GridQuery(null, HttpUtility.ParseQueryString("a=b%26%3d&c=%20&a=c&d="));
+
+            String expected = "?a=b%26%3d&a=c&c=+&d=";
+            String actual = query.ToString();
+
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion
