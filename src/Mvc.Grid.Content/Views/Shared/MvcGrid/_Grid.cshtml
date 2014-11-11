@@ -2,7 +2,7 @@
 @model IGrid
 
 <div class="mvc-grid">
-    <table class="table @Model.CssClasses mvc-grid-table" data-name="@Model.Name">
+    <table class="table table-striped table-hover mvc-grid-table @Model.CssClasses" data-name="@Model.Name">
         <thead>
             <tr>
                 @foreach (IGridColumn column in Model.Columns)
