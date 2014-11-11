@@ -74,6 +74,23 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void GridColumn_OnNonMemberExpressionIsNotSortable()
+        {
+            Boolean? actual = new GridColumn<GridModel, String>(grid, model => model.ToString()).IsSortable;
+            Boolean expected = false;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_OnMemberExpressionIsSortableIsNull()
+        {
+            GridColumn<GridModel, Decimal> column = new GridColumn<GridModel, Decimal>(grid, model => model.Sum);
+
+            Assert.IsNull(column.IsSortable);
+        }
+
+        [Test]
         public void GridColumn_SetsNameFromExpression()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;

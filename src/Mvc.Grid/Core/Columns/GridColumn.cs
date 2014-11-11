@@ -22,6 +22,7 @@ namespace NonFactors.Mvc.Grid
             Expression = expression;
             Type = GridProcessorType.Pre;
             CompiledExpression = expression.Compile();
+            IsSortable = GetInitialIsSortable(expression);
             Name = ExpressionHelper.GetExpressionText(expression);
 
             SortOrder = GetSortOrder();
@@ -64,6 +65,14 @@ namespace NonFactors.Mvc.Grid
             return query.ToString();
         }
 
+
+        private Boolean? GetInitialIsSortable(Expression<Func<TModel, TValue>> expression)
+        {
+            if (expression.Body is MemberExpression)
+                return null;
+
+            return false;
+        }
         private String GetRawValueFor(IGridRow row)
         {
             TValue value = CompiledExpression(row.Model as TModel);
