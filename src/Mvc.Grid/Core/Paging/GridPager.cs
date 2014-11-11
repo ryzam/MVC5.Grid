@@ -7,6 +7,7 @@ namespace NonFactors.Mvc.Grid
     {
         public String PartialViewName { get; set; }
         public IGrid<TModel> Grid { get; set; }
+        public String CssClasses { get; set; }
 
         public GridProcessorType Type { get; set; }
         public Int32 PagesToDisplay { get; set; }
