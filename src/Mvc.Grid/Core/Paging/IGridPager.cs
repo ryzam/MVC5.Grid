@@ -11,6 +11,7 @@ namespace NonFactors.Mvc.Grid
         Int32 CurrentPage { get; set; }
         Int32 StartingPage { get; }
         Int32 TotalPages { get; }
+        Int32 TotalRows { get; }
 
         String GetPagingQuery(Int32 page);
     }

@@ -13,7 +13,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridColumnTests
     {
-        private GridColumnProxy<GridModel, Object> column;
+        private GridColumn<GridModel, Object> column;
         private IGrid<GridModel> grid;
 
         [SetUp]
@@ -21,7 +21,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid = Substitute.For<IGrid<GridModel>>();
             grid.Query = new GridQuery(new NameValueCollection());
-            column = new GridColumnProxy<GridModel, Object>(grid, model => model.Name);
+            column = new GridColumn<GridModel, Object>(grid, model => model.Name);
         }
 
         #region Constructor: GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
@@ -38,7 +38,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridColumn_SetsIsEncodedToTrue()
         {
-            column = new GridColumnProxy<GridModel, Object>(grid, model => model.Name);
+            column = new GridColumn<GridModel, Object>(grid, model => model.Name);
 
             Assert.IsTrue(column.IsEncoded);
         }
@@ -91,7 +91,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase("Grid-Sort=Name&Grid-Order=Dasc", null)]
         [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Asc)]
         [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Desc)]
-        public void GridColumn_SetsSortOrderFromQuery(String query, GridSortOrder? expected)
+        public void GridColumn_SetsSortOrderFromGridQuery(String query, GridSortOrder? expected)
         {
             grid.Name = "Grid";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
@@ -103,7 +103,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Process(IEnumerable<TModel> items)
+        #region Method: Process(IQueryable<TModel> items)
 
         [Test]
         public void Process_IfNotSortableReturnsItems()
@@ -162,6 +162,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void ValueFor_UsesCompiledExpressionToGetValue()
         {
+            GridColumnProxy<GridModel, String> column = new GridColumnProxy<GridModel, String>(grid, model => model.Name);
             column.BaseCompiledExpression = (model) => "TestValue";
 
             String actual = column.ValueFor(new GridRow(null)).ToString();
@@ -177,9 +178,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase("<name>", null, true, "&lt;name&gt;")]
         [TestCase("<name>", "For <{0}>", false, "For <<name>>")]
         [TestCase("<name>", "For <{0}>", true, "For &lt;&lt;name&gt;&gt;")]
-        public void ValueFor_GetsValue(String name, String format, Boolean isEncoded, String expected)
+        public void ValueFor_GetsValue(String value, String format, Boolean isEncoded, String expected)
         {
-            IGridRow row = new GridRow(new GridModel { Name = name });
+            IGridRow row = new GridRow(new GridModel { Name = value });
             column.Encoded(isEncoded);
             column.Formatted(format);
 
@@ -193,14 +194,20 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: GetSortingQuery()
 
         [Test]
-        [TestCase(null, "", null, "#")]
-        [TestCase(false, "", null, "#")]
-        [TestCase(true, "", null, "?Grid+-Sort=Name&Grid+-Order=Asc")]
-        [TestCase(true, "", GridSortOrder.Asc, "?Grid+-Sort=Name&Grid+-Order=Desc")]
+        [TestCase(null, "Id=1", null, "#")]
+        [TestCase(false, "Id=1", null, "#")]
+        [TestCase(true, "", null, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
+        [TestCase(true, "Id=1", null, "?Id=1&G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
+        [TestCase(true, "Id=1", GridSortOrder.Asc, "?Id=1&G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Desc")]
+        [TestCase(true, "Id=1", GridSortOrder.Desc, "?Id=1&G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
+        [TestCase(true, "G%3d1%26D%3d2+-Sort=Snatch&G%3d1%26D%3d2+-Order=Desc", null, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
+        [TestCase(true, "G%3d1%26D%3d2+-Sort=Snatch&G%3d1%26D%3d2+-Order=Asc", GridSortOrder.Asc, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Desc")]
+        [TestCase(true, "G%3d1%26D%3d2+-Sort=Snatch&G%3d1%26D%3d2+-Order=Desc", GridSortOrder.Desc, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
         public void GetSortingQuery_GeneratesSortingQuery(Boolean? isSortable, String query, GridSortOrder? order, String expected)
         {
+            column.Grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
             column.IsSortable = isSortable;
-            column.Grid.Name = "Grid ";
+            column.Grid.Name = "G=1&D=2 ";
             column.SortOrder = order;
 
             String actual = column.GetSortingQuery();

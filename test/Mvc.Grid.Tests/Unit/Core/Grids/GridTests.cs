@@ -89,7 +89,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridColumns<GridModel> expected = new GridColumns<GridModel>(grid);
 
             CollectionAssert.AreEqual(expected, actual);
-            Assert.AreSame(actual.Grid, actual.Grid);
+            Assert.AreSame(expected.Grid, actual.Grid);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridRows<GridModel> expected = new GridRows<GridModel>(grid);
 
             CollectionAssert.AreEqual(expected, actual);
-            Assert.AreSame(actual.Grid, actual.Grid);
+            Assert.AreSame(expected.Grid, actual.Grid);
         }
 
         #endregion

@@ -18,15 +18,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid = Substitute.For<IGrid<GridModel>>();
             grid.Query = new GridQuery();
-            grid.Source
-                .Returns(new GridModel[5]
+            grid.Source = new GridModel[5]
             {
                 new GridModel(),
                 new GridModel(),
                 new GridModel(),
                 new GridModel(),
                 new GridModel()
-            }.AsQueryable());
+            }.AsQueryable();
 
             pager = new GridPager<GridModel>(grid);
         }
@@ -90,7 +89,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(41, 20, 3)]
         public void TotalPages_GetsTotalPages(Int32 itemsCount, Int32 rowsPerPage, Int32 expected)
         {
-            grid.Source.Returns(new GridModel[itemsCount].AsQueryable());
+            grid.Source = new GridModel[itemsCount].AsQueryable();
 
             GridPager<GridModel> pager = new GridPager<GridModel>(grid);
             pager.RowsPerPage = rowsPerPage;
@@ -142,9 +141,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         [Test]
         [TestCase("Page=15", 1)]
-        [TestCase("Grid-Page=15", 15)]
+        [TestCase("Grid-Page=2", 2)]
         [TestCase("Grid-Page=15a", 1)]
-        public void GridPager_SetsCurrentPageFromQuery(String query, Int32 expected)
+        public void GridPager_SetsCurrentPageFromGridQuery(String query, Int32 expected)
         {
             grid.Name = "Grid";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
@@ -193,12 +192,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: GetPagingQuery(Int32 page)
 
         [Test]
-        [TestCase("?Id=4&On=true", 3, "?Id=4&On=true&Grid+-Page=3")]
-        [TestCase("?Id=4&Grid -Page=10&On=true", 3, "?Id=4&Grid+-Page=3&On=true")]
-        public void GetPagingQuery_GeneratesPagingQuery(String queryString, Int32 page, String expected)
+        [TestCase("", 3, "?G%3d1%26D%3d2+-Page=3")]
+        [TestCase("Id=4", 3, "?Id=4&G%3d1%26D%3d2+-Page=3")]
+        [TestCase("G%3d1%26D%3d2+-Page=8", 3, "?G%3d1%26D%3d2+-Page=3")]
+        [TestCase("Id=4&G%3d1%26D%3d2+-Page=8", 3, "?Id=4&G%3d1%26D%3d2+-Page=3")]
+        [TestCase("Id=4&G%3d1%26D%3d2+-Page=8&Name=John", 3, "?Id=4&G%3d1%26D%3d2+-Page=3&Name=John")]
+        public void GetPagingQuery_GeneratesPagingQuery(String query, Int32 page, String expected)
         {
-            grid.Name = "Grid ";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(queryString));
+            grid.Name = "G=1&D=2 ";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
 
             String actual = new GridPager<GridModel>(grid).GetPagingQuery(page);
 

@@ -23,6 +23,7 @@ namespace NonFactors.Mvc.Grid
             Type = GridProcessorType.Pre;
             CompiledExpression = expression.Compile();
             Name = ExpressionHelper.GetExpressionText(expression);
+
             SortOrder = GetSortOrder();
         }
 

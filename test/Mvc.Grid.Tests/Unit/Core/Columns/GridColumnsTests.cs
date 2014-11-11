@@ -39,11 +39,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Add_AddsGridColumn()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
-            GridModel gridModel = new GridModel { Name = "Kokoye" };
-            columns.Add<String>(expression);
 
-            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, expression);
-            GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
+            IGridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, expression);
+            IGridColumn<GridModel, String> actual = columns.Add<String>(expression);
 
             Assert.AreEqual(expected.Expression, actual.Expression);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);

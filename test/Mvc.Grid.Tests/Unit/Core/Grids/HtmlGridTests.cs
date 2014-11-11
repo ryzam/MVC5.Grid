@@ -42,12 +42,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void HtmlGrid_SetsGridQuery()
         {
-            grid.Query = null;
             HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper("id=3&name=jim");
-            htmlGrid = new HtmlGrid<GridModel>(html, grid);
+            grid.Query = null;
 
-            GridQuery actual = new HtmlGrid<GridModel>(htmlGrid.Html, grid).Grid.Query as GridQuery;
             GridQuery expected = new GridQuery(HttpUtility.ParseQueryString("id=3&name=jim"));
+            GridQuery actual = new HtmlGrid<GridModel>(html, grid).Grid.Query;
 
             foreach (String key in expected)
                 Assert.AreEqual(expected[key], actual[key]);
@@ -89,11 +88,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Build_BuildsColumns()
         {
+            IGridColumns expected = htmlGrid.Grid.Columns;
             Boolean builderCalled = false;
 
-            htmlGrid.Build(columns =>
+            htmlGrid.Build(actual =>
             {
-                Assert.AreSame(htmlGrid.Grid.Columns, columns);
+                Assert.AreSame(expected, actual);
                 builderCalled = true;
             });
 
@@ -242,8 +242,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             htmlGrid.WithPager(pager => { });
 
-            GridPager<GridModel> actual = htmlGrid.Grid.Pager as GridPager<GridModel>;
-            GridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid);
+            IGridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid);
+            IGridPager<GridModel> actual = htmlGrid.Grid.Pager;
 
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
             Assert.AreEqual(expected.PagesToDisplay, actual.PagesToDisplay);
@@ -259,11 +259,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void WithPager_Builder_BuildsPager()
         {
+            htmlGrid.Grid.Pager = Substitute.For<IGridPager<GridModel>>();
+            IGridPager expected = htmlGrid.Grid.Pager;
             Boolean builderCalled = false;
 
-            htmlGrid.WithPager(pager =>
+            htmlGrid.WithPager(actual =>
             {
-                Assert.AreSame(htmlGrid.Grid.Pager, pager);
+                Assert.AreSame(expected, actual);
                 builderCalled = true;
             });
 
@@ -331,8 +333,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             htmlGrid.WithPager();
 
-            GridPager<GridModel> actual = htmlGrid.Grid.Pager as GridPager<GridModel>;
-            GridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid);
+            IGridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid);
+            IGridPager<GridModel> actual = htmlGrid.Grid.Pager;
 
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
             Assert.AreEqual(expected.PagesToDisplay, actual.PagesToDisplay);
