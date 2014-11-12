@@ -62,12 +62,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_SetsCompiledExpression()
+        public void GridColumn_SetsValueFunctionAsCompiledExpression()
         {
-            GridColumnProxy<GridModel, String> column = new GridColumnProxy<GridModel, String>(grid, model => model.Name);
             GridModel gridModel = new GridModel { Name = "TestName" };
 
-            String actual = column.BaseCompiledExpression(gridModel);
+            String actual = column.ValueFunction(gridModel) as String;
             String expected = "TestName";
 
             Assert.AreEqual(expected, actual);
@@ -116,6 +115,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridSortOrder? actual = new GridColumn<GridModel, String>(grid, model => model.Name).SortOrder;
 
             Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
+        #region Method: As(Func<TModel, TValue> valueFunction)
+
+        [Test]
+        public void As_SetsValueFunction()
+        {
+            Func<GridModel, Object> expected = (model) => model.Name;
+            Func<GridModel, Object> actual = column.As(expected).ValueFunction;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void As_ReturnsSameColumn()
+        {
+            IGridColumn actual = column.As(model => model.Name);
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
         }
 
         #endregion
@@ -177,10 +198,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: ValueFor(IGridRow row)
 
         [Test]
-        public void ValueFor_UsesCompiledExpressionToGetValue()
+        public void ValueFor_UsesValueFunctionToGetValue()
         {
-            GridColumnProxy<GridModel, String> column = new GridColumnProxy<GridModel, String>(grid, model => model.Name);
-            column.BaseCompiledExpression = (model) => "TestValue";
+            column.ValueFunction = (model) => "TestValue";
 
             String actual = column.ValueFor(new GridRow(null)).ToString();
             String expected = "TestValue";

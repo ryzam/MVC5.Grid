@@ -62,7 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\Core\Columns\BaseGridColumnTests.cs" />
     <Compile Include="Unit\Core\Columns\GridColumnsTests.cs" />
-    <Compile Include="Unit\Core\Columns\GridColumnProxy.cs" />
     <Compile Include="Unit\Core\Columns\GridColumnTests.cs" />
     <Compile Include="Unit\Core\Grids\GridTests.cs" />
     <Compile Include="Unit\Core\Grids\HtmlGridTests.cs" />

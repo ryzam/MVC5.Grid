@@ -10,7 +10,7 @@ namespace NonFactors.Mvc.Grid
     public class GridColumn<TModel, TValue> : BaseGridColumn, IGridColumn<TModel, TValue> where TModel : class
     {
         public Expression<Func<TModel, TValue>> Expression { get; set; }
-        protected Func<TModel, TValue> CompiledExpression { get; set; }
+        public Func<TModel, TValue> ValueFunction { get; set; }
 
         public GridProcessorType Type { get; set; }
         public IGrid<TModel> Grid { get; set; }
@@ -21,11 +21,18 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
             Expression = expression;
             Type = GridProcessorType.Pre;
-            CompiledExpression = expression.Compile();
+            ValueFunction = expression.Compile();
             IsSortable = GetInitialIsSortable(expression);
             Name = ExpressionHelper.GetExpressionText(expression);
 
             SortOrder = GetSortOrder();
+        }
+
+        public IGridColumn<TModel, TValue> As(Func<TModel, TValue> valueFunction)
+        {
+            ValueFunction = valueFunction;
+
+            return this;
         }
 
         public IQueryable<TModel> Process(IQueryable<TModel> items)
@@ -65,7 +72,6 @@ namespace NonFactors.Mvc.Grid
             return query.ToString();
         }
 
-
         private Boolean? GetInitialIsSortable(Expression<Func<TModel, TValue>> expression)
         {
             if (expression.Body is MemberExpression)
@@ -75,7 +81,7 @@ namespace NonFactors.Mvc.Grid
         }
         private String GetRawValueFor(IGridRow row)
         {
-            TValue value = CompiledExpression(row.Model as TModel);
+            TValue value = ValueFunction(row.Model as TModel);
             if (value == null)
                 return String.Empty;
 
