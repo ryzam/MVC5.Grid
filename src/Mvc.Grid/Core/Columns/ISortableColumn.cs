@@ -7,8 +7,6 @@ namespace NonFactors.Mvc.Grid
         GridSortOrder? SortOrder { get; set; }
         Boolean? IsSortable { get; set; }
 
-        IGridColumn Sortable(Boolean isSortable);
-
         String GetSortingQuery();
     }
 

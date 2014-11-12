@@ -7,13 +7,35 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class BaseGridColumnTests
     {
-        private BaseGridColumn column;
+        private BaseGridColumn<GridModel, String> column;
 
         [SetUp]
         public void SetUp()
         {
-            column = Substitute.For<BaseGridColumn>();
+            column = Substitute.For<BaseGridColumn<GridModel, String>>();
         }
+
+        #region Method: As(Func<TModel, TValue> value)
+
+        [Test]
+        public void As_SetsValueFunction()
+        {
+            Func<GridModel, String> expected = (model) => model.Name;
+            Func<GridModel, String> actual = column.As(expected).ValueFunction;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void As_ReturnsSameColumn()
+        {
+            IGridColumn actual = column.As(model => model.Name);
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
 
         #region Method: Sortable(Boolean isSortable)
 

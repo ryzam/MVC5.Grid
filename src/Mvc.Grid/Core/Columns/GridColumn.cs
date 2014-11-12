@@ -7,14 +7,8 @@ using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridColumn<TModel, TValue> : BaseGridColumn, IGridColumn<TModel, TValue> where TModel : class
+    public class GridColumn<TModel, TValue> : BaseGridColumn<TModel, TValue> where TModel : class
     {
-        public Expression<Func<TModel, TValue>> Expression { get; set; }
-        public Func<TModel, TValue> ValueFunction { get; set; }
-
-        public GridProcessorType Type { get; set; }
-        public IGrid<TModel> Grid { get; set; }
-
         public GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
         {
             Grid = grid;
@@ -28,14 +22,7 @@ namespace NonFactors.Mvc.Grid
             SortOrder = GetSortOrder();
         }
 
-        public IGridColumn<TModel, TValue> As(Func<TModel, TValue> valueFunction)
-        {
-            ValueFunction = valueFunction;
-
-            return this;
-        }
-
-        public IQueryable<TModel> Process(IQueryable<TModel> items)
+        public override IQueryable<TModel> Process(IQueryable<TModel> items)
         {
             if (IsSortable != true)
                 return items;
@@ -48,7 +35,6 @@ namespace NonFactors.Mvc.Grid
 
             return items.OrderByDescending(Expression);
         }
-
         public override IHtmlString ValueFor(IGridRow row)
         {
             String value = GetRawValueFor(row);

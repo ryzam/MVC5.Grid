@@ -12,12 +12,6 @@ namespace NonFactors.Mvc.Grid
         String Title { get; set; }
         String Name { get; set; }
 
-        IGridColumn Encoded(Boolean isEncoded);
-        IGridColumn Formatted(String format);
-        IGridColumn Css(String cssClasses);
-        IGridColumn Titled(String title);
-        IGridColumn Named(String name);
-
         IHtmlString ValueFor(IGridRow row);
     }
 
@@ -27,6 +21,12 @@ namespace NonFactors.Mvc.Grid
         Func<TModel, TValue> ValueFunction { get; set; }
         IGrid<TModel> Grid { get; set; }
 
-        IGridColumn<TModel, TValue> As(Func<TModel, TValue> valueFunction);
+        IGridColumn<TModel, TValue> As(Func<TModel, TValue> value);
+        IGridColumn<TModel, TValue> Sortable(Boolean isSortable);
+        IGridColumn<TModel, TValue> Encoded(Boolean isEncoded);
+        IGridColumn<TModel, TValue> Formatted(String format);
+        IGridColumn<TModel, TValue> Css(String cssClasses);
+        IGridColumn<TModel, TValue> Titled(String title);
+        IGridColumn<TModel, TValue> Named(String name);
     }
 }

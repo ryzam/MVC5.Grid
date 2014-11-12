@@ -119,28 +119,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: As(Func<TModel, TValue> valueFunction)
-
-        [Test]
-        public void As_SetsValueFunction()
-        {
-            Func<GridModel, Object> expected = (model) => model.Name;
-            Func<GridModel, Object> actual = column.As(expected).ValueFunction;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        [Test]
-        public void As_ReturnsSameColumn()
-        {
-            IGridColumn actual = column.As(model => model.Name);
-            IGridColumn expected = column;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        #endregion
-
         #region Method: Process(IQueryable<TModel> items)
 
         [Test]
