@@ -90,6 +90,23 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void GridColumn_OnNonMemberExpressionIsNotFilterable()
+        {
+            Boolean? actual = new GridColumn<GridModel, String>(grid, model => model.ToString()).IsFilterable;
+            Boolean expected = false;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_OnMemberExpressionIsFilterableIsNull()
+        {
+            GridColumn<GridModel, Decimal> column = new GridColumn<GridModel, Decimal>(grid, model => model.Sum);
+
+            Assert.IsNull(column.IsFilterable);
+        }
+
+        [Test]
         public void GridColumn_SetsNameFromExpression()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;

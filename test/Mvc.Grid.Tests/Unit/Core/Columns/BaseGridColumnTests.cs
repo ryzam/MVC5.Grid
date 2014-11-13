@@ -37,6 +37,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: Filterable(Boolean isFilterable)
+
+        [Test]
+        public void Filterable_SetsIsFilterable()
+        {
+            Boolean? actual = column.Filterable(true).IsFilterable;
+            Boolean? expected = true;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Filterable_ReturnsSameGrid()
+        {
+            IGridColumn actual = column.Filterable(true);
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: Sortable(Boolean isSortable)
 
         [Test]

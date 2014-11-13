@@ -17,6 +17,7 @@ namespace NonFactors.Mvc.Grid
             Type = GridProcessorType.Pre;
             ValueFunction = expression.Compile();
             IsSortable = GetInitialIsSortable(expression);
+            IsFilterable = GetInitialIsFilterable(expression);
             Name = ExpressionHelper.GetExpressionText(expression);
 
             SortOrder = GetSortOrder();
@@ -58,6 +59,13 @@ namespace NonFactors.Mvc.Grid
             return query.ToString();
         }
 
+        private Boolean? GetInitialIsFilterable(Expression<Func<TModel, TValue>> expression)
+        {
+            if (expression.Body is MemberExpression)
+                return null;
+
+            return false;
+        }
         private Boolean? GetInitialIsSortable(Expression<Func<TModel, TValue>> expression)
         {
             if (expression.Body is MemberExpression)

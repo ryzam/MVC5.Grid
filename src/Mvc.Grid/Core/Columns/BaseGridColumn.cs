@@ -14,6 +14,7 @@ namespace NonFactors.Mvc.Grid
         public IGrid<TModel> Grid { get; set; }
 
         public GridSortOrder? SortOrder { get; set; }
+        public Boolean? IsFilterable { get; set; }
         public Boolean? IsSortable { get; set; }
         public Boolean IsEncoded { get; set; }
         public String CssClasses { get; set; }
@@ -24,6 +25,12 @@ namespace NonFactors.Mvc.Grid
         public IGridColumn<TModel, TValue> As(Func<TModel, TValue> value)
         {
             ValueFunction = value;
+
+            return this;
+        }
+        public IGridColumn<TModel, TValue> Filterable(Boolean isFilterable)
+        {
+            IsFilterable = isFilterable;
 
             return this;
         }

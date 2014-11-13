@@ -4,7 +4,7 @@ using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
-    public interface IGridColumn : ISortableColumn
+    public interface IGridColumn : IFilterableColumn, ISortableColumn
     {
         Boolean IsEncoded { get; set; }
         String CssClasses { get; set; }
@@ -22,6 +22,7 @@ namespace NonFactors.Mvc.Grid
         IGrid<TModel> Grid { get; set; }
 
         IGridColumn<TModel, TValue> As(Func<TModel, TValue> value);
+        IGridColumn<TModel, TValue> Filterable(Boolean isFilterable);
         IGridColumn<TModel, TValue> Sortable(Boolean isSortable);
         IGridColumn<TModel, TValue> Encoded(Boolean isEncoded);
         IGridColumn<TModel, TValue> Formatted(String format);

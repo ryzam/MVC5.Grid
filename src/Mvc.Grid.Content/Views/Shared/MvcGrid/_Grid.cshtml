@@ -9,6 +9,7 @@
                 {
                     <th class="@column.CssClasses"
                         data-name="@column.Name"
+                        data-filter="@(column.IsFilterable == true)"
                         data-sort="@(column.IsSortable == true)"
                         data-sort-order="@column.SortOrder"
                         data-sort-query="@column.GetSortingQuery()">
