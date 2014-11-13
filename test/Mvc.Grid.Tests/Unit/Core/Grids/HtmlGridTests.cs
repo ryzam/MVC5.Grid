@@ -111,6 +111,37 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: Filterable(Boolean isFilterable)
+
+        [Test]
+        [TestCase(null, false, false)]
+        [TestCase(null, true, true)]
+        [TestCase(false, false, false)]
+        [TestCase(false, true, false)]
+        [TestCase(true, false, true)]
+        [TestCase(true, true, true)]
+        public void Filterable_SetsIsFilterable(Boolean? isColumnFilterable, Boolean isGridFilterable, Boolean? expectedIsFilterable)
+        {
+            foreach (IGridColumn column in htmlGrid.Grid.Columns)
+                column.IsFilterable = isColumnFilterable;
+
+            htmlGrid.Filterable(isGridFilterable);
+
+            foreach (IGridColumn actual in htmlGrid.Grid.Columns)
+                Assert.AreEqual(expectedIsFilterable, actual.IsFilterable);
+        }
+
+        [Test]
+        public void Filterable_ReturnsSameGrid()
+        {
+            IHtmlGrid<GridModel> actual = htmlGrid.Filterable(true);
+            IHtmlGrid<GridModel> expected = htmlGrid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: Sortable(Boolean isSortable)
 
         [Test]
@@ -120,7 +151,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(false, true, false)]
         [TestCase(true, false, true)]
         [TestCase(true, true, true)]
-        public void Sortable_SetsSortable(Boolean? isColumnSortable, Boolean isGridSortable, Boolean? expectedIsSortable)
+        public void Sortable_SetsIsSortable(Boolean? isColumnSortable, Boolean isGridSortable, Boolean? expectedIsSortable)
         {
             foreach (IGridColumn column in htmlGrid.Grid.Columns)
                 column.IsSortable = isColumnSortable;

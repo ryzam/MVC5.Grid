@@ -24,6 +24,14 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public IHtmlGrid<TModel> Filterable(Boolean isFilterable)
+        {
+            foreach (IGridColumn column in Grid.Columns)
+                if (column.IsFilterable == null)
+                    column.IsFilterable = isFilterable;
+
+            return this;
+        }
         public IHtmlGrid<TModel> Sortable(Boolean isSortable)
         {
             foreach (IGridColumn column in Grid.Columns)
