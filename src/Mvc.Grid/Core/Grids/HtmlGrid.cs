@@ -24,6 +24,7 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+
         public IHtmlGrid<TModel> Filterable(Boolean isFilterable)
         {
             foreach (IGridColumn column in Grid.Columns)
@@ -32,6 +33,11 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public IHtmlGrid<TModel> Filterable()
+        {
+            return Filterable(true);
+        }
+
         public IHtmlGrid<TModel> Sortable(Boolean isSortable)
         {
             foreach (IGridColumn column in Grid.Columns)
@@ -40,6 +46,11 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public IHtmlGrid<TModel> Sortable()
+        {
+            return Sortable(true);
+        }
+
         public IHtmlGrid<TModel> Css(String cssClasses)
         {
             Grid.CssClasses = cssClasses;
