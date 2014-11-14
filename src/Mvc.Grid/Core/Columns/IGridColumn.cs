@@ -15,7 +15,7 @@ namespace NonFactors.Mvc.Grid
         IHtmlString ValueFor(IGridRow row);
     }
 
-    public interface IGridColumn<TModel, TValue> : ISortableColumn<TModel>, IGridColumn where TModel : class
+    public interface IGridColumn<TModel, TValue> : IFilterableColumn<TModel>, ISortableColumn<TModel>, IGridColumn where TModel : class
     {
         Expression<Func<TModel, TValue>> Expression { get; set; }
         Func<TModel, TValue> ValueFunction { get; set; }

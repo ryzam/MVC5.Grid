@@ -139,9 +139,56 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Process(IQueryable<TModel> items)
 
         [Test]
+        public void Process_IfNotFilterableReturnsItems()
+        {
+            column.IsSortable = false;
+            column.IsFilterable = false;
+            column.SortOrder = GridSortOrder.Desc;
+            column.Filter = Substitute.For<IGridFilter<GridModel>>();
+
+            IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
+            IQueryable<GridModel> actual = column.Process(expected);
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Process_IfFilterIsNullReturnsItems()
+        {
+            column.Filter = null;
+            column.IsSortable = false;
+            column.IsFilterable = true;
+            column.SortOrder = GridSortOrder.Desc;
+
+            IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
+            IQueryable<GridModel> actual = column.Process(expected);
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Process_ReturnsFilteredItems()
+        {
+            column.IsSortable = false;
+            column.IsFilterable = true;
+            column.SortOrder = GridSortOrder.Desc;
+            column.Filter = Substitute.For<IGridFilter<GridModel>>();
+            IQueryable<GridModel> items = new GridModel[2].AsQueryable();
+            IQueryable<GridModel> filteredItems = new GridModel[2].AsQueryable();
+
+            column.Filter.Process(items).Returns(filteredItems);
+
+            IQueryable<GridModel> actual = column.Process(items);
+            IQueryable<GridModel> expected = filteredItems;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
         public void Process_IfNotSortableReturnsItems()
         {
             column.IsSortable = false;
+            column.IsFilterable = false;
             column.SortOrder = GridSortOrder.Desc;
 
             IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
@@ -153,6 +200,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Process_IfSortOrderIsNullReturnsItems()
         {
+            column.IsFilterable = false;
             column.IsSortable = true;
             column.SortOrder = null;
 
@@ -166,6 +214,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Process_ReturnsItemsSortedInAscendingOrder()
         {
             column.IsSortable = true;
+            column.IsFilterable = false;
             column.SortOrder = GridSortOrder.Asc;
             GridModel[] models = { new GridModel { Name = "B" }, new GridModel { Name = "A" }};
 
@@ -179,11 +228,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Process_ReturnsItemsSortedInDescendingOrder()
         {
             column.IsSortable = true;
+            column.IsFilterable = false;
             column.SortOrder = GridSortOrder.Desc;
             GridModel[] models = { new GridModel { Name = "A" }, new GridModel { Name = "B" } };
 
             IEnumerable expected = models.OrderByDescending(model => model.Name);
             IEnumerable actual = column.Process(models.AsQueryable());
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Process_ReturnsFilteredAndSortedItems()
+        {
+            column.IsSortable = true;
+            column.IsFilterable = true;
+            column.SortOrder = GridSortOrder.Desc;
+            column.Filter = Substitute.For<IGridFilter<GridModel>>();
+            IQueryable<GridModel> models = new [] { new GridModel { Name = "A" }, new GridModel { Name = "B" }, new GridModel { Name = "C" } }.AsQueryable();
+            column.Filter.Process(models).Returns(models.Where(model => model.Name == "B").ToList().AsQueryable());
+
+            IEnumerable expected = models.Where(model => model.Name == "B").OrderByDescending(model => model.Name);
+            IEnumerable actual = column.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);
         }

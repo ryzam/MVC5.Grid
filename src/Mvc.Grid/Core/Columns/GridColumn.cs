@@ -25,6 +25,9 @@ namespace NonFactors.Mvc.Grid
 
         public override IQueryable<TModel> Process(IQueryable<TModel> items)
         {
+            if (IsFilterable == true && Filter != null)
+                items = Filter.Process(items);
+
             if (IsSortable != true)
                 return items;
 
