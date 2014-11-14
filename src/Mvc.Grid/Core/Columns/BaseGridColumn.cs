@@ -22,7 +22,7 @@ namespace NonFactors.Mvc.Grid
         public String Title { get; set; }
         public String Name { get; set; }
 
-        public IGridColumn<TModel, TValue> As(Func<TModel, TValue> value)
+        public IGridColumn<TModel, TValue> RenderAs(Func<TModel, TValue> value)
         {
             ValueFunction = value;
 

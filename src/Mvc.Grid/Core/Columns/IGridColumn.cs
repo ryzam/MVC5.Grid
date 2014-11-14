@@ -21,7 +21,7 @@ namespace NonFactors.Mvc.Grid
         Func<TModel, TValue> ValueFunction { get; set; }
         IGrid<TModel> Grid { get; set; }
 
-        IGridColumn<TModel, TValue> As(Func<TModel, TValue> value);
+        IGridColumn<TModel, TValue> RenderAs(Func<TModel, TValue> value);
         IGridColumn<TModel, TValue> Filterable(Boolean isFilterable);
         IGridColumn<TModel, TValue> Sortable(Boolean isSortable);
         IGridColumn<TModel, TValue> Encoded(Boolean isEncoded);

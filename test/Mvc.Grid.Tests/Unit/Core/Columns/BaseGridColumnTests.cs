@@ -15,21 +15,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column = Substitute.For<BaseGridColumn<GridModel, String>>();
         }
 
-        #region Method: As(Func<TModel, TValue> value)
+        #region Method: RenderAs(Func<TModel, TValue> value)
 
         [Test]
-        public void As_SetsValueFunction()
+        public void RenderAs_SetsValueFunction()
         {
             Func<GridModel, String> expected = (model) => model.Name;
-            Func<GridModel, String> actual = column.As(expected).ValueFunction;
+            Func<GridModel, String> actual = column.RenderAs(expected).ValueFunction;
 
             Assert.AreSame(expected, actual);
         }
 
         [Test]
-        public void As_ReturnsSameColumn()
+        public void RenderAs_ReturnsSameColumn()
         {
-            IGridColumn actual = column.As(model => model.Name);
+            IGridColumn actual = column.RenderAs(model => model.Name);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);
