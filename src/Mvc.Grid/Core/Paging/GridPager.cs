@@ -43,12 +43,13 @@ namespace NonFactors.Mvc.Grid
             PagesToDisplay = 5;
             Type = GridProcessorType.Post;
             CurrentPage = GetCurrentPage();
-            TotalRows = Grid.Source.Count();
             PartialViewName = "MvcGrid/_Pager";
         }
 
         public IQueryable<TModel> Process(IQueryable<TModel> items)
         {
+            TotalRows = items.Count();
+
             return items.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage);
         }
 

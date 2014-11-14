@@ -18,14 +18,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid = Substitute.For<IGrid<GridModel>>();
             grid.Query = new GridQuery();
-            grid.Source = new GridModel[5]
-            {
-                new GridModel(),
-                new GridModel(),
-                new GridModel(),
-                new GridModel(),
-                new GridModel()
-            }.AsQueryable();
 
             pager = new GridPager<GridModel>(grid);
         }
@@ -68,6 +60,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             pager.PagesToDisplay = pagesToDisplay;
             pager.CurrentPage = currentPage;
             pager.RowsPerPage = 1;
+            pager.TotalRows = 5;
 
             Int32 actual = pager.StartingPage;
 
@@ -87,12 +80,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(39, 20, 2)]
         [TestCase(40, 20, 2)]
         [TestCase(41, 20, 3)]
-        public void TotalPages_GetsTotalPages(Int32 itemsCount, Int32 rowsPerPage, Int32 expected)
+        public void TotalPages_GetsTotalPages(Int32 totalRows, Int32 rowsPerPage, Int32 expected)
         {
-            grid.Source = new GridModel[itemsCount].AsQueryable();
-
             GridPager<GridModel> pager = new GridPager<GridModel>(grid);
             pager.RowsPerPage = rowsPerPage;
+            pager.TotalRows = totalRows;
 
             Int32 actual = pager.TotalPages;
 
@@ -154,15 +146,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridPager_SetsTotalRowsFromGridSource()
-        {
-            Int32 actual = new GridPager<GridModel>(grid).TotalRows;
-            Int32 expected = grid.Source.Count();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
         public void GridPager_SetsDefaultPartialViewName()
         {
             String actual = new GridPager<GridModel>(grid).PartialViewName;
@@ -176,13 +159,25 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Process(IQueryable<TModel> items)
 
         [Test]
+        public void Process_SetsTotalRows()
+        {
+            pager.Process(new GridModel[100].AsQueryable());
+
+            Int32 actual = pager.TotalRows;
+            Int32 expected = 100;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void Process_ReturnsPagedItems()
         {
+            IQueryable<GridModel> models = new[] { new GridModel(), new GridModel(), new GridModel() }.AsQueryable();
             pager.CurrentPage = 2;
             pager.RowsPerPage = 1;
 
-            IEnumerable expected = grid.Source.Skip(1).Take(1);
-            IEnumerable actual = pager.Process(grid.Source);
+            IEnumerable expected = models.Skip(1).Take(1);
+            IEnumerable actual = pager.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);
         }
