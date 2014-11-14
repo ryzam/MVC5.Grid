@@ -306,15 +306,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: WithPager(Action<IGridPager<TModel>> builder)
+        #region Method: Pageable(Action<IGridPager<TModel>> builder)
 
         [Test]
-        public void WithPager_Builder_DoesNotChangeExistingPager()
+        public void Pageable_Builder_DoesNotChangeExistingPager()
         {
             IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid);
             htmlGrid.Grid.Pager = pager;
 
-            htmlGrid.WithPager(gridPager => { });
+            htmlGrid.Pageable(gridPager => { });
 
             IGridPager actual = htmlGrid.Grid.Pager;
             IGridPager expected = pager;
@@ -323,11 +323,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_Builder_CreatesGridPager()
+        public void Pageable_Builder_CreatesGridPager()
         {
             htmlGrid.Grid.Pager = null;
 
-            htmlGrid.WithPager(pager => { });
+            htmlGrid.Pageable(pager => { });
 
             IGridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid);
             IGridPager<GridModel> actual = htmlGrid.Grid.Pager;
@@ -344,13 +344,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_Builder_BuildsPager()
+        public void Pageable_Builder_BuildsPager()
         {
             htmlGrid.Grid.Pager = Substitute.For<IGridPager<GridModel>>();
             IGridPager expected = htmlGrid.Grid.Pager;
             Boolean builderCalled = false;
 
-            htmlGrid.WithPager(actual =>
+            htmlGrid.Pageable(actual =>
             {
                 Assert.AreSame(expected, actual);
                 builderCalled = true;
@@ -360,11 +360,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_Builder_AddsGridProcessor()
+        public void Pageable_Builder_AddsGridProcessor()
         {
             htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
-            htmlGrid.WithPager(pager => { });
+            htmlGrid.Pageable(pager => { });
 
             Object actual = htmlGrid.Grid.Processors.Single();
             Object expected = htmlGrid.Grid.Pager;
@@ -373,12 +373,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_Builder_DoesNotReaddGridProcessor()
+        public void Pageable_Builder_DoesNotReaddGridProcessor()
         {
             htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
-            htmlGrid.WithPager(pager => { });
-            htmlGrid.WithPager(pager => { });
+            htmlGrid.Pageable(pager => { });
+            htmlGrid.Pageable(pager => { });
 
             Object actual = htmlGrid.Grid.Processors.Single();
             Object expected = htmlGrid.Grid.Pager;
@@ -387,9 +387,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_Builder_ReturnsSameGrid()
+        public void Pageable_Builder_ReturnsSameGrid()
         {
-            IHtmlGrid<GridModel> actual = htmlGrid.WithPager(gridPager => { });
+            IHtmlGrid<GridModel> actual = htmlGrid.Pageable(gridPager => { });
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);
@@ -397,15 +397,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: WithPager()
+        #region Method: Pageable()
 
         [Test]
-        public void WithPager_DoesNotChangeExistingPager()
+        public void Pageable_DoesNotChangeExistingPager()
         {
             IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid);
             htmlGrid.Grid.Pager = pager;
 
-            htmlGrid.WithPager();
+            htmlGrid.Pageable();
 
             IGridPager actual = htmlGrid.Grid.Pager;
             IGridPager expected = pager;
@@ -414,11 +414,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_CreatesGridPager()
+        public void Pageable_CreatesGridPager()
         {
             htmlGrid.Grid.Pager = null;
 
-            htmlGrid.WithPager();
+            htmlGrid.Pageable();
 
             IGridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid);
             IGridPager<GridModel> actual = htmlGrid.Grid.Pager;
@@ -435,11 +435,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_AddsGridPagerProcessor()
+        public void Pageable_AddsGridPagerProcessor()
         {
             htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
-            htmlGrid.WithPager();
+            htmlGrid.Pageable();
 
             Object actual = htmlGrid.Grid.Processors.Single();
             Object expected = htmlGrid.Grid.Pager;
@@ -448,12 +448,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_DoesNotReaddGridProcessor()
+        public void Pageable_DoesNotReaddGridProcessor()
         {
             htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
-            htmlGrid.WithPager();
-            htmlGrid.WithPager();
+            htmlGrid.Pageable();
+            htmlGrid.Pageable();
 
             Object actual = htmlGrid.Grid.Processors.Single();
             Object expected = htmlGrid.Grid.Pager;
@@ -462,9 +462,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void WithPager_ReturnsSameGrid()
+        public void Pageable_ReturnsSameGrid()
         {
-            IHtmlGrid<GridModel> actual = htmlGrid.WithPager();
+            IHtmlGrid<GridModel> actual = htmlGrid.Pageable();
             IHtmlGrid<GridModel> expected = htmlGrid;
 
             Assert.AreSame(expected, actual);

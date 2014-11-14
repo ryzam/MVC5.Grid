@@ -73,7 +73,7 @@ namespace NonFactors.Mvc.Grid
             return this;
         }
 
-        public IHtmlGrid<TModel> WithPager(Action<IGridPager<TModel>> builder)
+        public IHtmlGrid<TModel> Pageable(Action<IGridPager<TModel>> builder)
         {
             Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Grid);
             builder(Grid.Pager);
@@ -83,9 +83,9 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public IHtmlGrid<TModel> WithPager()
+        public IHtmlGrid<TModel> Pageable()
         {
-            return WithPager(builder => { });
+            return Pageable(builder => { });
         }
 
         public String ToHtmlString()

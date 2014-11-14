@@ -20,7 +20,7 @@ namespace NonFactors.Mvc.Grid
         IHtmlGrid<TModel> Empty(String text);
         IHtmlGrid<TModel> Named(String name);
 
-        IHtmlGrid<TModel> WithPager(Action<IGridPager<TModel>> builder);
-        IHtmlGrid<TModel> WithPager();
+        IHtmlGrid<TModel> Pageable(Action<IGridPager<TModel>> builder);
+        IHtmlGrid<TModel> Pageable();
     }
 }
