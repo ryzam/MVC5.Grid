@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Helpers\HtmlHelperFactory.cs" />
     <Compile Include="Helpers\HttpContextFactory.cs" />
+    <Compile Include="Objects\Models\AllTypesModel.cs" />
     <Compile Include="Objects\Models\GridModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\Core\Columns\BaseGridColumnTests.cs" />

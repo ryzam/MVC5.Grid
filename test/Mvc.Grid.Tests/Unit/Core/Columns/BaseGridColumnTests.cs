@@ -59,6 +59,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: FilterTyped(String filterType)
+
+        [Test]
+        public void FilterTyped_SetsIsFilterType()
+        {
+            String actual = column.FilterTyped("Numeric").FilterType;
+            String expected = "Numeric";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FilterTyped_ReturnsSameGrid()
+        {
+            IGridColumn actual = column.FilterTyped("Numeric");
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: Sortable(Boolean isSortable)
 
         [Test]

@@ -53,6 +53,180 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void AddProperty_SetsFilterTypeAsNullForEnum()
+        {
+            AssertFilterTypeFor(model => model.EnumField, null);
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForSByte()
+        {
+            AssertFilterTypeFor(model => model.SByteField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForByte()
+        {
+            AssertFilterTypeFor(model => model.ByteField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForInt16()
+        {
+            AssertFilterTypeFor(model => model.Int16Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForUInt16()
+        {
+            AssertFilterTypeFor(model => model.UInt16Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForInt32()
+        {
+            AssertFilterTypeFor(model => model.Int32Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForUInt32()
+        {
+            AssertFilterTypeFor(model => model.UInt32Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForInt64()
+        {
+            AssertFilterTypeFor(model => model.Int64Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForUInt64()
+        {
+            AssertFilterTypeFor(model => model.UInt64Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForSingle()
+        {
+            AssertFilterTypeFor(model => model.SingleField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForDouble()
+        {
+            AssertFilterTypeFor(model => model.DoubleField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForDecimal()
+        {
+            AssertFilterTypeFor(model => model.DecimalField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsBooleanForBoolean()
+        {
+            AssertFilterTypeFor(model => model.BooleanField, "Boolean");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsDateCellForDateTime()
+        {
+            AssertFilterTypeFor(model => model.DateTimeField, "Date");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNullForNullableEnum()
+        {
+            AssertFilterTypeFor(model => model.NullableEnumField, null);
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableSByte()
+        {
+            AssertFilterTypeFor(model => model.NullableSByteField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableByte()
+        {
+            AssertFilterTypeFor(model => model.NullableByteField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableInt16()
+        {
+            AssertFilterTypeFor(model => model.NullableInt16Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableUInt16()
+        {
+            AssertFilterTypeFor(model => model.NullableUInt16Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableInt32()
+        {
+            AssertFilterTypeFor(model => model.NullableInt32Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableUInt32()
+        {
+            AssertFilterTypeFor(model => model.NullableUInt32Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableInt64()
+        {
+            AssertFilterTypeFor(model => model.NullableInt64Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableUInt64()
+        {
+            AssertFilterTypeFor(model => model.NullableUInt64Field, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableSingle()
+        {
+            AssertFilterTypeFor(model => model.NullableSingleField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableDouble()
+        {
+            AssertFilterTypeFor(model => model.NullableDoubleField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsNumberForNullableDecimal()
+        {
+            AssertFilterTypeFor(model => model.NullableDecimalField, "Number");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsBooleanForNullableBoolean()
+        {
+            AssertFilterTypeFor(model => model.NullableBooleanField, "Boolean");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsDateForNullableDateTime()
+        {
+            AssertFilterTypeFor(model => model.NullableDateTimeField, "Date");
+        }
+
+        [Test]
+        public void AddProperty_SetsFilterTypeAsTextForOtherTypes()
+        {
+            AssertFilterTypeFor(model => model.StringField, "Text");
+        }
+
+        [Test]
         public void GridColumn_SetsValueFunctionAsCompiledExpression()
         {
             GridModel gridModel = new GridModel { Name = "TestName" };
@@ -309,6 +483,20 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.SortOrder = order;
 
             String actual = column.GetSortingQuery();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
+        #region Test helpers
+
+        private void AssertFilterTypeFor<TProperty>(Expression<Func<AllTypesModel, TProperty>> property, String expected)
+        {
+            IGrid<AllTypesModel> grid = Substitute.For<IGrid<AllTypesModel>>();
+            grid.Query = new GridQuery();
+
+            String actual = new GridColumn<AllTypesModel, TProperty>(grid, property).FilterType;
 
             Assert.AreEqual(expected, actual);
         }

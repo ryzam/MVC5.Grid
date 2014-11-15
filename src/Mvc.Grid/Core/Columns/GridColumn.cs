@@ -14,6 +14,7 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
             IsEncoded = true;
             Expression = expression;
+            FilterType = GetFilterType();
             ValueFunction = expression.Compile();
             ProcessorType = GridProcessorType.Pre;
             IsSortable = GetInitialIsSortable(expression);
@@ -99,6 +100,33 @@ namespace NonFactors.Mvc.Grid
             }
 
             return null;
+        }
+        private String GetFilterType()
+        {
+            Type type = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+            if (type.IsEnum) return null;
+
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                case TypeCode.Int16:
+                case TypeCode.UInt16:
+                case TypeCode.Int32:
+                case TypeCode.UInt32:
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                case TypeCode.Single:
+                case TypeCode.Double:
+                case TypeCode.Decimal:
+                    return "Number";
+                case TypeCode.DateTime:
+                    return "Date";
+                case TypeCode.Boolean:
+                    return "Boolean";
+                default:
+                    return "Text";
+            }
         }
     }
 }
