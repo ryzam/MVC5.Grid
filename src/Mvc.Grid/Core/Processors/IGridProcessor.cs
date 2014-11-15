@@ -4,7 +4,7 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGridProcessor<T> where T : class
     {
-        GridProcessorType Type { get; set; }
+        GridProcessorType ProcessorType { get; set; }
 
         IQueryable<T> Process(IQueryable<T> items);
     }

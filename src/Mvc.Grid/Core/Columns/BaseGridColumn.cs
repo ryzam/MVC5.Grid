@@ -10,8 +10,8 @@ namespace NonFactors.Mvc.Grid
         public Expression<Func<TModel, TValue>> Expression { get; set; }
         public Func<TModel, TValue> ValueFunction { get; set; }
 
+        public GridProcessorType ProcessorType { get; set; }
         public IGridFilter<TModel> Filter { get; set; }
-        public GridProcessorType Type { get; set; }
         public IGrid<TModel> Grid { get; set; }
 
         public GridSortOrder? SortOrder { get; set; }

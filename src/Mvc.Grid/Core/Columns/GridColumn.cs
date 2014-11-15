@@ -14,8 +14,8 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
             IsEncoded = true;
             Expression = expression;
-            Type = GridProcessorType.Pre;
             ValueFunction = expression.Compile();
+            ProcessorType = GridProcessorType.Pre;
             IsSortable = GetInitialIsSortable(expression);
             IsFilterable = GetInitialIsFilterable(expression);
             Name = ExpressionHelper.GetExpressionText(expression);

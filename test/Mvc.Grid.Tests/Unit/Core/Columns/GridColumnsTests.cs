@@ -43,6 +43,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, expression);
             IGridColumn<GridModel, String> actual = columns.Add<String>(expression);
 
+            Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
             Assert.AreEqual(expected.Expression, actual.Expression);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
             Assert.AreEqual(expected.IsSortable, actual.IsSortable);
@@ -52,7 +53,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreEqual(expected.Title, actual.Title);
             Assert.AreEqual(expected.Name, actual.Name);
             Assert.AreEqual(expected.Grid, actual.Grid);
-            Assert.AreEqual(expected.Type, actual.Type);
         }
 
         [Test]

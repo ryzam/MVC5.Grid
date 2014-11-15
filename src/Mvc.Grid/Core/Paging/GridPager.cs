@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Grid
         public IGrid<TModel> Grid { get; set; }
         public String CssClasses { get; set; }
 
-        public GridProcessorType Type { get; set; }
+        public GridProcessorType ProcessorType { get; set; }
         public Int32 PagesToDisplay { get; set; }
         public Int32 CurrentPage { get; set; }
         public Int32 RowsPerPage { get; set; }
@@ -41,9 +41,9 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
             RowsPerPage = 20;
             PagesToDisplay = 5;
-            Type = GridProcessorType.Post;
             CurrentPage = GetCurrentPage();
             PartialViewName = "MvcGrid/_Pager";
+            ProcessorType = GridProcessorType.Post;
         }
 
         public IQueryable<TModel> Process(IQueryable<TModel> items)

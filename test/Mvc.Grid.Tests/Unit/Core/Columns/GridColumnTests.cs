@@ -53,21 +53,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_SetsTypeAsPreProcessor()
-        {
-            GridProcessorType actual = new GridColumn<GridModel, Object>(grid, model => model.Name).Type;
-            GridProcessorType expected = GridProcessorType.Pre;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
         public void GridColumn_SetsValueFunctionAsCompiledExpression()
         {
             GridModel gridModel = new GridModel { Name = "TestName" };
 
             String actual = column.ValueFunction(gridModel) as String;
             String expected = "TestName";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsProcessorTypeAsPreProcessor()
+        {
+            GridProcessorType actual = new GridColumn<GridModel, Object>(grid, model => model.Name).ProcessorType;
+            GridProcessorType expected = GridProcessorType.Pre;
 
             Assert.AreEqual(expected, actual);
         }

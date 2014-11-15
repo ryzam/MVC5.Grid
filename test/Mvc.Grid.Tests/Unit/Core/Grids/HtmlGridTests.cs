@@ -334,12 +334,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
             Assert.AreEqual(expected.PagesToDisplay, actual.PagesToDisplay);
+            Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
             Assert.AreEqual(expected.StartingPage, actual.StartingPage);
             Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
             Assert.AreEqual(expected.RowsPerPage, actual.RowsPerPage);
             Assert.AreEqual(expected.TotalPages, actual.TotalPages);
             Assert.AreEqual(expected.TotalRows, actual.TotalRows);
-            Assert.AreEqual(expected.Type, actual.Type);
             Assert.AreSame(expected.Grid, actual.Grid);
         }
 
@@ -425,12 +425,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
             Assert.AreEqual(expected.PagesToDisplay, actual.PagesToDisplay);
+            Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
             Assert.AreEqual(expected.StartingPage, actual.StartingPage);
             Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
             Assert.AreEqual(expected.RowsPerPage, actual.RowsPerPage);
             Assert.AreEqual(expected.TotalPages, actual.TotalPages);
             Assert.AreEqual(expected.TotalRows, actual.TotalRows);
-            Assert.AreEqual(expected.Type, actual.Type);
             Assert.AreSame(expected.Grid, actual.Grid);
         }
 

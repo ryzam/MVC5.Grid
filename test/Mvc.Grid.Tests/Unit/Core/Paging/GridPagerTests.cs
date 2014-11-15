@@ -123,15 +123,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridPager_SetsTypeAsPostProcessor()
-        {
-            GridProcessorType actual = new GridPager<GridModel>(grid).Type;
-            GridProcessorType expected = GridProcessorType.Post;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
         [TestCase("Page=15", 1)]
         [TestCase("Grid-Page=2", 2)]
         [TestCase("Grid-Page=15a", 1)]
@@ -150,6 +141,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             String actual = new GridPager<GridModel>(grid).PartialViewName;
             String expected = "MvcGrid/_Pager";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridPager_SetsProcessorTypeAsPostProcessor()
+        {
+            GridProcessorType actual = new GridPager<GridModel>(grid).ProcessorType;
+            GridProcessorType expected = GridProcessorType.Post;
 
             Assert.AreEqual(expected, actual);
         }

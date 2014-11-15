@@ -9,9 +9,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: BaseGridFilter()
 
         [Test]
-        public void BaseGridFilter_SetsTypeAsPreProcessor()
+        public void BaseGridFilter_SetsProcessorTypeAsPreProcessor()
         {
-            GridProcessorType actual = Substitute.For<BaseGridFilter<GridModel>>().Type;
+            GridProcessorType actual = Substitute.For<BaseGridFilter<GridModel>>().ProcessorType;
             GridProcessorType expected = GridProcessorType.Pre;
 
             Assert.AreEqual(expected, actual);

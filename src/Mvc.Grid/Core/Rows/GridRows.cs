@@ -16,10 +16,10 @@ namespace NonFactors.Mvc.Grid
         public IEnumerator<IGridRow> GetEnumerator()
         {
             IQueryable<TModel> items = Grid.Source;
-            foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.Type == GridProcessorType.Pre))
+            foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.ProcessorType == GridProcessorType.Pre))
                 items = processor.Process(items);
 
-            foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.Type == GridProcessorType.Post))
+            foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.ProcessorType == GridProcessorType.Post))
                 items = processor.Process(items);
 
             return items
