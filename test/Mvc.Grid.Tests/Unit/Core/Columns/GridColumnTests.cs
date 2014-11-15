@@ -292,8 +292,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: GetSortingQuery()
 
         [Test]
-        [TestCase(null, "Id=1", null, "#")]
-        [TestCase(false, "Id=1", null, "#")]
+        [TestCase(null, "Id=1", null, null)]
+        [TestCase(false, "Id=1", null, null)]
         [TestCase(true, "", null, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
         [TestCase(true, "Id=1", null, "?Id=1&G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
         [TestCase(true, "Id=1", GridSortOrder.Asc, "?Id=1&G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Desc")]

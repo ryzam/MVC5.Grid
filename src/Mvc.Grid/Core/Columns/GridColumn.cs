@@ -49,7 +49,7 @@ namespace NonFactors.Mvc.Grid
         public override String GetSortingQuery()
         {
             if (!(IsSortable == true))
-                return "#";
+                return null;
 
             GridQuery query = new GridQuery(Grid.Query);
             query[Grid.Name + "-Sort"] = Name;
