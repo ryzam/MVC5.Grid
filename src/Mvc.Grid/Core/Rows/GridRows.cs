@@ -23,8 +23,8 @@ namespace NonFactors.Mvc.Grid
                 items = processor.Process(items);
 
             return items
-                .Select(model => new GridRow(model))
                 .ToList()
+                .Select(model => new GridRow(model))
                 .GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()
