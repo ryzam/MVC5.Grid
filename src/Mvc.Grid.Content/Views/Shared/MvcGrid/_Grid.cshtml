@@ -7,7 +7,7 @@
             <tr>
                 @foreach (IGridColumn column in Model.Columns)
                 {
-                    <th class="@column.CssClasses"
+                    <th class="mvc-grid-header @column.CssClasses"
                         data-name="@column.Name"
                         data-filter="@(column.IsFilterable == true)"
                         data-filter-type="@column.FilterType"
@@ -22,6 +22,10 @@
                         else
                         {
                             <span class="mvc-grid-sort mvc-grid-sort-@column.SortOrder.ToString().ToLower()"></span>
+                        }
+                        @if (column.IsFilterable == true)
+                        {
+                            <a class="mvc-grid-filter" href="#" />
                         }
                     </th>
                 }
