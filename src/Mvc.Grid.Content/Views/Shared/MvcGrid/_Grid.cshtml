@@ -15,6 +15,14 @@
                         data-sort-order="@column.SortOrder"
                         data-sort-query="@column.GetSortingQuery()">
                         @column.Title
+                        @if (column.SortOrder == null)
+                        {
+                            <span class="mvc-grid-sort"></span>
+                        }
+                        else
+                        {
+                            <span class="mvc-grid-sort mvc-grid-sort-@column.SortOrder.ToString().ToLower()"></span>
+                        }
                     </th>
                 }
             </tr>

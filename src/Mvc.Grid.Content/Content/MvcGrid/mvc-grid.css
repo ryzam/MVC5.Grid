@@ -15,3 +15,10 @@
 .mvc-grid-table-empty {
     text-align: center;
 }
+
+.mvc-grid-sort-asc:after {
+    content: "\2193";
+}
+.mvc-grid-sort-desc:after {
+    content: "\2191";
+}
