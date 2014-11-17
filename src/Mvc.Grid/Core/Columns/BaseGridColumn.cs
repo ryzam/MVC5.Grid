@@ -17,6 +17,7 @@ namespace NonFactors.Mvc.Grid
         public GridSortOrder? SortOrder { get; set; }
         public Boolean? IsFilterable { get; set; }
         public Boolean? IsSortable { get; set; }
+        public String FilterValue { get; set; }
         public Boolean IsEncoded { get; set; }
         public String FilterType { get; set; }
         public String CssClasses { get; set; }
