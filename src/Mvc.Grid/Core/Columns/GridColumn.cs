@@ -22,6 +22,10 @@ namespace NonFactors.Mvc.Grid
             Name = ExpressionHelper.GetExpressionText(expression);
 
             SortOrder = GetSortOrder();
+            Filter = GetFilter();
+
+            if (Filter != null)
+                FilterValue = Filter.FilterValue;
         }
 
         public override IQueryable<TModel> Process(IQueryable<TModel> items)
@@ -87,6 +91,13 @@ namespace NonFactors.Mvc.Grid
                 return value.ToString();
 
             return String.Format(Format, value);
+        }
+        private IGridFilter<TModel> GetFilter()
+        {
+            if (!Grid.Query.Keys.Cast<String>().Contains(Grid.Name + "-" + Name + "-Equals")) return null;
+            String value = Grid.Query[Grid.Name + "-" + Name + "-Equals"];
+
+            return GridFilterFactory.GetFilter(this, "Equals", value);
         }
         private GridSortOrder? GetSortOrder()
         {

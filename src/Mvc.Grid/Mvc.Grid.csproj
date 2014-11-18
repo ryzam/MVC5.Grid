@@ -41,7 +41,9 @@
     <Compile Include="Core\Columns\IFilterableColumn.cs" />
     <Compile Include="Core\Columns\ISortableColumn.cs" />
     <Compile Include="Core\Filtering\BaseGridFilter.cs" />
+    <Compile Include="Core\Filtering\GridFilterFactory.cs" />
     <Compile Include="Core\Filtering\IGridFilter.cs" />
+    <Compile Include="Core\Filtering\StringEqualsFilter.cs" />
     <Compile Include="Core\Grids\Grid.cs" />
     <Compile Include="Core\Columns\GridColumns.cs" />
     <Compile Include="Core\Grids\HtmlGrid.cs" />
