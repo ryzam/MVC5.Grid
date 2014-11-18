@@ -57,6 +57,7 @@
         position: absolute;
         height: 8px;
         width: 14px;
+        top: -8px;
     }
 
     .mvc-grid-filter-popup .form-group {
