@@ -46,13 +46,16 @@
                 e.preventDefault();
 
                 var filterName = $(this).parent().data('filter-name');
-                var filterValue = $(this).parent().data('filter-value');
                 if ($.fn.mvcgrid.filters[filterName]) {
+                    var filterType = $(this).parent().data('filter-type');
+                    var filterValue = $(this).parent().data('filter-value');
                     var filterPopup = $('body').children('.mvc-grid-filter-popup');
-                    filterPopup.find('.popup-content').html($.fn.mvcgrid.filters[filterName].render(filterValue));
+
+                    filterPopup.find('.popup-content').html($.fn.mvcgrid.filters[filterName].render(filterType, filterValue));
                     filterPopup.addClass('open');
 
                     that.setFilterPopupPosition($(this), filterPopup);
+                    that.bindFilterApply(filterPopup, $(this).parent().data('name'));
                 }
             });
         },
@@ -77,6 +80,39 @@
 
             popup.attr('style', 'display: block; left: ' + dropdownLeft + 'px; top: ' + dropdownTop + 'px !important');
             arrow.css('left', arrowLeft + 'px');
+        },
+        bindFilterApply: function (popup, columnName) {
+            var gridName = this.grid.find('.mvc-grid-table').data('name');
+            var apply = popup.find('.mvc-grid-filter-apply');
+            var that = this;
+
+            apply.click(function (e) {
+                var type = popup.find('.mvc-grid-filter-type').val();
+                var value = popup.find('.mvc-grid-input').val();
+                window.location.search = that.getSearchQuery(gridName + '-' + columnName + '-' + type, value);
+            });
+        },
+        getSearchQuery: function (parameter, value) {
+            var parameters = window.location.search.replace('?', '').split('&');
+            var paramExists = false;
+
+            for (var i = 0; i < parameters.length; i++) {
+                var tokens = parameters[i].split('=');
+                var param = tokens[0];
+                var pValue = tokens[1];
+
+                if (param == parameter) {
+                    paramExists = true;
+                    pValue = value;
+                }
+
+                parameters[i] = param + '=' + pValue;
+            }
+            if (!paramExists) {
+                parameters.push(parameter + '=' + value);
+            }
+
+            return '?' + parameters.join('&');
         }
     };
 
@@ -93,11 +129,12 @@
             function GridTextFilter() {
             }
 
-            GridTextFilter.prototype.render = function (value) {
+            GridTextFilter.prototype.render = function (type, value) {
                 return (
                     '<div class="form-group">' +
-                        '<select class="form-control">' +
-                            '<option value="Equals" selected="selected">Equals</option>' +
+                        '<select class="mvc-grid-filter-type form-control">' +
+                            '<option value="Equals"' + (type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
+                            '<option value="Contains"' + (type == 'Contains' ? ' selected="selected"' : '') + '>Contains</option>' +
                         '</select>' +
                     '</div>' +
                     '<div class="form-group">' +

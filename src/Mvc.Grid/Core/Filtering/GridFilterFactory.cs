@@ -11,6 +11,7 @@ namespace NonFactors.Mvc.Grid
         {
             filters = new Hashtable();
             Register(typeof(String), "Equals", typeof(StringEqualsFilter<>));
+            Register(typeof(String), "Contains", typeof(StringContainsFilter<>));
         }
 
         public static IGridFilter<TModel> GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String name, String value) where TModel : class
@@ -28,6 +29,7 @@ namespace NonFactors.Mvc.Grid
             IGridFilter<TModel> filter = (IGridFilter<TModel>)Activator.CreateInstance(filterType);
             filter.FilteredExpression = column.Expression;
             filter.FilterValue = value;
+            filter.FilterType = name;
 
             return filter;
         }

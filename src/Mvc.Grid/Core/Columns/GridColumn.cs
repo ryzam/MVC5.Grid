@@ -25,7 +25,10 @@ namespace NonFactors.Mvc.Grid
             Filter = GetFilter();
 
             if (Filter != null)
+            {
                 FilterValue = Filter.FilterValue;
+                FilterType = Filter.FilterType;
+            } 
         }
 
         public override IQueryable<TModel> Process(IQueryable<TModel> items)
@@ -94,10 +97,13 @@ namespace NonFactors.Mvc.Grid
         }
         private IGridFilter<TModel> GetFilter()
         {
-            if (!Grid.Query.Keys.Cast<String>().Contains(Grid.Name + "-" + Name + "-Equals")) return null;
-            String value = Grid.Query[Grid.Name + "-" + Name + "-Equals"];
+            String filterKey = Grid.Query.Keys.Cast<String>().FirstOrDefault(key => (key ?? String.Empty).Contains(Grid.Name + "-" + Name + "-"));
+            if (filterKey == null) return null;
 
-            return GridFilterFactory.GetFilter(this, "Equals", value);
+            String value = Grid.Query[filterKey];
+            String filterType = filterKey.Substring((Grid.Name + "-" + Name + "-").Length);
+
+            return GridFilterFactory.GetFilter(this, filterType, value);
         }
         private GridSortOrder? GetSortOrder()
         {

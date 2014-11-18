@@ -7,5 +7,6 @@ namespace NonFactors.Mvc.Grid
     {
         LambdaExpression FilteredExpression { get; set; }
         String FilterValue { get; set; }
+        String FilterType { get; set; }
     }
 }

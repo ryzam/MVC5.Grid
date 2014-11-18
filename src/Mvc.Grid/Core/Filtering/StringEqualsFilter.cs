@@ -8,9 +8,9 @@ namespace NonFactors.Mvc.Grid
     {
         public override IQueryable<TModel> Process(IQueryable<TModel> items)
         {
-            Expression constraint = Expression.Constant(FilterValue);
+            Expression value = Expression.Constant(FilterValue);
             ParameterExpression parameter = FilteredExpression.Parameters[0];
-            Expression equal = Expression.Equal(FilteredExpression.Body, constraint);
+            Expression equal = Expression.Equal(FilteredExpression.Body, value);
             Expression<Func<TModel, Boolean>> filter = Expression.Lambda<Func<TModel, Boolean>>(equal, parameter);
 
             return items.Where(filter);
