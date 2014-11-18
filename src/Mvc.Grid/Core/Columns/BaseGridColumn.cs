@@ -18,6 +18,7 @@ namespace NonFactors.Mvc.Grid
         public Boolean? IsFilterable { get; set; }
         public Boolean? IsSortable { get; set; }
         public String FilterValue { get; set; }
+        public String FilterName { get; set; }
         public Boolean IsEncoded { get; set; }
         public String FilterType { get; set; }
         public String CssClasses { get; set; }
@@ -37,9 +38,9 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public IGridColumn<TModel, TValue> FilterTyped(String filterType)
+        public IGridColumn<TModel, TValue> FilterNamed(String filterName)
         {
-            FilterType = filterType;
+            FilterName = filterName;
 
             return this;
         }

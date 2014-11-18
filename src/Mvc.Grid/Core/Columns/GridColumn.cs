@@ -14,7 +14,7 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
             IsEncoded = true;
             Expression = expression;
-            FilterType = GetFilterType();
+            FilterName = GetFilterName();
             ValueFunction = expression.Compile();
             ProcessorType = GridProcessorType.Pre;
             IsSortable = GetInitialIsSortable(expression);
@@ -101,7 +101,7 @@ namespace NonFactors.Mvc.Grid
 
             return null;
         }
-        private String GetFilterType()
+        private String GetFilterName()
         {
             Type type = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
             if (type.IsEnum) return null;

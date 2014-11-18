@@ -32,12 +32,12 @@
                 e.stopPropagation();
                 e.preventDefault();
 
-                var filterType = $(this).parent().data('filter-type');
-                if ($.fn.mvcgrid.filters[filterType]) {
+                var filterName = $(this).parent().data('filter-name');
+                if ($.fn.mvcgrid.filters[filterName]) {
                     var filterPopup = $('body').children('.mvc-grid-filter-popup');
                     if (filterPopup.length > 0) {
                         filterPopup.addClass("open");
-                        filterPopup.html($.fn.mvcgrid.filters[filterType]("Equals"));
+                        filterPopup.html($.fn.mvcgrid.filters[filterName]("Equals"));
                     } else {
                         $('body').append("<div class='mvc-grid-filter-popup dropdown-menu open'><div class='popup-arrow'></div>" + $.fn.mvcgrid.filters[filterType]("Equals") + "</div>");
                         filterPopup = $('body').children('.mvc-grid-filter-popup');

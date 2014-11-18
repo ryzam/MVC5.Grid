@@ -7,6 +7,7 @@ namespace NonFactors.Mvc.Grid
         Boolean? IsFilterable { get; set; }
         String FilterValue { get; set; }
         String FilterType { get; set; }
+        String FilterName { get; set; }
     }
     public interface IFilterableColumn<TModel> : IGridProcessor<TModel> where TModel : class
     {
