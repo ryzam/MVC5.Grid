@@ -10,111 +10,147 @@
 
 (function ($) {
     function MvcGrid(element) {
-        this.grid = $(element);
-        this.init();
+        this.init($(element).find('table'));
     }
 
     MvcGrid.prototype = {
-        init: function () {
-            this.initSorting();
+        init: function (table) {
+            this.initVariables(table);
             this.initFiltering();
-        },
+            this.initSorting();
 
-        initSorting: function () {
-            this.grid.find('th[data-sort="True"]').on('click.mvcgrid', function () {
-                window.location.href = $(this).data('sort-query');
-            });
+            this.removeGridAtributes();
         },
+        initVariables: function (table) {
+            this.name = table.data('name');
+            this.table = table;
+            this.columns = [];
 
-        initFiltering: function () {
-            this.createFilterPopup();
-            this.bindFilters();
-        },
-        createFilterPopup: function () {
-            if ($('body').children('.mvc-grid-filter-popup').length == 0) {
-                $('body').append('<div class="mvc-grid-filter-popup dropdown-menu">' +
-                                    '<div class="popup-arrow"></div>' +
-                                    '<div class="popup-content"></div>' +
-                                 '</div>');
+            var gridColumns = this.table.find('.mvc-grid-header');
+            for (var col = 0; col < gridColumns.length; col++) {
+                var gridColumn = $(gridColumns[col]);
+                this.columns[col] = {
+                    column: gridColumn,
+                    name: gridColumn.data('name'),
+                    filter: {
+                        isEnabled: gridColumn.data('filterable'),
+                        name: gridColumn.data('filter-name'),
+                        type: gridColumn.data('filter-type'),
+                        value: gridColumn.data('filter-val')
+                    },
+                    sort: {
+                        isEnabled: gridColumn.data('sortable'),
+                        order: gridColumn.data('sort-order'),
+                        query: gridColumn.data('sort-query')
+                    }
+                };
             }
         },
-        bindFilters: function () {
+        initFiltering: function () {
             var that = this;
 
-            this.grid.find('th[data-filter="True"] .mvc-grid-filter').on('click.mvcgrid', function (e) {
-                e.stopPropagation();
-                e.preventDefault();
+            for (var col = 0; col < this.columns.length; col++) {
+                var column = this.columns[col];
+                if (column.filter.isEnabled) {
+                    column.column.find('.mvc-grid-filter').bind('click.mvcgrid', function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
 
-                var filterName = $(this).parent().data('filter-name');
-                if ($.fn.mvcgrid.filters[filterName]) {
-                    var filterType = $(this).parent().data('filter-type');
-                    var filterValue = $(this).parent().data('filter-value');
-                    var filterPopup = $('body').children('.mvc-grid-filter-popup');
-
-                    filterPopup.find('.popup-content').html($.fn.mvcgrid.filters[filterName].render(filterType, filterValue));
-                    filterPopup.addClass('open');
-
-                    that.setFilterPopupPosition($(this), filterPopup);
-                    that.bindFilterApply(filterPopup, $(this).parent().data('name'));
+                        that.renderFilterPopupFor(this, column);
+                    });
                 }
-            });
+            }
+        },
+        initSorting: function () {
+            for (var col = 0; col < this.columns.length; col++) {
+                if (this.columns[col].sort.isEnabled) {
+                    var query = this.columns[col].sort.query;
+                    this.columns[col].column.bind('click.mvcgrid', function () {
+                        window.location.href = query;
+                    });
+                }
+            }
+        },
+
+        renderFilterPopupFor: function (filter, column) {
+            var uiFilter = $.fn.mvcgrid.filters[column.filter.name];
+            if (uiFilter) {
+                var popup = $('body').children('.mvc-grid-filter-popup');
+
+                popup.find('.popup-content').html(uiFilter.render(column.filter));
+                this.setFilterPopupPosition($(filter), popup);
+                uiFilter.bindEvents(this, column, popup);
+                popup.addClass('open');
+            }
         },
         setFilterPopupPosition: function (filter, popup) {
             var arrow = popup.find('.popup-arrow');
-
-            var dropdownWidth = popup.width();
-            var popupLeft = filter.offset().left;
-            var popupTop = filter.offset().top;
+            var filterLeft = filter.offset().left;
             var winWidth = $(window).width();
-            var dropdownTop = popupTop + 20;
-            var dropdownLeft = 0;
-            var arrowLeft = 0;
+            var popupWidth = popup.width();
 
-            if (popupLeft + dropdownWidth + 10 > winWidth) {
-                dropdownLeft = winWidth - dropdownWidth - 20;
-                arrowLeft = popupLeft - dropdownLeft - 3;
-            } else {
-                dropdownLeft = popupLeft - 30;
-                arrowLeft = 17;
+            var popupLeft = filterLeft - 18;
+            var arrowLeft = 15;
+
+            if (filterLeft + popupWidth + 5 > winWidth) {
+                popupLeft = winWidth - popupWidth - 24;
+                arrowLeft = filterLeft - popupLeft - 3;
             }
 
-            popup.attr('style', 'display: block; left: ' + dropdownLeft + 'px; top: ' + dropdownTop + 'px !important');
+            popup.css('top', (filter.offset().top + 20) + 'px');
+            popup.css('left', popupLeft + 'px');
             arrow.css('left', arrowLeft + 'px');
         },
-        bindFilterApply: function (popup, columnName) {
-            var gridName = this.grid.find('.mvc-grid-table').data('name');
-            var apply = popup.find('.mvc-grid-filter-apply');
-            var that = this;
-
-            apply.click(function (e) {
-                var type = popup.find('.mvc-grid-filter-type').val();
-                var value = popup.find('.mvc-grid-input').val();
-                window.location.search = that.getSearchQuery(gridName + '-' + columnName + '-' + type, value);
-            });
-        },
-        getSearchQuery: function (parameter, value) {
+        formFilterQueryFor: function (column, filterType, filterValue) {
             var parameters = window.location.search.replace('?', '').split('&');
+            var filterParam = this.name + '-' + column.name + '-' + filterType;
+            var columnParam = this.name + '-' + column.name;
             var paramExists = false;
+            var newParameters = [];
+            var newParams = 0;
 
             for (var i = 0; i < parameters.length; i++) {
-                var tokens = parameters[i].split('=');
-                var param = tokens[0];
-                var pValue = tokens[1];
+                if (parameters[i] !== '') {
+                    var paramKey = parameters[i].split('=')[0];
+                    if (paramKey.indexOf(columnParam) == 0) {
+                        parameters[i] = filterParam + '=' + filterValue;
+                        paramExists = true;
+                    }
 
-                if (param == parameter) {
-                    paramExists = true;
-                    pValue = value;
+                    newParameters[newParams++] = parameters[i];
                 }
-
-                parameters[i] = param + '=' + pValue;
             }
             if (!paramExists) {
-                parameters.push(parameter + '=' + value);
+                newParameters.push(filterParam + '=' + filterValue);
             }
 
-            return '?' + parameters.join('&');
+            return '?' + newParameters.join('&');
+        },
+
+        removeGridAtributes: function () {
+            this.table.removeAttr('data-name');
+            for (var col = 0; col < this.columns.length; col++) {
+                this.removeGridColumnAttributes(this.columns[col].column);
+            }
+        },
+        removeGridColumnAttributes: function (column) {
+            column.removeAttr('data-name');
+
+            column.removeAttr('data-filterable');
+            column.removeAttr('data-filter-name');
+            column.removeAttr('data-filter-type');
+            column.removeAttr('data-filter-val');
+
+            column.removeAttr('data-sortable');
+            column.removeAttr('data-sort-order');
+            column.removeAttr('data-sort-query');
         }
     };
+
+    $('body').append('<div class="mvc-grid-filter-popup dropdown-menu">' +
+                        '<div class="popup-arrow"></div>' +
+                        '<div class="popup-content"></div>' +
+                     '</div>');
 
     $.fn.mvcgrid = function () {
         return this.each(function () {
@@ -123,26 +159,38 @@
             }
         });
     };
-
     $.fn.mvcgrid.filters = {
         Text: (function ($) {
             function GridTextFilter() {
             }
 
-            GridTextFilter.prototype.render = function (type, value) {
-                return (
-                    '<div class="form-group">' +
-                        '<select class="mvc-grid-filter-type form-control">' +
-                            '<option value="Equals"' + (type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
-                            '<option value="Contains"' + (type == 'Contains' ? ' selected="selected"' : '') + '>Contains</option>' +
-                        '</select>' +
-                    '</div>' +
-                    '<div class="form-group">' +
-                        '<input class="form-control mvc-grid-input" type="text" value="' + value + '">' +
-                    '</div>' +
-                    '<div class="mvc-grid-filter-buttons">' +
-                        '<button class="btn btn-primary btn-block mvc-grid-filter-apply" type="button">Apply</button>' +
-                    '</div>');
+            GridTextFilter.prototype = {
+                render: function (filter) {
+                    return (
+                        '<div class="form-group">' +
+                            '<select class="mvc-grid-filter-type form-control">' +
+                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
+                                '<option value="Contains"' + (filter.type == 'Contains' ? ' selected="selected"' : '') + '>Contains</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                            '<input class="form-control mvc-grid-input" type="text" value="' + filter.value + '">' +
+                        '</div>' +
+                        '<div class="mvc-grid-filter-buttons">' +
+                            '<button class="btn btn-primary btn-block mvc-grid-filter-apply" type="button">Apply</button>' +
+                        '</div>');
+                },
+                bindEvents: function (mvcGrid, column, popup) {
+                    var applyButton = popup.find('.mvc-grid-filter-apply');
+
+                    applyButton.bind('click.mvcgrid', function () {
+                        var type = popup.find('.mvc-grid-filter-type').val();
+                        var value = popup.find('.mvc-grid-input').val();
+                        popup.removeClass('open');
+
+                        window.location.href = mvcGrid.formFilterQueryFor(column, type, value);
+                    });
+                }
             }
 
             return new GridTextFilter();

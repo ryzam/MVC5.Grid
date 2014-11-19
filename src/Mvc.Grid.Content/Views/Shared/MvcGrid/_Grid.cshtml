@@ -9,11 +9,11 @@
                 {
                     <th class="mvc-grid-header @column.CssClasses"
                         data-name="@column.Name"
-                        data-filter="@(column.IsFilterable == true)"
+                        data-filterable="@(column.IsFilterable == true)"
                         data-filter-name="@column.FilterName"
                         data-filter-type="@column.FilterType"
-                        data-filter-value="@column.FilterValue"
-                        data-sort="@(column.IsSortable == true)"
+                        data-filter-val="@column.FilterValue"
+                        data-sortable="@(column.IsSortable == true)"
                         data-sort-order="@column.SortOrder"
                         data-sort-query="@column.GetSortingQuery()">
                         @column.Title

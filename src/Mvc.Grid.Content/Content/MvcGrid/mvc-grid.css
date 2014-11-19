@@ -43,14 +43,16 @@
     top: 50%;
 }
 
-.mvc-grid-filter-popup.open {
-    display: block;
-}
 
 .mvc-grid-filter-popup {
     position: absolute;
     padding: 0 5px;
+    display: none;
 }
+
+    .mvc-grid-filter-popup.open {
+        display: block;
+    }
 
     .mvc-grid-filter-popup .popup-arrow {
         background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAMAAAD+zz7+AAAAP1BMVEX////////////////////////////////////////////////////////MzMzn5+f////d3d3W1tb29vbv7+/jdafZAAAADnRSTlMAAQgRBQcCGgMLKSUZIkFRd6sAAABPSURBVHhePcoJDoVACAPQ4u5fyjb3P6ugiYWkeQQIAJncf2v12ZSPkvoHsGDfsAyOWjkgNfOgmmm5P79JN2vnDEytO84UWEQ+zAhD0N4wLuqDBO7lVsPjAAAAAElFTkSuQmCC');
