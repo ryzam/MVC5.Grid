@@ -52,8 +52,8 @@
 
 .mvc-grid-filter-popup {
     position: absolute;
-    padding: 0 5px;
     display: none;
+    padding: 0;
 }
 
     .mvc-grid-filter-popup.open {
@@ -66,6 +66,10 @@
         height: 8px;
         width: 14px;
         top: -8px;
+    }
+
+    .mvc-grid-filter-popup .popup-content {
+        padding: 0 5px;
     }
 
     .mvc-grid-filter-popup .form-group {

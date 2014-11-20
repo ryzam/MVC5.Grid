@@ -57,7 +57,6 @@
             var that = this;
 
             column.column.find('.mvc-grid-filter').bind('click.mvcgrid', function (e) {
-                e.stopPropagation();
                 e.preventDefault();
 
                 that.renderFilterPopupFor(this, column);
@@ -71,20 +70,34 @@
             }
         },
         bindSorting: function (column) {
-            column.column.bind('click.mvcgrid', function () {
-                window.location.href = column.sort.query;
+            column.column.bind('click.mvcgrid', function (e) {
+                var target = $(e.target || e.srcElement);
+                if (!target.hasClass("mvc-grid-filter") && target.parents(".mvc-grid-filter").length == 0) {
+                    window.location.href = column.sort.query;
+                }
             });
         },
 
         renderFilterPopupFor: function (filter, column) {
+            var popup = $('body').children('.mvc-grid-filter-popup');
             var uiFilter = $.fn.mvcgrid.filters[column.filter.name];
-            if (uiFilter) {
-                var popup = $('body').children('.mvc-grid-filter-popup');
 
+            if (uiFilter) {
                 popup.find('.popup-content').html(uiFilter.render(column.filter));
                 this.setFilterPopupPosition($(filter), popup);
                 uiFilter.bindEvents(this, column, popup);
                 popup.addClass('open');
+
+                $(window).bind('click.mvcgrid', function (e) {
+                    var target = $(e.target || e.srcElement);
+                    if (!target.hasClass("mvc-grid-filter") && target.parents(".mvc-grid-filter-popup").length == 0) {
+                        $(window).unbind('click.mvcgrid');
+                        popup.removeClass("open");
+                    }
+                });
+            } else {
+                $(window).unbind('click.mvcgrid');
+                popup.removeClass("open");
             }
         },
         setFilterPopupPosition: function (filter, popup) {
@@ -158,6 +171,10 @@
                         '<div class="popup-arrow"></div>' +
                         '<div class="popup-content"></div>' +
                      '</div>');
+
+    $(window).resize(function () {
+        $(".mvc-grid-filter-popup").removeClass("open");
+    });
 
     $.fn.mvcgrid = function () {
         return this.each(function () {
