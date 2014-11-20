@@ -29,20 +29,26 @@
 }
 
 .mvc-grid-filter {
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAMBAMAAACpRTGTAAAAMFBMVEUAAAD///////9ISEgZGRn///82NjbGxsaHh4f///9VVVW9vb1NTU3///8ZGRkzMzMT2xyPAAAADnRSTlMAQATDTxTzOGwQqzG3KGb54LsAAABDSURBVAgdBcExDkBAEADAsahU9wO/ofJWnqKWiEIp1yqEM1NlqBKYcs5n0yaGer/Ge4unF3N8neWgKzOi9FAIXoKVH+i2E10JB20gAAAAAElFTkSuQmCC');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAMBAMAAACpRTGTAAAAMFBMVEUAAAD///////9ISEgZGRn///82NjbGxsaHh4f///9VVVW9vb1NTU3///8ZGRkzMzMT2xyPAAAADnRSTlMAQATDTxTzOGwQqzG3KGb54LsAAABDSURBVAgdBcExDkBAEADAsahU9wO/ofJWnqKWiEIp1yqEM1NlqBKYcs5n0yaGer/Ge4unF3N8neWgKzOi9FAIXoKVH+i2E10JB20gAAAAAElFTkSuQmCC');
     -webkit-transform: translate(0, -40%);
     -moz-transform: translate(0, -40%);
     -ms-transform: translate(0, -40%);
     -o-transform: translate(0, -40%);
     transform: translate(0, -40%);
+    background-repeat: no-repeat;
+    background-position: center;
     position: absolute;
-    height: 12px;
+    height: 100%;
     float: right;
-    width: 10px;
-    right: 10px;
-    top: 50%;
+    width: 30px;
+    right: 0;
+    top: 40%;
 }
 
+    .mvc-grid-filter:focus {
+        text-decoration: none;
+        outline: none;
+    }
 
 .mvc-grid-filter-popup {
     position: absolute;
