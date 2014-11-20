@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Grid 0.4.0
+ * Mvc.Grid 0.5.0
  * https://github.com/NonFactors/MVC.Grid
  *
  * Copyright © 2014 NonFactors
@@ -47,29 +47,33 @@
             }
         },
         initFiltering: function () {
-            var that = this;
-
             for (var col = 0; col < this.columns.length; col++) {
-                var column = this.columns[col];
-                if (column.filter.isEnabled) {
-                    column.column.find('.mvc-grid-filter').bind('click.mvcgrid', function (e) {
-                        e.stopPropagation();
-                        e.preventDefault();
-
-                        that.renderFilterPopupFor(this, column);
-                    });
+                if (this.columns[col].filter.isEnabled) {
+                    this.bindFiltering(this.columns[col]);
                 }
             }
+        },
+        bindFiltering: function (column) {
+            var that = this;
+
+            column.column.find('.mvc-grid-filter').bind('click.mvcgrid', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                that.renderFilterPopupFor(this, column);
+            });
         },
         initSorting: function () {
             for (var col = 0; col < this.columns.length; col++) {
                 if (this.columns[col].sort.isEnabled) {
-                    var query = this.columns[col].sort.query;
-                    this.columns[col].column.bind('click.mvcgrid', function () {
-                        window.location.href = query;
-                    });
+                    this.bindSorting(this.columns[col]);
                 }
             }
+        },
+        bindSorting: function (column) {
+            column.column.bind('click.mvcgrid', function () {
+                window.location.href = column.sort.query;
+            });
         },
 
         renderFilterPopupFor: function (filter, column) {
@@ -86,10 +90,13 @@
         setFilterPopupPosition: function (filter, popup) {
             var arrow = popup.find('.popup-arrow');
             var filterLeft = filter.offset().left;
+            var filterTop = filter.offset().top;
+            var filterHeight = filter.height();
             var winWidth = $(window).width();
             var popupWidth = popup.width();
 
-            var popupLeft = filterLeft - 18;
+            var popupTop = filterTop + filterHeight / 2 + 12;
+            var popupLeft = filterLeft - 8;
             var arrowLeft = 15;
 
             if (filterLeft + popupWidth + 5 > winWidth) {
@@ -97,9 +104,9 @@
                 arrowLeft = filterLeft - popupLeft - 3;
             }
 
-            popup.css('top', (filter.offset().top + 20) + 'px');
-            popup.css('left', popupLeft + 'px');
             arrow.css('left', arrowLeft + 'px');
+            popup.css('left', popupLeft + 'px');
+            popup.css('top', popupTop + 'px');
         },
         formFilterQueryFor: function (column, filterType, filterValue) {
             var parameters = window.location.search.replace('?', '').split('&');
