@@ -121,10 +121,11 @@
             popup.css('left', popupLeft + 'px');
             popup.css('top', popupTop + 'px');
         },
-        formFilterQueryFor: function (column, filterType, filterValue) {
+        formFilterQueryFor: function (column, type, value) {
+            var filterParam = encodeURIComponent(this.name + '-' + column.name + '-' + type);
+            var columnParam = encodeURIComponent(this.name + '-' + column.name);
             var parameters = window.location.search.replace('?', '').split('&');
-            var filterParam = this.name + '-' + column.name + '-' + filterType;
-            var columnParam = this.name + '-' + column.name;
+            var filterValue = encodeURIComponent(value);
             var paramExists = false;
             var newParameters = [];
             var newParams = 0;
