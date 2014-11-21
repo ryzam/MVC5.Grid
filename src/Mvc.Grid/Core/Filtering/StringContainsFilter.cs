@@ -12,8 +12,12 @@ namespace NonFactors.Mvc.Grid
             Expression value = Expression.Constant(FilterValue);
             MethodInfo method = typeof(String).GetMethod("Contains");
             ParameterExpression parameter = FilteredExpression.Parameters[0];
+
+            Expression notEqual = Expression.NotEqual(FilteredExpression.Body, Expression.Constant(null));
             Expression contains = Expression.Call(FilteredExpression.Body, method, value);
-            Expression<Func<TModel, Boolean>> filter = Expression.Lambda<Func<TModel, Boolean>>(contains, parameter);
+            Expression andAlso = Expression.AndAlso(notEqual, contains);
+
+            Expression<Func<TModel, Boolean>> filter = Expression.Lambda<Func<TModel, Boolean>>(andAlso, parameter);
 
             return items.Where(filter);
         }
