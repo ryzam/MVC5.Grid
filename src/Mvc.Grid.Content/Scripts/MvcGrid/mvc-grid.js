@@ -33,13 +33,13 @@
                     column: gridColumn,
                     name: gridColumn.data('name') || "",
                     filter: {
-                        isEnabled: gridColumn.data('filterable') || false,
+                        isEnabled: gridColumn.data('filterable') || "False",
                         name: gridColumn.data('filter-name') || "",
                         type: gridColumn.data('filter-type') || "",
                         value: gridColumn.data('filter-val') || ""
                     },
                     sort: {
-                        isEnabled: gridColumn.data('sortable') || false,
+                        isEnabled: gridColumn.data('sortable') || "False",
                         order: gridColumn.data('sort-order') || "",
                         query: gridColumn.data('sort-query') || ""
                     }
@@ -48,7 +48,7 @@
         },
         initFiltering: function () {
             for (var col = 0; col < this.columns.length; col++) {
-                if (this.columns[col].filter.isEnabled) {
+                if (this.columns[col].filter.isEnabled == "True") {
                     this.bindFiltering(this.columns[col]);
                 }
             }
@@ -64,7 +64,7 @@
         },
         initSorting: function () {
             for (var col = 0; col < this.columns.length; col++) {
-                if (this.columns[col].sort.isEnabled) {
+                if (this.columns[col].sort.isEnabled == "True") {
                     this.bindSorting(this.columns[col]);
                 }
             }
