@@ -31,17 +31,17 @@
                 var gridColumn = $(gridColumns[col]);
                 this.columns[col] = {
                     column: gridColumn,
-                    name: gridColumn.data('name'),
+                    name: gridColumn.data('name') || "",
                     filter: {
-                        isEnabled: gridColumn.data('filterable'),
-                        name: gridColumn.data('filter-name'),
-                        type: gridColumn.data('filter-type'),
-                        value: gridColumn.data('filter-val')
+                        isEnabled: gridColumn.data('filterable') || false,
+                        name: gridColumn.data('filter-name') || "",
+                        type: gridColumn.data('filter-type') || "",
+                        value: gridColumn.data('filter-val') || ""
                     },
                     sort: {
-                        isEnabled: gridColumn.data('sortable'),
-                        order: gridColumn.data('sort-order'),
-                        query: gridColumn.data('sort-query')
+                        isEnabled: gridColumn.data('sortable') || false,
+                        order: gridColumn.data('sort-order') || "",
+                        query: gridColumn.data('sort-query') || ""
                     }
                 };
             }
