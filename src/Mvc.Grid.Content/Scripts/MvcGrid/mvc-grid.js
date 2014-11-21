@@ -215,8 +215,11 @@
                     });
 
                     var filterInput = popup.find('.mvc-grid-input');
-                    filterInput.bind('keyup', function () {
+                    filterInput.bind('keyup', function (e) {
                         column.filter.value = this.value;
+                        if (e.keyCode == 13) {
+                            applyButton.click();
+                        }
                     });
                 }
             }
