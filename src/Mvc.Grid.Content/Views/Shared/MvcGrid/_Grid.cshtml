@@ -19,15 +19,11 @@
                         @column.Title
                         @if (column.SortOrder == null)
                         {
-                            <span class="mvc-grid-sort"></span>
-                        }
-                        else
-                        {
                             <span class="mvc-grid-sort mvc-grid-sort-@column.SortOrder.ToString().ToLower()"></span>
                         }
                         @if (column.IsFilterable == true)
                         {
-                            <a class="mvc-grid-filter" href="#" />
+                            <a class="mvc-grid-filter" href="javascript:void(0);" />
                         }
                     </th>
                 }

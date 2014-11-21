@@ -206,13 +206,17 @@
                 },
                 bindEvents: function (mvcGrid, column, popup) {
                     var applyButton = popup.find('.mvc-grid-filter-apply');
-
                     applyButton.bind('click.mvcgrid', function () {
                         var type = popup.find('.mvc-grid-filter-type').val();
                         var value = popup.find('.mvc-grid-input').val();
                         popup.removeClass('open');
 
                         window.location.href = mvcGrid.formFilterQueryFor(column, type, value);
+                    });
+
+                    var filterInput = popup.find('.mvc-grid-input');
+                    filterInput.bind('keyup', function () {
+                        column.filter.value = this.value;
                     });
                 }
             }
