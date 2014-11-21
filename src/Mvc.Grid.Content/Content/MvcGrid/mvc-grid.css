@@ -8,8 +8,13 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-.mvc-grid-table th {
+.mvc-grid-filter,
+.mvc-grid-sortable {
     cursor: pointer;
+}
+
+.mvc-grid-table .mvc-grid-filterable {
+    padding-right: 30px;
 }
 
 .mvc-grid-table-empty {

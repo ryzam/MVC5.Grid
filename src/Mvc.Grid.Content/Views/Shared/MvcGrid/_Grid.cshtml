@@ -7,7 +7,10 @@
             <tr>
                 @foreach (IGridColumn column in Model.Columns)
                 {
-                    <th class="mvc-grid-header @column.CssClasses"
+                    String filterableClass = column.IsFilterable == true ? "mvc-grid-filterable" : "";
+                    String sortableClass = column.IsSortable == true ? "mvc-grid-sortable" : "";
+
+                    <th class="mvc-grid-header @filterableClass @sortableClass @column.CssClasses"
                         data-name="@column.Name"
                         data-filterable="@(column.IsFilterable == true)"
                         data-filter-name="@column.FilterName"
