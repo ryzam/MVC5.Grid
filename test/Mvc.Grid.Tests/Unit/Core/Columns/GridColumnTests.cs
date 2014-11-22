@@ -14,7 +14,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     public class GridColumnTests
     {
         private GridColumn<GridModel, Object> column;
+        private IGridFilters oldFilters;
         private IGrid<GridModel> grid;
+
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            oldFilters = MvcGrid.Filters;
+        }
 
         [SetUp]
         public void SetUp()
@@ -22,6 +29,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             grid = Substitute.For<IGrid<GridModel>>();
             grid.Query = new GridQuery(new NameValueCollection());
             column = new GridColumn<GridModel, Object>(grid, model => model.Name);
+
+            MvcGrid.Filters = Substitute.For<IGridFilters>();
+        }
+
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            MvcGrid.Filters = oldFilters;
         }
 
         #region Constructor: GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
@@ -304,6 +319,74 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
 
             GridSortOrder? actual = new GridColumn<GridModel, String>(grid, model => model.Name).SortOrder;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("")]
+        [TestCase("=value")]
+        [TestCase("param=value")]
+        [TestCase("Grid-Name=value")]
+        public void GridColumn_OnGridQueryWithoutFilterSetsFilterToNull(String query)
+        {
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+
+            Object filter = new GridColumn<GridModel, String>(grid, model => model.Name).Filter;
+
+            Assert.IsNull(filter);
+        }
+
+        [Test]
+        [TestCase("Grid-Name-Equals=", "Equals", "")]
+        [TestCase("Grid-Name-Equals=Test", "Equals", "Test")]
+        [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value", "Equals", "Test")]
+        [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value", "Equals", "Test")]
+        public void GridColumn_SetsFilterFromMvcGridFilters(String query, String type, String value)
+        {
+            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), type, value).Returns(filter);
+
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            GridColumn<GridModel, String> column = new GridColumn<GridModel, String>(grid, model => model.Name);
+
+            Object actual = column.Filter;
+            Object expected = filter;
+
+            MvcGrid.Filters.Received().GetFilter(column, type, value);
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsFilterValueFromFilter()
+        {
+            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
+            filter.FilterValue = "Test";
+
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString("Grid-Name-Equals=Value"));
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Equals", "Value").Returns(filter);
+
+            String actual = new GridColumn<GridModel, String>(grid, model => model.Name).FilterValue;
+            String expected = filter.FilterValue;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GridColumn_SetsFilterTypeFromFilter()
+        {
+            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
+            filter.FilterType = "Test";
+
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString("Grid-Name-Equals=Value"));
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Equals", "Value").Returns(filter);
+
+            String actual = new GridColumn<GridModel, String>(grid, model => model.Name).FilterType;
+            String expected = filter.FilterType;
 
             Assert.AreEqual(expected, actual);
         }
