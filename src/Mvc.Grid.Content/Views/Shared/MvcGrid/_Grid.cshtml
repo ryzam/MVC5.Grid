@@ -37,7 +37,7 @@
             {
                 foreach (IGridRow row in Model.Rows)
                 {
-                    <tr>
+                    <tr class="mvc-grid-row @row.CssClasses">
                         @foreach (IGridColumn column in Model.Columns)
                         {
                             <td class="@column.CssClasses">@column.ValueFor(row)</td>

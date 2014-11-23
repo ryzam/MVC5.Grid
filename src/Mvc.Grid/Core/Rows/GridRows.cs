@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,7 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridRows<TModel> : IGridRows<TModel> where TModel : class
     {
+        public Func<TModel, String> CssClasses { get; set; }
         public IGrid<TModel> Grid { get; private set; }
 
         public GridRows(IGrid<TModel> grid)
@@ -24,7 +26,12 @@ namespace NonFactors.Mvc.Grid
 
             return items
                 .ToList()
-                .Select(model => new GridRow(model))
+                .Select(model => new GridRow(model)
+                {
+                    CssClasses = (CssClasses != null)
+                        ? CssClasses(model)
+                        : null
+                })
                 .GetEnumerator();
         }
         IEnumerator IEnumerable.GetEnumerator()

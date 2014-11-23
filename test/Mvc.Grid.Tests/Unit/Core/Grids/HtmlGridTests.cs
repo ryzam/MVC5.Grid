@@ -229,6 +229,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: RowCss(Func<TModel, String> cssClasses)
+
+        [Test]
+        public void RowCss_SetsRowsCssClasses()
+        {
+            Func<GridModel, String> expected = (model) => "";
+            Func<GridModel, String> actual = htmlGrid.RowCss(expected).Grid.Rows.CssClasses;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void RowCss_ReturnsSameGrid()
+        {
+            IHtmlGrid<GridModel> actual = htmlGrid.RowCss(null);
+            IHtmlGrid<GridModel> expected = htmlGrid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: Css(String cssClasses)
 
         [Test]

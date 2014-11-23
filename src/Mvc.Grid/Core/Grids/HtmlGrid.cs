@@ -51,6 +51,12 @@ namespace NonFactors.Mvc.Grid
             return Sortable(true);
         }
 
+        public IHtmlGrid<TModel> RowCss(Func<TModel, String> cssClasses)
+        {
+            Grid.Rows.CssClasses = cssClasses;
+
+            return this;
+        }
         public IHtmlGrid<TModel> Css(String cssClasses)
         {
             Grid.CssClasses = cssClasses;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -8,6 +9,7 @@ namespace NonFactors.Mvc.Grid
 
     public interface IGridRows<TModel> : IGridRows where TModel : class
     {
+        Func<TModel, String> CssClasses { get; set; }
         IGrid<TModel> Grid { get; }
     }
 }
