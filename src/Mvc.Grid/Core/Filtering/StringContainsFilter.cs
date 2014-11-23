@@ -9,15 +9,17 @@ namespace NonFactors.Mvc.Grid
     {
         public override IQueryable<TModel> Process(IQueryable<TModel> items)
         {
+            MethodInfo toUpperMethod = typeof(String).GetMethod("ToUpper", new Type[0]);
+            MethodInfo containsMethod = typeof(String).GetMethod("Contains");
             ParameterExpression parameter = FilteredExpression.Parameters[0];
-            MethodInfo method = typeof(String).GetMethod("Contains");
-            Expression value = Expression.Constant(Value);
+            Expression value = Expression.Constant(Value.ToUpper());
 
-            Expression notEqual = Expression.NotEqual(FilteredExpression.Body, Expression.Constant(null));
-            Expression contains = Expression.Call(FilteredExpression.Body, method, value);
-            Expression andAlso = Expression.AndAlso(notEqual, contains);
+            Expression notNull = Expression.NotEqual(FilteredExpression.Body, Expression.Constant(null));
+            Expression toUpper = Expression.Call(FilteredExpression.Body, toUpperMethod);
+            Expression contains = Expression.Call(toUpper, containsMethod, value);
 
-            Expression<Func<TModel, Boolean>> filter = Expression.Lambda<Func<TModel, Boolean>>(andAlso, parameter);
+            Expression notNullContains = Expression.AndAlso(notNull, contains);
+            Expression<Func<TModel, Boolean>> filter = Expression.Lambda<Func<TModel, Boolean>>(notNullContains, parameter);
 
             return items.Where(filter);
         }

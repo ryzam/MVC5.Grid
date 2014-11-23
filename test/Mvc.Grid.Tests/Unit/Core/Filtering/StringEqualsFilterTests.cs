@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Process(IQueryable<TModel> items)
 
         [Test]
-        public void Process_FiltersItems()
+        public void Process_FiltersItemsWithCaseInsensitiveComparison()
         {
             StringEqualsFilter<GridModel> filter = new StringEqualsFilter<GridModel>();
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -27,7 +27,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
                 new GridModel { Name = "Test2" }
             }.AsQueryable();
 
-            IQueryable expected = models.Where(model => model.Name == "Test");
+            IQueryable expected = models.Where(model => model.Name != null && model.Name.ToUpper() == "TEST");
             IQueryable actual = filter.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);
