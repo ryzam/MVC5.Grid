@@ -9,18 +9,19 @@ namespace NonFactors.Mvc.Grid
     {
         public Expression<Func<TModel, TValue>> Expression { get; set; }
         public Func<TModel, TValue> ValueFunction { get; set; }
-
         public GridProcessorType ProcessorType { get; set; }
-        public IGridFilter<TModel> Filter { get; set; }
         public IGrid<TModel> Grid { get; set; }
 
         public GridSortOrder? SortOrder { get; set; }
-        public Boolean? IsFilterable { get; set; }
         public Boolean? IsSortable { get; set; }
+
+        public IGridFilter<TModel> Filter { get; set; }
+        public Boolean? IsFilterable { get; set; }
         public String FilterValue { get; set; }
         public String FilterName { get; set; }
-        public Boolean IsEncoded { get; set; }
         public String FilterType { get; set; }
+
+        public Boolean IsEncoded { get; set; }
         public String CssClasses { get; set; }
         public String Format { get; set; }
         public String Title { get; set; }

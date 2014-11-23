@@ -30,16 +30,16 @@
             for (var col = 0; col < gridColumns.length; col++) {
                 var gridColumn = $(gridColumns[col]);
                 this.columns[col] = {
-                    column: gridColumn,
+                    element: gridColumn,
                     name: gridColumn.data('name') || "",
                     filter: {
-                        isEnabled: gridColumn.data('filterable') || "False",
+                        isEnabled: gridColumn.data('filterable') || "",
                         name: gridColumn.data('filter-name') || "",
                         type: gridColumn.data('filter-type') || "",
                         value: gridColumn.data('filter-val') || ""
                     },
                     sort: {
-                        isEnabled: gridColumn.data('sortable') || "False",
+                        isEnabled: gridColumn.data('sortable') || "",
                         order: gridColumn.data('sort-order') || "",
                         query: gridColumn.data('sort-query') || ""
                     }
@@ -56,7 +56,7 @@
         bindFiltering: function (column) {
             var that = this;
 
-            column.column.find('.mvc-grid-filter').bind('click.mvcgrid', function (e) {
+            column.element.find('.mvc-grid-filter').bind('click.mvcgrid', function (e) {
                 e.preventDefault();
 
                 that.renderFilterPopupFor(this, column);
@@ -70,7 +70,7 @@
             }
         },
         bindSorting: function (column) {
-            column.column.bind('click.mvcgrid', function (e) {
+            column.element.bind('click.mvcgrid', function (e) {
                 var target = $(e.target || e.srcElement);
                 if (!target.hasClass("mvc-grid-filter") && target.parents(".mvc-grid-filter").length == 0) {
                     window.location.href = column.sort.query;

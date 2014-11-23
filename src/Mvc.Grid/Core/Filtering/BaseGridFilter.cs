@@ -8,8 +8,8 @@ namespace NonFactors.Mvc.Grid
     {
         public LambdaExpression FilteredExpression { get; set; }
         public GridProcessorType ProcessorType { get; set; }
-        public String FilterValue { get; set; }
-        public String FilterType { get; set; }
+        public String Value { get; set; }
+        public String Type { get; set; }
 
         public BaseGridFilter()
         {

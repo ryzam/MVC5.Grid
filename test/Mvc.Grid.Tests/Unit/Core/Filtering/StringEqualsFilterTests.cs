@@ -16,7 +16,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             StringEqualsFilter<GridModel> filter = new StringEqualsFilter<GridModel>();
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
             filter.FilteredExpression = expression;
-            filter.FilterValue = "Test";
+            filter.Value = "Test";
 
             IQueryable<GridModel> models = new[]
             {

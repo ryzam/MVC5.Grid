@@ -33,8 +33,8 @@ namespace NonFactors.Mvc.Grid
             Type filterType = typedFilters[name].MakeGenericType(typeof(TModel));
             IGridFilter<TModel> filter = (IGridFilter<TModel>)Activator.CreateInstance(filterType);
             filter.FilteredExpression = column.Expression;
-            filter.FilterValue = value;
-            filter.FilterType = name;
+            filter.Value = value;
+            filter.Type = name;
 
             return filter;
         }

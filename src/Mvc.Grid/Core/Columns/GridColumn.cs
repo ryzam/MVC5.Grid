@@ -15,10 +15,10 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
             Expression = expression;
             FilterName = GetFilterName();
+            IsSortable = IsMember(expression);
+            IsFilterable = IsMember(expression);
             ValueFunction = expression.Compile();
             ProcessorType = GridProcessorType.Pre;
-            IsSortable = GetInitialIsSortable(expression);
-            IsFilterable = GetInitialIsFilterable(expression);
             Name = ExpressionHelper.GetExpressionText(expression);
 
             SortOrder = GetSortOrder();
@@ -26,8 +26,8 @@ namespace NonFactors.Mvc.Grid
 
             if (Filter != null)
             {
-                FilterValue = Filter.FilterValue;
-                FilterType = Filter.FilterType;
+                FilterValue = Filter.Value;
+                FilterType = Filter.Type;
             }
         }
 
@@ -70,14 +70,7 @@ namespace NonFactors.Mvc.Grid
             return query.ToString();
         }
 
-        private Boolean? GetInitialIsFilterable(Expression<Func<TModel, TValue>> expression)
-        {
-            if (expression.Body is MemberExpression)
-                return null;
-
-            return false;
-        }
-        private Boolean? GetInitialIsSortable(Expression<Func<TModel, TValue>> expression)
+        private Boolean? IsMember(Expression<Func<TModel, TValue>> expression)
         {
             if (expression.Body is MemberExpression)
                 return null;

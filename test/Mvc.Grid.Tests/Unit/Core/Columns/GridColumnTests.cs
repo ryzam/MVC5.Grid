@@ -363,14 +363,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void GridColumn_SetsFilterValueFromFilter()
         {
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            filter.FilterValue = "Test";
+            filter.Value = "Test";
 
             grid.Name = "Grid";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString("Grid-Name-Equals=Value"));
             MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Equals", "Value").Returns(filter);
 
             String actual = new GridColumn<GridModel, String>(grid, model => model.Name).FilterValue;
-            String expected = filter.FilterValue;
+            String expected = filter.Value;
 
             Assert.AreEqual(expected, actual);
         }
@@ -379,14 +379,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void GridColumn_SetsFilterTypeFromFilter()
         {
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            filter.FilterType = "Test";
+            filter.Type = "Test";
 
             grid.Name = "Grid";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString("Grid-Name-Equals=Value"));
             MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Equals", "Value").Returns(filter);
 
             String actual = new GridColumn<GridModel, String>(grid, model => model.Name).FilterType;
-            String expected = filter.FilterType;
+            String expected = filter.Type;
 
             Assert.AreEqual(expected, actual);
         }

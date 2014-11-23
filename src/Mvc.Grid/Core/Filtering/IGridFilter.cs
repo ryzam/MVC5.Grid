@@ -6,7 +6,7 @@ namespace NonFactors.Mvc.Grid
     public interface IGridFilter<TModel> : IGridProcessor<TModel> where TModel : class
     {
         LambdaExpression FilteredExpression { get; set; }
-        String FilterValue { get; set; }
-        String FilterType { get; set; }
+        String Value { get; set; }
+        String Type { get; set; }
     }
 }

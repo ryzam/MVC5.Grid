@@ -44,6 +44,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridColumn<GridModel, String> actual = columns.Add<String>(expression);
 
             Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
+            Assert.AreEqual(expected.IsFilterable, actual.IsFilterable);
+            Assert.AreEqual(expected.FilterValue, actual.FilterValue);
+            Assert.AreEqual(expected.FilterType, actual.FilterType);
+            Assert.AreEqual(expected.FilterName, actual.FilterName);
             Assert.AreEqual(expected.Expression, actual.Expression);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
             Assert.AreEqual(expected.IsSortable, actual.IsSortable);

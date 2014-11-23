@@ -60,14 +60,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridFilter<GridModel> actual = filters.GetFilter<GridModel, String>(column, "Equals", "Test");
             IGridFilter<GridModel> expected = new StringEqualsFilter<GridModel>();
             expected.FilteredExpression = column.Expression;
-            expected.FilterType = "Equals";
-            expected.FilterValue = "Test";
+            expected.Type = "Equals";
+            expected.Value = "Test";
 
             Assert.AreEqual(expected.FilteredExpression, actual.FilteredExpression);
             Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
-            Assert.AreEqual(expected.FilterValue, actual.FilterValue);
-            Assert.AreEqual(expected.FilterType, actual.FilterType);
             Assert.AreEqual(expected.GetType(), actual.GetType());
+            Assert.AreEqual(expected.Value, actual.Value);
+            Assert.AreEqual(expected.Type, actual.Type);
         }
 
         #endregion

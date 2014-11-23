@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Grid
         {
             ParameterExpression parameter = FilteredExpression.Parameters[0];
             MethodInfo method = typeof(String).GetMethod("Contains");
-            Expression value = Expression.Constant(FilterValue);
+            Expression value = Expression.Constant(Value);
 
             Expression notEqual = Expression.NotEqual(FilteredExpression.Body, Expression.Constant(null));
             Expression contains = Expression.Call(FilteredExpression.Body, method, value);

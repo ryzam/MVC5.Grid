@@ -7,22 +7,22 @@
             <tr>
                 @foreach (IGridColumn column in Model.Columns)
                 {
-                    String filterableClass = column.IsFilterable == true ? "mvc-grid-filterable" : "";
-                    String sortableClass = column.IsSortable == true ? "mvc-grid-sortable" : "";
+                    String filterableClass = column.IsFilterable == true ? "filterable" : null;
+                    String sortableClass = column.IsSortable == true ? "sortable" : null;
 
                     <th class="mvc-grid-header @filterableClass @sortableClass @column.CssClasses"
                         data-name="@column.Name"
-                        data-filterable="@(column.IsFilterable == true)"
+                        data-filterable="@column.IsFilterable"
                         data-filter-name="@column.FilterName"
                         data-filter-type="@column.FilterType"
                         data-filter-val="@column.FilterValue"
-                        data-sortable="@(column.IsSortable == true)"
+                        data-sortable="@column.IsSortable"
                         data-sort-order="@column.SortOrder"
                         data-sort-query="@column.GetSortingQuery()">
                         @column.Title
-                        @if (column.IsSortable == true && column.SortOrder != null)
+                        @if (column.IsSortable == true)
                         {
-                            <span class="mvc-grid-sort mvc-grid-sort-@column.SortOrder.ToString().ToLower()"></span>
+                            <span class="mvc-grid-sort @column.SortOrder.ToString().ToLower()"></span>
                         }
                         @if (column.IsFilterable == true)
                         {
