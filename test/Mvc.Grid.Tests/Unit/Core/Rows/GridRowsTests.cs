@@ -26,7 +26,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: GetEnumerator()
 
         [Test]
-        public void GetEnumerator_ProcessesRows()
+        public void GetEnumerator_OnNullCurrentRowsProcessesRows()
         {
             IQueryable<GridModel> models = new[] { new GridModel(), new GridModel() }.AsQueryable();
             IGridProcessor<GridModel> postProcessor = Substitute.For<IGridProcessor<GridModel>>();
@@ -43,6 +43,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             grid.Processors.Add(preProcessor);
 
             GridRows<GridModel> rows = new GridRows<GridModel>(grid);
+            IEnumerable<IGridRow> currentRows = rows.CurrentRows;
 
             IEnumerable<Object> actual = rows.ToList().Select(row => row.Model);
             IEnumerable<Object> expected = postProcessedModels;
@@ -50,6 +51,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             postProcessor.Received().Process(preProcessedModels);
             CollectionAssert.AreEqual(expected, actual);
             preProcessor.Received().Process(models);
+            Assert.IsNull(currentRows);
         }
 
         [Test]
@@ -62,6 +64,27 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             rows.CssClasses = (model) => "grid-row";
 
             Assert.IsTrue(rows.All(row => row.CssClasses == "grid-row"));
+        }
+
+        [Test]
+        public void GetEnumerator_ReturnsCurrentRows()
+        {
+            IQueryable<GridModel> models = new[] { new GridModel(), new GridModel() }.AsQueryable();
+            IGridProcessor<GridModel> preProcessor = Substitute.For<IGridProcessor<GridModel>>();
+            preProcessor.Process(models).Returns(new GridModel[0].AsQueryable());
+            preProcessor.ProcessorType = GridProcessorType.Pre;
+            Grid<GridModel> grid = new Grid<GridModel>(models);
+
+            GridRows<GridModel> rows = new GridRows<GridModel>(grid);
+            rows.ToList();
+
+            grid.Processors.Add(preProcessor);
+
+            IEnumerable<Object> actual = rows.ToList().Select(row => row.Model);
+            IEnumerable<Object> expected = models;
+
+            preProcessor.DidNotReceive().Process(Arg.Any<IQueryable<GridModel>>());
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
