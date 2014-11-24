@@ -108,13 +108,13 @@
             var winWidth = $(window).width();
             var popupWidth = popup.width();
 
-            var popupTop = filterTop + filterHeight / 2 + 12;
+            var popupTop = filterTop + filterHeight / 2 + 14;
             var popupLeft = filterLeft - 8;
             var arrowLeft = 15;
 
             if (filterLeft + popupWidth + 5 > winWidth) {
-                popupLeft = winWidth - popupWidth - 24;
-                arrowLeft = filterLeft - popupLeft - 3;
+                popupLeft = winWidth - popupWidth - 14;
+                arrowLeft = filterLeft - popupLeft + 7;
             }
 
             arrow.css('left', arrowLeft + 'px');
@@ -151,7 +151,7 @@
         removeGridAtributes: function () {
             this.table.removeAttr('data-name');
             for (var col = 0; col < this.columns.length; col++) {
-                this.removeGridColumnAttributes(this.columns[col].column);
+                this.removeGridColumnAttributes(this.columns[col].element);
             }
         },
         removeGridColumnAttributes: function (column) {
