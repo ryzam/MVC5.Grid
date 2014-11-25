@@ -226,6 +226,57 @@
             }
 
             return new GridTextFilter();
+        })(jQuery),
+        Number: (function ($) {
+            function GridNumberFilter() {
+            }
+
+            GridNumberFilter.prototype = {
+                render: function (filter) {
+                    return (
+                        '<div class="form-group">' +
+                            '<select class="mvc-grid-filter-type form-control">' +
+                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
+                                '<option value="LessThan"' + (filter.type == 'LessThan' ? ' selected="selected"' : '') + '>Less than</option>' +
+                                '<option value="GreaterThan"' + (filter.type == 'GreaterThan' ? ' selected="selected"' : '') + '>Greater than</option>' +
+                                '<option value="LessThanOrEqual"' + (filter.type == 'LessThanOrEqual' ? ' selected="selected"' : '') + '>Less than or equal</option>' +
+                                '<option value="GreaterThanOrEqual"' + (filter.type == 'GreaterThanOrEqual' ? ' selected="selected"' : '') + '>Greater than or equal</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                            '<input class="form-control mvc-grid-input" type="text" value="' + filter.value + '">' +
+                        '</div>' +
+                        '<div class="mvc-grid-filter-buttons">' +
+                            '<button class="btn btn-primary btn-block mvc-grid-filter-apply" type="button">Apply</button>' +
+                        '</div>');
+                },
+                bindEvents: function (mvcGrid, column, popup) {
+                    var applyButton = popup.find('.mvc-grid-filter-apply');
+                    applyButton.bind('click.mvcgrid', function () {
+                        var type = popup.find('.mvc-grid-filter-type').val();
+                        var value = popup.find('.mvc-grid-input').val();
+                        popup.removeClass('open');
+
+                        window.location.href = mvcGrid.formFilterQueryFor(column, type, value);
+                    });
+
+                    var pattern = new RegExp('^(?=.*\\d+.*)[-+]?\\d*[.,]?\\d*$');
+                    var filterInput = popup.find('.mvc-grid-input');
+                    filterInput.bind('keyup', function (e) {
+                        column.filter.value = this.value;
+                        if (pattern.test(this.value)) {
+                            $(this).removeClass("invalid");
+                            if (e.keyCode == 13) {
+                                applyButton.click();
+                            }
+                        } else {
+                            $(this).addClass("invalid");
+                        }
+                    });
+                }
+            }
+
+            return new GridNumberFilter();
         })(jQuery)
     };
 
