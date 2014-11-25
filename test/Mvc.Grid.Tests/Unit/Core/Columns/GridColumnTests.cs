@@ -273,7 +273,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridColumn_OnMemberExpressionIsSortableIsNull()
         {
-            GridColumn<GridModel, Decimal> column = new GridColumn<GridModel, Decimal>(grid, model => model.Sum);
+            GridColumn<GridModel, Int32> column = new GridColumn<GridModel, Int32>(grid, model => model.Sum);
 
             Assert.IsNull(column.IsSortable);
         }
@@ -290,7 +290,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GridColumn_OnMemberExpressionIsFilterableIsNull()
         {
-            GridColumn<GridModel, Decimal> column = new GridColumn<GridModel, Decimal>(grid, model => model.Sum);
+            GridColumn<GridModel, Int32> column = new GridColumn<GridModel, Int32>(grid, model => model.Sum);
 
             Assert.IsNull(column.IsFilterable);
         }
