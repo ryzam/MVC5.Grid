@@ -59,21 +59,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: FilterNamed(String filterName)
+        #region Method: FilteredAs(String filterName)
 
         [Test]
-        public void FilterNamed_SetsIsFilterName()
+        public void FilteredAs_SetsFilterName()
         {
-            String actual = column.FilterNamed("Numeric").FilterName;
+            String actual = column.FilteredAs("Numeric").FilterName;
             String expected = "Numeric";
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void FilterName_ReturnsSameGrid()
+        public void FilteredAs_ReturnsSameGrid()
         {
-            IGridColumn actual = column.FilterNamed("Numeric");
+            IGridColumn actual = column.FilteredAs("Numeric");
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);

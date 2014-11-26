@@ -39,7 +39,7 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public IGridColumn<TModel, TValue> FilterNamed(String filterName)
+        public IGridColumn<TModel, TValue> FilteredAs(String filterName)
         {
             FilterName = filterName;
 

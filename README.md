@@ -6,7 +6,7 @@ Planned features for the release:
 - [x] - Automatic filtering
 - [x] - Automatic sorting
 - [x] - Automatic paging
-- [ ] - Filter extensibility
+- [x] - Filter extensibility
 - [ ] - Grid extensibility
 - [ ] - Globalization
 - [ ] - Ajax support

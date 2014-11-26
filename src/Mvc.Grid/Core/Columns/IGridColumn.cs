@@ -23,6 +23,7 @@ namespace NonFactors.Mvc.Grid
 
         IGridColumn<TModel, TValue> RenderAs(Func<TModel, TValue> value);
         IGridColumn<TModel, TValue> Filterable(Boolean isFilterable);
+        IGridColumn<TModel, TValue> FilteredAs(String filterName);
         IGridColumn<TModel, TValue> Sortable(Boolean isSortable);
         IGridColumn<TModel, TValue> Encoded(Boolean isEncoded);
         IGridColumn<TModel, TValue> Formatted(String format);
