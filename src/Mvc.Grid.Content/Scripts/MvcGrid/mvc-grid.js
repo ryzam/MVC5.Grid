@@ -201,8 +201,13 @@
                         '<div class="form-group">' +
                             '<input class="form-control mvc-grid-input" type="text" value="' + filter.value + '">' +
                         '</div>' +
-                        '<div class="mvc-grid-filter-buttons">' +
-                            '<button class="btn btn-primary btn-block mvc-grid-filter-apply" type="button">Apply</button>' +
+                        '<div class="mvc-grid-filter-buttons row">' +
+                            '<div class="mvc-grid-left-button col-sm-8">' +
+                                '<button class="btn btn-success btn-block mvc-grid-filter-apply" type="button">&#10004;</button>' +
+                            '</div>' +
+                            '<div class="mvc-grid-right-button col-sm-4">' +
+                                '<button class="btn btn-danger btn-block mvc-grid-filter-apply" type="button">&#10008;</button>' +
+                            '</div>' +
                         '</div>');
                 },
                 bindEvents: function (mvcGrid, column, popup) {
@@ -246,8 +251,13 @@
                         '<div class="form-group">' +
                             '<input class="form-control mvc-grid-input" type="text" value="' + filter.value + '">' +
                         '</div>' +
-                        '<div class="mvc-grid-filter-buttons">' +
-                            '<button class="btn btn-primary btn-block mvc-grid-filter-apply" type="button">Apply</button>' +
+                        '<div class="mvc-grid-filter-buttons row">' +
+                            '<div class="mvc-grid-left-button col-sm-8">' +
+                                '<button class="btn btn-success btn-block mvc-grid-filter-apply" type="button">&#10004;</button>' +
+                            '</div>' +
+                            '<div class="mvc-grid-right-button col-sm-4">' +
+                                '<button class="btn btn-danger btn-block mvc-grid-filter-apply" type="button">&#10008;</button>' +
+                            '</div>' +
                         '</div>');
                 },
                 bindEvents: function (mvcGrid, column, popup) {

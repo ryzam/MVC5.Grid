@@ -93,6 +93,14 @@
     padding: 10px;
 }
 
+.mvc-grid-left-button {
+    padding-right: 7px;
+}
+
+.mvc-grid-right-button {
+    padding-left: 7px;
+}
+
 .mvc-grid-table-empty {
     text-align: center;
 }
