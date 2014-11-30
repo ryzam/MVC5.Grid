@@ -147,6 +147,23 @@
 
             return '?' + newParameters.join('&');
         },
+        formFilterQueryWithout: function (column) {
+            var columnParam = encodeURIComponent(this.name + '-' + column.name);
+            var parameters = window.location.search.replace('?', '').split('&');
+            var newParameters = [];
+            var newParams = 0;
+
+            for (var i = 0; i < parameters.length; i++) {
+                if (parameters[i] != '' && parameters[i].indexOf(columnParam) != 0) {
+                    newParameters[newParams++] = parameters[i];
+                }
+            }
+
+            if (newParameters.length == 0)
+                return '';
+
+            return '?' + newParameters.join('&');
+        },
 
         removeGridAtributes: function () {
             this.table.removeAttr('data-name');
@@ -206,26 +223,33 @@
                                 '<button class="btn btn-success btn-block mvc-grid-filter-apply" type="button">&#10004;</button>' +
                             '</div>' +
                             '<div class="mvc-grid-right-button col-sm-4">' +
-                                '<button class="btn btn-danger btn-block mvc-grid-filter-apply" type="button">&#10008;</button>' +
+                                '<button class="btn btn-danger btn-block mvc-grid-filter-cancel" type="button">&#10008;</button>' +
                             '</div>' +
                         '</div>');
                 },
                 bindEvents: function (mvcGrid, column, popup) {
-                    var applyButton = popup.find('.mvc-grid-filter-apply');
-                    applyButton.bind('click.mvcgrid', function () {
-                        var type = popup.find('.mvc-grid-filter-type').val();
-                        var value = popup.find('.mvc-grid-input').val();
-                        popup.removeClass('open');
-
-                        window.location.href = mvcGrid.formFilterQueryFor(column, type, value);
-                    });
-
                     var filterInput = popup.find('.mvc-grid-input');
                     filterInput.bind('keyup', function (e) {
                         column.filter.value = this.value;
                         if (e.keyCode == 13) {
                             applyButton.click();
                         }
+                    });
+
+                    var applyButton = popup.find('.mvc-grid-filter-apply');
+                    applyButton.bind('click.mvcgrid', function () {
+                        var type = popup.find('.mvc-grid-filter-type').val();
+                        var value = popup.find('.mvc-grid-input').val();
+                        popup.removeClass('open');
+
+                        window.location.search = mvcGrid.formFilterQueryFor(column, type, value);
+                    });
+
+                    var cancelButton = popup.find('.mvc-grid-filter-cancel');
+                    cancelButton.bind('click.mvcgrid', function () {
+                        popup.removeClass('open');
+
+                        window.location.search = mvcGrid.formFilterQueryWithout(column);
                     });
                 }
             }
@@ -256,20 +280,11 @@
                                 '<button class="btn btn-success btn-block mvc-grid-filter-apply" type="button">&#10004;</button>' +
                             '</div>' +
                             '<div class="mvc-grid-right-button col-sm-4">' +
-                                '<button class="btn btn-danger btn-block mvc-grid-filter-apply" type="button">&#10008;</button>' +
+                                '<button class="btn btn-danger btn-block mvc-grid-filter-cancel" type="button">&#10008;</button>' +
                             '</div>' +
                         '</div>');
                 },
                 bindEvents: function (mvcGrid, column, popup) {
-                    var applyButton = popup.find('.mvc-grid-filter-apply');
-                    applyButton.bind('click.mvcgrid', function () {
-                        var type = popup.find('.mvc-grid-filter-type').val();
-                        var value = popup.find('.mvc-grid-input').val();
-                        popup.removeClass('open');
-
-                        window.location.href = mvcGrid.formFilterQueryFor(column, type, value);
-                    });
-
                     var pattern = new RegExp('^(?=.*\\d+.*)[-+]?\\d*[.,]?\\d*$');
                     var filterInput = popup.find('.mvc-grid-input');
                     filterInput.bind('keyup', function (e) {
@@ -282,6 +297,22 @@
                         } else {
                             $(this).addClass("invalid");
                         }
+                    });
+
+                    var applyButton = popup.find('.mvc-grid-filter-apply');
+                    applyButton.bind('click.mvcgrid', function () {
+                        var type = popup.find('.mvc-grid-filter-type').val();
+                        var value = popup.find('.mvc-grid-input').val();
+                        popup.removeClass('open');
+
+                        window.location.search = mvcGrid.formFilterQueryFor(column, type, value);
+                    });
+
+                    var cancelButton = popup.find('.mvc-grid-filter-cancel');
+                    cancelButton.bind('click.mvcgrid', function () {
+                        popup.removeClass('open');
+
+                        window.location.search = mvcGrid.formFilterQueryWithout(column);
                     });
                 }
             }
