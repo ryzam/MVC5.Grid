@@ -234,7 +234,7 @@
                     });
 
                     var filterInput = popup.find('.mvc-grid-input');
-                    filterInput.bind('keyup', function (e) {
+                    filterInput.bind('keyup.mvcgrid', function (e) {
                         column.filter.value = this.value;
                         if (e.keyCode == 13) {
                             applyButton.click();
@@ -297,7 +297,7 @@
 
                     var pattern = new RegExp('^(?=.*\\d+.*)[-+]?\\d*[.,]?\\d*$');
                     var filterInput = popup.find('.mvc-grid-input');
-                    filterInput.bind('keyup', function (e) {
+                    filterInput.bind('keyup.mvcgrid', function (e) {
                         column.filter.value = this.value;
                         if (pattern.test(this.value)) {
                             $(this).removeClass("invalid");
