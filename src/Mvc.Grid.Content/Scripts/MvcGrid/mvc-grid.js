@@ -121,11 +121,11 @@
             popup.css('left', popupLeft + 'px');
             popup.css('top', popupTop + 'px');
         },
-        formFilterQueryFor: function (column, type, value) {
-            var filterParam = encodeURIComponent(this.name + '-' + column.name + '-' + type);
+        formFilterQueryFor: function (column) {
+            var filterParam = encodeURIComponent(this.name + '-' + column.name + '-' + column.filter.type);
             var columnParam = encodeURIComponent(this.name + '-' + column.name);
             var parameters = window.location.search.replace('?', '').split('&');
-            var filterValue = encodeURIComponent(value);
+            var filterValue = encodeURIComponent(column.filter.value);
             var paramExists = false;
             var newParameters = [];
             var newParams = 0;
@@ -232,6 +232,7 @@
                     typeSelect.bind('change.mvcgrid', function () {
                         column.filter.type = this.value;
                     });
+                    typeSelect.change();
 
                     var filterInput = popup.find('.mvc-grid-input');
                     filterInput.bind('keyup.mvcgrid', function (e) {
@@ -243,11 +244,9 @@
 
                     var applyButton = popup.find('.mvc-grid-filter-apply');
                     applyButton.bind('click.mvcgrid', function () {
-                        var type = popup.find('.mvc-grid-filter-type').val();
-                        var value = popup.find('.mvc-grid-input').val();
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryFor(column, type, value);
+                        window.location.search = mvcGrid.formFilterQueryFor(column);
                     });
 
                     var cancelButton = popup.find('.mvc-grid-filter-cancel');
@@ -294,6 +293,7 @@
                     typeSelect.bind('change.mvcgrid', function () {
                         column.filter.type = this.value;
                     });
+                    typeSelect.change();
 
                     var pattern = new RegExp('^(?=.*\\d+.*)[-+]?\\d*[.,]?\\d*$');
                     var filterInput = popup.find('.mvc-grid-input');
@@ -311,11 +311,9 @@
 
                     var applyButton = popup.find('.mvc-grid-filter-apply');
                     applyButton.bind('click.mvcgrid', function () {
-                        var type = popup.find('.mvc-grid-filter-type').val();
-                        var value = popup.find('.mvc-grid-input').val();
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryFor(column, type, value);
+                        window.location.search = mvcGrid.formFilterQueryFor(column);
                     });
 
                     var cancelButton = popup.find('.mvc-grid-filter-cancel');
