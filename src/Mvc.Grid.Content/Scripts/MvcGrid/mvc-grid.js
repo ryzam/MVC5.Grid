@@ -228,6 +228,11 @@
                         '</div>');
                 },
                 bindEvents: function (mvcGrid, column, popup) {
+                    var typeSelect = popup.find('.mvc-grid-filter-type');
+                    typeSelect.bind('change.mvcgrid', function () {
+                        column.filter.type = this.value;
+                    });
+
                     var filterInput = popup.find('.mvc-grid-input');
                     filterInput.bind('keyup', function (e) {
                         column.filter.value = this.value;
@@ -285,6 +290,11 @@
                         '</div>');
                 },
                 bindEvents: function (mvcGrid, column, popup) {
+                    var typeSelect = popup.find('.mvc-grid-filter-type');
+                    typeSelect.bind('change.mvcgrid', function () {
+                        column.filter.type = this.value;
+                    });
+
                     var pattern = new RegExp('^(?=.*\\d+.*)[-+]?\\d*[.,]?\\d*$');
                     var filterInput = popup.find('.mvc-grid-input');
                     filterInput.bind('keyup', function (e) {
