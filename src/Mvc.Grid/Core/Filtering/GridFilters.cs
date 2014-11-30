@@ -84,6 +84,8 @@ namespace NonFactors.Mvc.Grid
 
             Register(typeof(String), "Equals", typeof(StringEqualsFilter<>));
             Register(typeof(String), "Contains", typeof(StringContainsFilter<>));
+            Register(typeof(String), "EndsWith", typeof(StringEndsWithFilter<>));
+            Register(typeof(String), "StartsWith", typeof(StringStartsWithFilter<>));
         }
 
         public IGridFilter<TModel> GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String name, String value) where TModel : class

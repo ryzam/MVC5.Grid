@@ -88,6 +88,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         [TestCase(typeof(String), "Equals", typeof(StringEqualsFilter<>))]
         [TestCase(typeof(String), "Contains", typeof(StringContainsFilter<>))]
+        [TestCase(typeof(String), "EndsWith", typeof(StringEndsWithFilter<>))]
+        [TestCase(typeof(String), "StartsWith", typeof(StringStartsWithFilter<>))]
         public void GridFilters_RegistersDefaultFilters(Type type, String name, Type expected)
         {
             GridFilters filters = new GridFilters();

@@ -66,6 +66,8 @@
     <Compile Include="Unit\Core\Columns\GridColumnTests.cs" />
     <Compile Include="Unit\Core\Filtering\BaseGridFilterTests.cs" />
     <Compile Include="Unit\Core\Filtering\GridFiltersTests.cs" />
+    <Compile Include="Unit\Core\Filtering\Text\StringEndsWithFilterTests.cs" />
+    <Compile Include="Unit\Core\Filtering\Text\StringStartsWithFilterTests.cs" />
     <Compile Include="Unit\Core\MvcGridTests.cs" />
     <Compile Include="Unit\Core\Filtering\Number\DecimalFilterTests.cs" />
     <Compile Include="Unit\Core\Filtering\Number\SingleFilterTests.cs" />
@@ -79,8 +81,8 @@
     <Compile Include="Unit\Core\Filtering\Number\UInt32FilterTests.cs" />
     <Compile Include="Unit\Core\Filtering\Number\Int32FilterTests.cs" />
     <Compile Include="Unit\Core\Filtering\Number\NumberFilterTests.cs" />
-    <Compile Include="Unit\Core\Filtering\StringContainsFilterTests.cs" />
-    <Compile Include="Unit\Core\Filtering\StringEqualsFilterTests.cs" />
+    <Compile Include="Unit\Core\Filtering\Text\StringContainsFilterTests.cs" />
+    <Compile Include="Unit\Core\Filtering\Text\StringEqualsFilterTests.cs" />
     <Compile Include="Unit\Core\Grids\GridTests.cs" />
     <Compile Include="Unit\Core\Grids\HtmlGridTests.cs" />
     <Compile Include="Unit\Core\Paging\GridPagerTests.cs" />

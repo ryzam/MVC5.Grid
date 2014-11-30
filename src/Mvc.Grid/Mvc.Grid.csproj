@@ -56,9 +56,11 @@
     <Compile Include="Core\Filtering\GridFilters.cs" />
     <Compile Include="Core\Filtering\IGridFilter.cs" />
     <Compile Include="Core\Filtering\IGridFilters.cs" />
+    <Compile Include="Core\Filtering\Text\StringEndsWithFilter.cs" />
+    <Compile Include="Core\Filtering\Text\StringStartsWithFilter.cs" />
     <Compile Include="Core\MvcGrid.cs" />
-    <Compile Include="Core\Filtering\StringContainsFilter.cs" />
-    <Compile Include="Core\Filtering\StringEqualsFilter.cs" />
+    <Compile Include="Core\Filtering\Text\StringContainsFilter.cs" />
+    <Compile Include="Core\Filtering\Text\StringEqualsFilter.cs" />
     <Compile Include="Core\Grids\Grid.cs" />
     <Compile Include="Core\Columns\GridColumns.cs" />
     <Compile Include="Core\Grids\HtmlGrid.cs" />

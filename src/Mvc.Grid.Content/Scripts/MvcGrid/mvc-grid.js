@@ -213,6 +213,8 @@
                             '<select class="mvc-grid-filter-type form-control">' +
                                 '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
                                 '<option value="Contains"' + (filter.type == 'Contains' ? ' selected="selected"' : '') + '>Contains</option>' +
+                                '<option value="StartsWith"' + (filter.type == 'StartsWith' ? ' selected="selected"' : '') + '>Starts with</option>' +
+                                '<option value="EndsWith"' + (filter.type == 'EndsWith' ? ' selected="selected"' : '') + '>Ends with</option>' +
                             '</select>' +
                         '</div>' +
                         '<div class="form-group">' +
