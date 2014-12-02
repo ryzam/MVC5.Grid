@@ -92,6 +92,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(typeof(DateTime), "LessThanOrEqual", typeof(DateTimeFilter<>))]
         [TestCase(typeof(DateTime), "GreaterThanOrEqual", typeof(DateTimeFilter<>))]
 
+        [TestCase(typeof(Boolean), "Equals", typeof(BooleanFilter<>))]
+
         [TestCase(typeof(String), "Equals", typeof(StringEqualsFilter<>))]
         [TestCase(typeof(String), "Contains", typeof(StringContainsFilter<>))]
         [TestCase(typeof(String), "EndsWith", typeof(StringEndsWithFilter<>))]

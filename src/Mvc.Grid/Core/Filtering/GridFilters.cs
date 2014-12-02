@@ -88,6 +88,8 @@ namespace NonFactors.Mvc.Grid
             Register(typeof(DateTime), "LessThanOrEqual", typeof(DateTimeFilter<>));
             Register(typeof(DateTime), "GreaterThanOrEqual", typeof(DateTimeFilter<>));
 
+            Register(typeof(Boolean), "Equals", typeof(BooleanFilter<>));
+
             Register(typeof(String), "Equals", typeof(StringEqualsFilter<>));
             Register(typeof(String), "Contains", typeof(StringContainsFilter<>));
             Register(typeof(String), "EndsWith", typeof(StringEndsWithFilter<>));
