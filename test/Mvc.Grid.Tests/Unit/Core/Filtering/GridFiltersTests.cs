@@ -86,6 +86,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase(typeof(Decimal), "LessThanOrEqual", typeof(DecimalFilter<>))]
         [TestCase(typeof(Decimal), "GreaterThanOrEqual", typeof(DecimalFilter<>))]
 
+        [TestCase(typeof(DateTime), "Equals", typeof(DateTimeFilter<>))]
+        [TestCase(typeof(DateTime), "LessThan", typeof(DateTimeFilter<>))]
+        [TestCase(typeof(DateTime), "GreaterThan", typeof(DateTimeFilter<>))]
+        [TestCase(typeof(DateTime), "LessThanOrEqual", typeof(DateTimeFilter<>))]
+        [TestCase(typeof(DateTime), "GreaterThanOrEqual", typeof(DateTimeFilter<>))]
+
         [TestCase(typeof(String), "Equals", typeof(StringEqualsFilter<>))]
         [TestCase(typeof(String), "Contains", typeof(StringContainsFilter<>))]
         [TestCase(typeof(String), "EndsWith", typeof(StringEndsWithFilter<>))]

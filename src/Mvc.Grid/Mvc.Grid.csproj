@@ -41,6 +41,7 @@
     <Compile Include="Core\Columns\IFilterableColumn.cs" />
     <Compile Include="Core\Columns\ISortableColumn.cs" />
     <Compile Include="Core\Filtering\BaseGridFilter.cs" />
+    <Compile Include="Core\Filtering\Date\DateTimeFilter.cs" />
     <Compile Include="Core\Filtering\Number\ByteFilter.cs" />
     <Compile Include="Core\Filtering\Number\Int64Filter.cs" />
     <Compile Include="Core\Filtering\Number\DoubleFilter.cs" />
