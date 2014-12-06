@@ -12,10 +12,10 @@
     position: relative;
 }
 
-.mvc-grid-header.sortable,
-.mvc-grid-header .mvc-grid-filter {
-    cursor: pointer;
-}
+    .mvc-grid-header.sortable,
+    .mvc-grid-header .mvc-grid-filter {
+        cursor: pointer;
+    }
 
 .mvc-grid-sort.asc:after {
     content: "\2193";
@@ -84,6 +84,28 @@
         padding: 10px;
         margin: 0;
     }
+
+    .mvc-grid-filter-popup .mvc-grid-boolean-filter {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .mvc-grid-filter-popup .mvc-grid-boolean-filter li {
+            cursor: pointer;
+            padding: 0 5px;
+            display: block;
+            width: 100%;
+        }
+
+            .mvc-grid-filter-popup .mvc-grid-boolean-filter li:hover {
+                background-color: #EEEEEE;
+                text-decoration: none;
+            }
+
+            .mvc-grid-filter-popup .mvc-grid-boolean-filter li.active {
+                background-color: #DDDDDD;
+            }
 
     .mvc-grid-filter-popup .mvc-grid-input {
         font-size: 12px;

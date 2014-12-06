@@ -328,6 +328,58 @@
             }
 
             return new GridNumberFilter();
+        })(jQuery),
+        Boolean: (function ($) {
+            function GridBooleanFilter() {
+            }
+
+            GridBooleanFilter.prototype = {
+                render: function (filter) {
+                    return (
+                        '<div class="form-group">' +
+                            '<ul class="mvc-grid-filter-type mvc-grid-boolean-filter">' +
+                                '<li ' + (filter.value == 'True' ? 'class="active" ' : '') + 'data-value="True">Yes</li>' +
+                                '<li ' + (filter.value == 'False' ? 'class="active" ' : '') + 'data-value="False">No</li>' +
+                            '</ul>' +
+                        '</div>' +
+                        '<div class="mvc-grid-filter-buttons row">' +
+                            '<div class="mvc-grid-left-button col-sm-8">' +
+                                '<button class="btn btn-success btn-block mvc-grid-filter-apply" type="button">&#10004;</button>' +
+                            '</div>' +
+                            '<div class="mvc-grid-right-button col-sm-4">' +
+                                '<button class="btn btn-danger btn-block mvc-grid-filter-cancel" type="button">&#10008;</button>' +
+                            '</div>' +
+                        '</div>');
+                },
+                bindEvents: function (mvcGrid, column, popup) {
+                    var valueItems = popup.find('.mvc-grid-filter-type li');
+                    column.filter.type = 'Equals';
+
+                    valueItems.bind('click.mvcgrid', function () {
+                        var item = $(this);
+
+                        column.filter.value = item.data('value');
+                        item.siblings().removeClass("active");
+                        item.addClass("active");
+                    });
+
+                    var applyButton = popup.find('.mvc-grid-filter-apply');
+                    applyButton.bind('click.mvcgrid', function () {
+                        popup.removeClass('open');
+
+                        window.location.search = mvcGrid.formFilterQueryFor(column);
+                    });
+
+                    var cancelButton = popup.find('.mvc-grid-filter-cancel');
+                    cancelButton.bind('click.mvcgrid', function () {
+                        popup.removeClass('open');
+
+                        window.location.search = mvcGrid.formFilterQueryWithout(column);
+                    });
+                }
+            }
+
+            return new GridBooleanFilter();
         })(jQuery)
     };
 
