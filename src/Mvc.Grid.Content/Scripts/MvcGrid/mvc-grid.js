@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Grid 0.5.0
+ * Mvc.Grid 0.6.0
  * https://github.com/NonFactors/MVC.Grid
  *
  * Copyright © 2014 NonFactors
@@ -328,6 +328,69 @@
             }
 
             return new GridNumberFilter();
+        })(jQuery),
+        Date: (function ($) {
+            function GridDateFilter() {
+            }
+
+            GridDateFilter.prototype = {
+                render: function (filter) {
+                    var filterInput = '<input class="form-control mvc-grid-input" type="text" value="' + filter.value + '">';
+
+                    return (
+                        '<div class="form-group">' +
+                            '<select class="mvc-grid-filter-type form-control">' +
+                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
+                                '<option value="LessThan"' + (filter.type == 'LessThan' ? ' selected="selected"' : '') + '>Less than</option>' +
+                                '<option value="GreaterThan"' + (filter.type == 'GreaterThan' ? ' selected="selected"' : '') + '>Greater than</option>' +
+                                '<option value="LessThanOrEqual"' + (filter.type == 'LessThanOrEqual' ? ' selected="selected"' : '') + '>Less than or equal</option>' +
+                                '<option value="GreaterThanOrEqual"' + (filter.type == 'GreaterThanOrEqual' ? ' selected="selected"' : '') + '>Greater than or equal</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                            filterInput +
+                        '</div>' +
+                        '<div class="mvc-grid-filter-buttons row">' +
+                            '<div class="mvc-grid-left-button col-sm-8">' +
+                                '<button class="btn btn-success btn-block mvc-grid-filter-apply" type="button">&#10004;</button>' +
+                            '</div>' +
+                            '<div class="mvc-grid-right-button col-sm-4">' +
+                                '<button class="btn btn-danger btn-block mvc-grid-filter-cancel" type="button">&#10008;</button>' +
+                            '</div>' +
+                        '</div>');
+                },
+                bindEvents: function (mvcGrid, column, popup) {
+                    var typeSelect = popup.find('.mvc-grid-filter-type');
+                    typeSelect.bind('change.mvcgrid', function () {
+                        column.filter.type = this.value;
+                    });
+                    typeSelect.change();
+
+                    var filterInput = popup.find('.mvc-grid-input');
+                    filterInput.bind('keyup.mvcgrid', function (e) {
+                        column.filter.value = this.value;
+                        if (e.keyCode == 13) {
+                            applyButton.click();
+                        }
+                    });
+
+                    var applyButton = popup.find('.mvc-grid-filter-apply');
+                    applyButton.bind('click.mvcgrid', function () {
+                        popup.removeClass('open');
+
+                        window.location.search = mvcGrid.formFilterQueryFor(column);
+                    });
+
+                    var cancelButton = popup.find('.mvc-grid-filter-cancel');
+                    cancelButton.bind('click.mvcgrid', function () {
+                        popup.removeClass('open');
+
+                        window.location.search = mvcGrid.formFilterQueryWithout(column);
+                    });
+                }
+            }
+
+            return new GridDateFilter();
         })(jQuery),
         Boolean: (function ($) {
             function GridBooleanFilter() {
