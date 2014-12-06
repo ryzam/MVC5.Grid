@@ -12,7 +12,7 @@ namespace NonFactors.Mvc.Grid
         public GridProcessorType ProcessorType { get; set; }
         public IGrid<TModel> Grid { get; set; }
 
-        public GridSortOrder? SortOrder { get; set; }
+        public virtual GridSortOrder? SortOrder { get; set; }
         public Boolean? IsSortable { get; set; }
 
         public IGridFilter<TModel> Filter { get; set; }

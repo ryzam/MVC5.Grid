@@ -39,6 +39,64 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             MvcGrid.Filters = oldFilters;
         }
 
+        #region Property: SortOrder
+
+        [Test]
+        [TestCase("Sort=Name&Grid-Order=Desc", null)]
+        [TestCase("Grid-Sort=Sum&Grid-Order=Desc", null)]
+        [TestCase("Grid-Sort=Name&RGrid-Order=Asc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Dasc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Asc)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Desc)]
+        public void SortOrder_OnFirstCallSetsSortOrderFromGridQuery(String query, GridSortOrder? expected)
+        {
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+
+            GridSortOrder? actual = new GridColumn<GridModel, String>(grid, model => model.Name).SortOrder;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("", "Grid-Sort=Name&Grid-Order=Asc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=", "Grid-Sort=Name&Grid-Order=Desc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Asc", "Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Asc)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Desc", "Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Desc)]
+        public void SortOrder_DoesNotResetSortOrderAfterFirstCall(String initialQuery, String changedQuery, GridSortOrder? expected)
+        {
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(initialQuery));
+            grid.Name = "Grid";
+
+            GridSortOrder? sortOrder = column.SortOrder;
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(changedQuery));
+
+            GridSortOrder? actual = column.SortOrder;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("Grid-Sort=Name&Grid-Order=Asc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Desc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Asc)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Asc)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Desc)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Desc)]
+        public void SortOrder_DoesNotResetSortOrderAfterSettingIt(String query, GridSortOrder? expected)
+        {
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            grid.Name = "Grid";
+
+            column.SortOrder = expected;
+
+            GridSortOrder? actual = column.SortOrder;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
         #region Constructor: GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
 
         [Test]
@@ -302,23 +360,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             String actual = new GridColumn<GridModel, String>(grid, expression).Name;
             String expected = ExpressionHelper.GetExpressionText(expression);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("Sort=Name&Grid-Order=Desc", null)]
-        [TestCase("Grid-Sort=Sum&Grid-Order=Desc", null)]
-        [TestCase("Grid-Sort=Name&RGrid-Order=Asc", null)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Dasc", null)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Asc)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Desc)]
-        public void GridColumn_SetsSortOrderFromGridQuery(String query, GridSortOrder? expected)
-        {
-            grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
-
-            GridSortOrder? actual = new GridColumn<GridModel, String>(grid, model => model.Name).SortOrder;
 
             Assert.AreEqual(expected, actual);
         }

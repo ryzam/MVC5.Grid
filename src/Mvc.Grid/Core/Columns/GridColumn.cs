@@ -9,6 +9,34 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumn<TModel, TValue> : BaseGridColumn<TModel, TValue> where TModel : class
     {
+        private Boolean IsGridSortSet { get; set; }
+        public override GridSortOrder? SortOrder
+        {
+            get
+            {
+                if (IsGridSortSet)
+                    return base.SortOrder;
+
+                if (Grid.Query[Grid.Name + "-Sort"] == Name)
+                {
+                    String orderValue = Grid.Query[Grid.Name + "-Order"];
+                    GridSortOrder order;
+
+                    if (Enum.TryParse<GridSortOrder>(orderValue, out order))
+                        SortOrder = order;
+                }
+
+                IsGridSortSet = true;
+
+                return base.SortOrder;
+            }
+            set
+            {
+                base.SortOrder = value;
+                IsGridSortSet = true;
+            }
+        }
+
         public GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
         {
             Grid = grid;
@@ -21,7 +49,6 @@ namespace NonFactors.Mvc.Grid
             ProcessorType = GridProcessorType.Pre;
             Name = ExpressionHelper.GetExpressionText(expression);
 
-            SortOrder = GetSortOrder();
             Filter = GetFilter();
 
             if (Filter != null)
@@ -97,19 +124,6 @@ namespace NonFactors.Mvc.Grid
             String filterType = filterKey.Substring((Grid.Name + "-" + Name + "-").Length);
 
             return MvcGrid.Filters.GetFilter(this, filterType, value);
-        }
-        private GridSortOrder? GetSortOrder()
-        {
-            if (Grid.Query[Grid.Name + "-Sort"] == Name)
-            {
-                String orderValue = Grid.Query[Grid.Name + "-Order"];
-                GridSortOrder order;
-
-                if (Enum.TryParse<GridSortOrder>(orderValue, out order))
-                    return order;
-            }
-
-            return null;
         }
         private String GetFilterName()
         {
