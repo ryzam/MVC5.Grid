@@ -37,6 +37,67 @@ namespace NonFactors.Mvc.Grid
             }
         }
 
+        private Boolean IsGridFilterSet { get; set; }
+        public override IGridFilter<TModel> Filter
+        {
+            get
+            {
+                if (IsGridFilterSet)
+                    return base.Filter;
+
+                String filterKey = Grid.Query.AllKeys
+                    .FirstOrDefault(key => (key ?? String.Empty)
+                        .Contains(Grid.Name + "-" + Name + "-"));
+
+                if (filterKey != null)
+                {
+                    String value = Grid.Query.GetValues(filterKey)[0];
+                    String filterType = filterKey.Substring((Grid.Name + "-" + Name + "-").Length);
+
+                    Filter = MvcGrid.Filters.GetFilter(this, filterType, value);
+                }
+
+                IsGridFilterSet = true;
+
+                return base.Filter;
+            }
+            set
+            {
+                base.Filter = value;
+                IsGridFilterSet = true;
+            }
+        }
+        public override String FilterValue
+        {
+            get
+            {
+                if (Filter != null)
+                    return Filter.Value;
+
+                return null;
+            }
+            set
+            {
+                if (Filter != null)
+                    Filter.Value = value;
+            }
+        }
+        public override String FilterType
+        {
+            get
+            {
+                if (Filter != null)
+                    return Filter.Type;
+
+                return null;
+            }
+            set
+            {
+                if (Filter != null)
+                    Filter.Type = value;
+            }
+        }
+
         public GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
         {
             Grid = grid;
@@ -48,14 +109,6 @@ namespace NonFactors.Mvc.Grid
             ValueFunction = expression.Compile();
             ProcessorType = GridProcessorType.Pre;
             Name = ExpressionHelper.GetExpressionText(expression);
-
-            Filter = GetFilter();
-
-            if (Filter != null)
-            {
-                FilterValue = Filter.Value;
-                FilterType = Filter.Type;
-            }
         }
 
         public override IQueryable<TModel> Process(IQueryable<TModel> items)
@@ -115,16 +168,7 @@ namespace NonFactors.Mvc.Grid
 
             return String.Format(Format, value);
         }
-        private IGridFilter<TModel> GetFilter()
-        {
-            String filterKey = Grid.Query.Keys.Cast<String>().FirstOrDefault(key => (key ?? String.Empty).Contains(Grid.Name + "-" + Name + "-"));
-            if (filterKey == null) return null;
 
-            String value = Grid.Query.GetValues(filterKey)[0];
-            String filterType = filterKey.Substring((Grid.Name + "-" + Name + "-").Length);
-
-            return MvcGrid.Filters.GetFilter(this, filterType, value);
-        }
         private String GetFilterName()
         {
             Type type = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);

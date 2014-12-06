@@ -15,11 +15,11 @@ namespace NonFactors.Mvc.Grid
         public virtual GridSortOrder? SortOrder { get; set; }
         public Boolean? IsSortable { get; set; }
 
-        public IGridFilter<TModel> Filter { get; set; }
+        public virtual IGridFilter<TModel> Filter { get; set; }
+        public virtual String FilterValue { get; set; }
+        public virtual String FilterType { get; set; }
         public Boolean? IsFilterable { get; set; }
-        public String FilterValue { get; set; }
         public String FilterName { get; set; }
-        public String FilterType { get; set; }
 
         public Boolean IsEncoded { get; set; }
         public String CssClasses { get; set; }

@@ -97,6 +97,161 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Property: Filter
+
+        [Test]
+        [TestCase("Grid-Name-Equals=")]
+        [TestCase("Grid-Name-Equals=Test")]
+        [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value")]
+        [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value")]
+        public void Filter_DoesNotResetFilterAfterSettingIt(String query)
+        {
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+
+            IGridFilter<GridModel> setFilter = Substitute.For<IGridFilter<GridModel>>();
+            column.Filter = setFilter;
+
+            Object actual = column.Filter;
+            Object expected = setFilter;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        [TestCase("Grid-Name-Equals=", "Equals", "")]
+        [TestCase("Grid-Name-Equals=Test", "Equals", "Test")]
+        [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value", "Equals", "Test")]
+        [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value", "Equals", "Test")]
+        public void Filter_SetsFilterFromMvcGridFilters(String query, String type, String value)
+        {
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), type, value).Returns(filter);
+
+            Object actual = column.Filter;
+            Object expected = filter;
+
+            MvcGrid.Filters.Received().GetFilter(column, type, value);
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        [TestCase("")]
+        [TestCase("=value")]
+        [TestCase("param=value")]
+        [TestCase("Grid-Name=value")]
+        public void Filter_OnGridQueryWithoutFilterLeavesFilterNull(String query)
+        {
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+
+            Object filter = column.Filter;
+
+            Assert.IsNull(filter);
+        }
+
+        [Test]
+        [TestCase("Grid-Name-Equals=")]
+        [TestCase("Grid-Name-Equals=Test")]
+        [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value")]
+        [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value")]
+        public void Filter_DoesNotResetFilterAfterFirstCall(String query)
+        {
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+
+            filter = Substitute.For<IGridFilter<GridModel>>();
+            IGridFilter<GridModel> currentFilter = column.Filter;
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+
+            Object expected = currentFilter;
+            Object actual = column.Filter;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
+        #region Property: FilterValue
+
+        [Test]
+        public void FilterValue_GetsValueFromFilter()
+        {
+            column.Filter = Substitute.For<IGridFilter<GridModel>>();
+            column.Filter.Value = "Test";
+
+            String expected = column.Filter.Value;
+            String actual = column.FilterValue;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FilterValue_OnNullFilterReturnsNull()
+        {
+            column.Filter = null;
+
+            Assert.IsNull(column.FilterValue);
+        }
+
+        [Test]
+        public void GridColumn_SetsFilterValue()
+        {
+            column.Filter = Substitute.For<IGridFilter<GridModel>>();
+            column.Filter.Value = null;
+            column.FilterValue = "T";
+
+            String actual = column.Filter.Value;
+            String expected = "T";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
+        #region Property: FilterType
+
+        [Test]
+        public void FilterType_GetsTypeFromFilter()
+        {
+            column.Filter = Substitute.For<IGridFilter<GridModel>>();
+            column.Filter.Type = "Test";
+
+            String expected = column.Filter.Type;
+            String actual = column.FilterType;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FilterType_OnNullFilterReturnsNull()
+        {
+            column.Filter = null;
+
+            Assert.IsNull(column.FilterType);
+        }
+
+        [Test]
+        public void GridColumn_SetsFilterType()
+        {
+            column.Filter = Substitute.For<IGridFilter<GridModel>>();
+            column.Filter.Type = null;
+            column.FilterType = "T";
+
+            String actual = column.Filter.Type;
+            String expected = "T";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
         #region Constructor: GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
 
         [Test]
@@ -360,74 +515,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             String actual = new GridColumn<GridModel, String>(grid, expression).Name;
             String expected = ExpressionHelper.GetExpressionText(expression);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("")]
-        [TestCase("=value")]
-        [TestCase("param=value")]
-        [TestCase("Grid-Name=value")]
-        public void GridColumn_OnGridQueryWithoutFilterSetsFilterToNull(String query)
-        {
-            grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
-
-            Object filter = new GridColumn<GridModel, String>(grid, model => model.Name).Filter;
-
-            Assert.IsNull(filter);
-        }
-
-        [Test]
-        [TestCase("Grid-Name-Equals=", "Equals", "")]
-        [TestCase("Grid-Name-Equals=Test", "Equals", "Test")]
-        [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value", "Equals", "Test")]
-        [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value", "Equals", "Test")]
-        public void GridColumn_SetsFilterFromMvcGridFilters(String query, String type, String value)
-        {
-            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), type, value).Returns(filter);
-
-            grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
-            GridColumn<GridModel, String> column = new GridColumn<GridModel, String>(grid, model => model.Name);
-
-            Object actual = column.Filter;
-            Object expected = filter;
-
-            MvcGrid.Filters.Received().GetFilter(column, type, value);
-            Assert.AreSame(expected, actual);
-        }
-
-        [Test]
-        public void GridColumn_SetsFilterValueFromFilter()
-        {
-            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            filter.Value = "Test";
-
-            grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString("Grid-Name-Equals=Value"));
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Equals", "Value").Returns(filter);
-
-            String actual = new GridColumn<GridModel, String>(grid, model => model.Name).FilterValue;
-            String expected = filter.Value;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void GridColumn_SetsFilterTypeFromFilter()
-        {
-            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            filter.Type = "Test";
-
-            grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString("Grid-Name-Equals=Value"));
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Equals", "Value").Returns(filter);
-
-            String actual = new GridColumn<GridModel, String>(grid, model => model.Name).FilterType;
-            String expected = filter.Type;
 
             Assert.AreEqual(expected, actual);
         }
