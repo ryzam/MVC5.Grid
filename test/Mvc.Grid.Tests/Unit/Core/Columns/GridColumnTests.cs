@@ -125,6 +125,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         [Test]
         [TestCase("")]
+        [TestCase("value")]
         [TestCase("=value")]
         [TestCase("Grid-Name=value")]
         [TestCase("RGrid-Name-Equals=value")]
