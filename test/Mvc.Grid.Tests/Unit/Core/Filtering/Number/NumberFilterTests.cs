@@ -16,7 +16,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            models = new[] { new GridModel(), new GridModel { Sum = 1 }, new GridModel { Sum = 2 } }.AsQueryable();
+            models = new[] { new GridModel(), new GridModel { NSum = 1, Sum = 1 }, new GridModel { NSum = 2, Sum = 2 } }.AsQueryable();
             Expression<Func<GridModel, Int32>> expression = (model) => model.Sum;
             filter = Substitute.ForPartsOf<NumberFilter<GridModel>>();
             filter.FilteredExpression = expression;
@@ -36,12 +36,40 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void Process_FiltersNullableUsingEquals()
+        {
+            Expression<Func<GridModel, Int32?>> expression = (model) => model.NSum;
+            filter.FilteredExpression = expression;
+            filter.GetNumericValue().Returns(1);
+            filter.Type = "Equals";
+
+            IEnumerable expected = models.Where(model => model.NSum == 1);
+            IEnumerable actual = filter.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void Process_FiltersUsingEquals()
         {
             filter.GetNumericValue().Returns(1);
             filter.Type = "Equals";
 
             IEnumerable expected = models.Where(model => model.Sum == 1);
+            IEnumerable actual = filter.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Process_FiltersNullableUsingLessThan()
+        {
+            Expression<Func<GridModel, Int32?>> expression = (model) => model.NSum;
+            filter.FilteredExpression = expression;
+            filter.GetNumericValue().Returns(1);
+            filter.Type = "LessThan";
+
+            IEnumerable expected = models.Where(model => model.NSum < 1);
             IEnumerable actual = filter.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);
@@ -60,6 +88,20 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void Process_FiltersNullableUsingGreaterThan()
+        {
+            Expression<Func<GridModel, Int32?>> expression = (model) => model.NSum;
+            filter.FilteredExpression = expression;
+            filter.GetNumericValue().Returns(1);
+            filter.Type = "GreaterThan";
+
+            IEnumerable expected = models.Where(model => model.NSum > 1);
+            IEnumerable actual = filter.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void Process_FiltersUsingGreaterThan()
         {
             filter.GetNumericValue().Returns(1);
@@ -72,12 +114,40 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void Process_FiltersNullableUsingLessThanOrEqual()
+        {
+            Expression<Func<GridModel, Int32?>> expression = (model) => model.NSum;
+            filter.FilteredExpression = expression;
+            filter.GetNumericValue().Returns(1);
+            filter.Type = "LessThanOrEqual";
+
+            IEnumerable expected = models.Where(model => model.NSum <= 1);
+            IEnumerable actual = filter.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void Process_FiltersUsingLessThanOrEqual()
         {
             filter.GetNumericValue().Returns(1);
             filter.Type = "LessThanOrEqual";
 
             IEnumerable expected = models.Where(model => model.Sum <= 1);
+            IEnumerable actual = filter.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Process_FiltersNullableUsingGreaterThanOrEqual()
+        {
+            Expression<Func<GridModel, Int32?>> expression = (model) => model.NSum;
+            filter.FilteredExpression = expression;
+            filter.GetNumericValue().Returns(1);
+            filter.Type = "GreaterThanOrEqual";
+
+            IEnumerable expected = models.Where(model => model.NSum >= 1);
             IEnumerable actual = filter.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);

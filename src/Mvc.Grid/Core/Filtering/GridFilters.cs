@@ -98,7 +98,7 @@ namespace NonFactors.Mvc.Grid
 
         public IGridFilter<TModel> GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String type, String value) where TModel : class
         {
-            Type valueType = typeof(TValue);
+            Type valueType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
             if (!Table.ContainsKey(valueType))
                 return null;
 
@@ -118,10 +118,12 @@ namespace NonFactors.Mvc.Grid
         public void Register(Type forType, String filterType, Type filter)
         {
             IDictionary<String, Type> typedFilters = new Dictionary<String, Type>();
-            if (Table.ContainsKey(forType))
-                typedFilters = Table[forType];
+            Type underlyingType = Nullable.GetUnderlyingType(forType) ?? forType;
+
+            if (Table.ContainsKey(underlyingType))
+                typedFilters = Table[underlyingType];
             else
-                Table.Add(forType, typedFilters);
+                Table.Add(underlyingType, typedFilters);
 
             typedFilters.Add(filterType, filter);
         }

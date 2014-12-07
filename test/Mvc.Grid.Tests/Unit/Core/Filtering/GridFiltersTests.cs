@@ -128,6 +128,25 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void GetFilter_GetsFilterForNullableType()
+        {
+            IGridColumn<GridModel, Int32?> column = Substitute.For<IGridColumn<GridModel, Int32?>>();
+            column.Expression = (model) => model.Sum;
+
+            IGridFilter<GridModel> actual = filters.GetFilter<GridModel, Int32?>(column, "Equals", "1");
+            IGridFilter<GridModel> expected = new Int32Filter<GridModel>();
+            expected.FilteredExpression = column.Expression;
+            expected.Type = "Equals";
+            expected.Value = "1";
+
+            Assert.AreEqual(expected.FilteredExpression, actual.FilteredExpression);
+            Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            Assert.AreEqual(expected.Value, actual.Value);
+            Assert.AreEqual(expected.Type, actual.Type);
+        }
+
+        [Test]
         public void GetFilter_ReturnsFilter()
         {
             IGridColumn<GridModel, String> column = Substitute.For<IGridColumn<GridModel, String>>();
@@ -159,6 +178,33 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             filters.Register(typeof(Object), "TestFilter", typeof(String));
 
             Type actual = filterPairs["TestFilter"];
+            Type expected = typeof(String);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Register_RegistersNullableFilterTypeForExistingType()
+        {
+            IDictionary<String, Type> filterPairs = new Dictionary<String, Type> { { "Test", typeof(Object) } };
+
+            filters.Table.Remove(typeof(Int32));
+            filters.Table.Add(typeof(Int32), filterPairs);
+
+            filters.Register(typeof(Int32?), "TestFilter", typeof(String));
+
+            Type actual = filterPairs["TestFilter"];
+            Type expected = typeof(String);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Register_RegistersNullableTypeAsNotNullable()
+        {
+            filters.Register(typeof(Int32?), "Test", typeof(String));
+
+            Type actual = filters.Table[typeof(Int32)]["Test"];
             Type expected = typeof(String);
 
             Assert.AreEqual(expected, actual);

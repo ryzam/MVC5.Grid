@@ -22,23 +22,20 @@ namespace NonFactors.Mvc.Grid
             switch (Type)
             {
                 case "Equals":
-                    return ToLambda(Expression.Equal(FilteredExpression.Body, Expression.Constant(value)));
+                    return ToLambda(Expression.Equal(GetNullSafeExpression(), Expression.Constant(value)));
                 case "LessThan":
-                    return ToLambda(Expression.LessThan(FilteredExpression.Body, Expression.Constant(value)));
+                    return ToLambda(Expression.LessThan(GetNullSafeExpression(), Expression.Constant(value)));
                 case "GreaterThan":
-                    return ToLambda(Expression.GreaterThan(FilteredExpression.Body, Expression.Constant(value)));
+                    return ToLambda(Expression.GreaterThan(GetNullSafeExpression(), Expression.Constant(value)));
                 case "LessThanOrEqual":
-                    return ToLambda(Expression.LessThanOrEqual(FilteredExpression.Body, Expression.Constant(value)));
+                    return ToLambda(Expression.LessThanOrEqual(GetNullSafeExpression(), Expression.Constant(value)));
                 case "GreaterThanOrEqual":
-                    return ToLambda(Expression.GreaterThanOrEqual(FilteredExpression.Body, Expression.Constant(value)));
+                    return ToLambda(Expression.GreaterThanOrEqual(GetNullSafeExpression(), Expression.Constant(value)));
             }
 
             return null;
         }
-        private Expression<Func<TModel, Boolean>> ToLambda(Expression expression)
-        {
-            return Expression.Lambda<Func<TModel, Boolean>>(expression, FilteredExpression.Parameters[0]);
-        }
+
         private Object GetDateValue()
         {
             DateTime date;

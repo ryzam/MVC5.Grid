@@ -11,15 +11,9 @@ namespace NonFactors.Mvc.Grid
             Object value = GetBooleanValue();
             if (value == null) return items;
 
-            return items.Where(GetFilterExpression(value));
+            return items.Where(ToLambda(Expression.Equal(GetNullSafeExpression(), Expression.Constant(value))));
         }
 
-        private Expression<Func<TModel, Boolean>> GetFilterExpression(Object value)
-        {
-            Expression expression = Expression.Equal(FilteredExpression.Body, Expression.Constant(value));
-
-            return Expression.Lambda<Func<TModel, Boolean>>(expression, FilteredExpression.Parameters[0]);
-        }
         private Object GetBooleanValue()
         {
             if (String.Equals(Value, "true", StringComparison.InvariantCultureIgnoreCase))

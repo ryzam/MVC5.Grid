@@ -18,8 +18,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             models = new[]
             {
                 new GridModel(),
-                new GridModel { IsChecked = true },
-                new GridModel{ IsChecked = false }
+                new GridModel { IsChecked = true, NIsChecked = true },
+                new GridModel{ IsChecked = false, NIsChecked = false }
             }.AsQueryable();
 
             Expression<Func<GridModel, Boolean>> expression = (model) => model.IsChecked;
@@ -44,11 +44,43 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase("true")]
         [TestCase("True")]
         [TestCase("TRUE")]
+        public void Process_FiltersNullableUsingEqualsTrue(String value)
+        {
+            Expression<Func<GridModel, Boolean?>> expression = (model) => model.NIsChecked;
+            filter.FilteredExpression = expression;
+            filter.Value = value;
+
+            IEnumerable expected = models.Where(model => model.NIsChecked == true);
+            IEnumerable actual = filter.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("true")]
+        [TestCase("True")]
+        [TestCase("TRUE")]
         public void Process_FiltersUsingEqualsTrue(String value)
         {
             filter.Value = value;
 
             IEnumerable expected = models.Where(model => model.IsChecked);
+            IEnumerable actual = filter.Process(models);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("false")]
+        [TestCase("False")]
+        [TestCase("FALSE")]
+        public void Process_FiltersNullableUsingEqualsFalse(String value)
+        {
+            Expression<Func<GridModel, Boolean?>> expression = (model) => model.NIsChecked;
+            filter.FilteredExpression = expression;
+            filter.Value = value;
+
+            IEnumerable expected = models.Where(model => model.NIsChecked == false);
             IEnumerable actual = filter.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);
