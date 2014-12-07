@@ -1,5 +1,4 @@
-﻿using NSubstitute;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Linq;
@@ -18,13 +17,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             models = new[]
             {
-                new GridModel(),
+                new GridModel { Date = new DateTime(2013, 01, 01) },
                 new GridModel { Date = new DateTime(2014, 01, 01) },
-                new GridModel{ Date = new DateTime(2015, 01, 01) }
+                new GridModel { Date = new DateTime(2015, 01, 01) }
             }.AsQueryable();
 
             Expression<Func<GridModel, DateTime>> expression = (model) => model.Date;
-            filter = Substitute.ForPartsOf<DateTimeFilter<GridModel>>();
+            filter = new DateTimeFilter<GridModel>();
             filter.FilteredExpression = expression;
         }
 

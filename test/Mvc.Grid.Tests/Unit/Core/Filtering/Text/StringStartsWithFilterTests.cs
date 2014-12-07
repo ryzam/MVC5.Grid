@@ -24,7 +24,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
                 new GridModel { Name = "Tes" },
                 new GridModel { Name = "test" },
                 new GridModel { Name = "Test" },
-                new GridModel { Name = "TEST2" }
+                new GridModel { Name = "TTEST2" }
             }.AsQueryable();
 
             IQueryable expected = models.Where(model => model.Name != null && model.Name.ToUpper().StartsWith("TEST"));

@@ -109,7 +109,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String name, String value)
+        #region Method: GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String type, String value)
 
         [Test]
         public void GetFilter_OnNotFoundValueTypeReturnsNull()
@@ -148,7 +148,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Register(Type forType, String name, Type filterType)
+        #region Method: Register(Type forType, String filterType, Type filter)
 
         [Test]
         public void Register_RegistersFilterForExistingType()
@@ -177,7 +177,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Unregister(Type forType, String name, Type filterType)
+        #region Method: Unregister(Type forType, String filterType)
 
         [Test]
         public void Unregister_UnregistersExistingFilter()

@@ -8,17 +8,17 @@ namespace NonFactors.Mvc.Grid
     {
         public override IQueryable<TModel> Process(IQueryable<TModel> items)
         {
-            Expression<Func<TModel, Boolean>> filter = GetFilterExpression();
+            Object value = GetNumericValue();
+            if (value == null) return items;
+
+            Expression<Func<TModel, Boolean>> filter = GetFilterExpression(value);
             if (filter == null) return items;
 
             return items.Where(filter);
         }
 
-        private Expression<Func<TModel, Boolean>> GetFilterExpression()
+        private Expression<Func<TModel, Boolean>> GetFilterExpression(Object value)
         {
-            Object value = GetNumericValue();
-            if (value == null) return null;
-
             switch (Type)
             {
                 case "Equals":

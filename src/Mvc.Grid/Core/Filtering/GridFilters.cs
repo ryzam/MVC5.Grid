@@ -96,26 +96,26 @@ namespace NonFactors.Mvc.Grid
             Register(typeof(String), "StartsWith", typeof(StringStartsWithFilter<>));
         }
 
-        public IGridFilter<TModel> GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String name, String value) where TModel : class
+        public IGridFilter<TModel> GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String type, String value) where TModel : class
         {
             Type valueType = typeof(TValue);
             if (!Table.ContainsKey(valueType))
                 return null;
 
             IDictionary<String, Type> typedFilters = Table[valueType];
-            if (!typedFilters.ContainsKey(name))
+            if (!typedFilters.ContainsKey(type))
                 return null;
 
-            Type filterType = typedFilters[name].MakeGenericType(typeof(TModel));
+            Type filterType = typedFilters[type].MakeGenericType(typeof(TModel));
             IGridFilter<TModel> filter = (IGridFilter<TModel>)Activator.CreateInstance(filterType);
             filter.FilteredExpression = column.Expression;
             filter.Value = value;
-            filter.Type = name;
+            filter.Type = type;
 
             return filter;
         }
 
-        public void Register(Type forType, String name, Type filterType)
+        public void Register(Type forType, String filterType, Type filter)
         {
             IDictionary<String, Type> typedFilters = new Dictionary<String, Type>();
             if (Table.ContainsKey(forType))
@@ -123,12 +123,12 @@ namespace NonFactors.Mvc.Grid
             else
                 Table.Add(forType, typedFilters);
 
-            typedFilters.Add(name, filterType);
+            typedFilters.Add(filterType, filter);
         }
-        public void Unregister(Type forType, String name)
+        public void Unregister(Type forType, String filterType)
         {
             if (Table.ContainsKey(forType))
-                Table[forType].Remove(name);
+                Table[forType].Remove(filterType);
         }
     }
 }

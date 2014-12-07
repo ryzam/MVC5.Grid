@@ -1,5 +1,4 @@
-﻿using NSubstitute;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Linq;
@@ -24,7 +23,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             }.AsQueryable();
 
             Expression<Func<GridModel, Boolean>> expression = (model) => model.IsChecked;
-            filter = Substitute.ForPartsOf<BooleanFilter<GridModel>>();
+            filter = new BooleanFilter<GridModel>();
             filter.FilteredExpression = expression;
         }
 

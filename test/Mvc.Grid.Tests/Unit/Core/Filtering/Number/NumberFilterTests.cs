@@ -16,7 +16,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            models = new[] { new GridModel(), new GridModel { Sum = 1 }, new GridModel() { Sum = 2 } }.AsQueryable();
+            models = new[] { new GridModel(), new GridModel { Sum = 1 }, new GridModel { Sum = 2 } }.AsQueryable();
             Expression<Func<GridModel, Int32>> expression = (model) => model.Sum;
             filter = Substitute.ForPartsOf<NumberFilter<GridModel>>();
             filter.FilteredExpression = expression;

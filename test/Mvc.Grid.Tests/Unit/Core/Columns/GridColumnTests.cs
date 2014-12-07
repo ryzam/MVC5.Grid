@@ -42,13 +42,23 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Property: SortOrder
 
         [Test]
-        [TestCase("Sort=Name&Grid-Order=Desc", null)]
+        public void SortOrder_DoesNotChangeSortOrderAfterItsSet()
+        {
+            grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString("Grid-Sort=Name&Grid-Order=Asc"));
+
+            column.SortOrder = null;
+
+            Assert.IsNull(column.SortOrder);
+        }
+
+        [Test]
         [TestCase("Grid-Sort=Sum&Grid-Order=Desc", null)]
         [TestCase("Grid-Sort=Name&RGrid-Order=Asc", null)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Dasc", null)]
+        [TestCase("Grid-Sort=Name&Grid-Order=Descc", null)]
         [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Asc)]
         [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Desc)]
-        public void SortOrder_OnFirstCallSetsSortOrderFromGridQuery(String query, GridSortOrder? expected)
+        public void SortOrder_SetsSortOrderThenItsNotSet(String query, GridSortOrder? expected)
         {
             grid.Name = "Grid";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
@@ -59,36 +69,16 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        [TestCase("", "Grid-Sort=Name&Grid-Order=Asc", null)]
         [TestCase("Grid-Sort=Name&Grid-Order=", "Grid-Sort=Name&Grid-Order=Desc", null)]
         [TestCase("Grid-Sort=Name&Grid-Order=Asc", "Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Asc)]
         [TestCase("Grid-Sort=Name&Grid-Order=Desc", "Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Desc)]
-        public void SortOrder_DoesNotResetSortOrderAfterFirstCall(String initialQuery, String changedQuery, GridSortOrder? expected)
+        public void SortOrder_DoesNotChangeSortOrderAfterFirstGet(String initialQuery, String changedQuery, GridSortOrder? expected)
         {
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(initialQuery));
             grid.Name = "Grid";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(initialQuery));
 
             GridSortOrder? sortOrder = column.SortOrder;
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(changedQuery));
-
-            GridSortOrder? actual = column.SortOrder;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("Grid-Sort=Name&Grid-Order=Asc", null)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Desc", null)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Asc)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Asc)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Asc", GridSortOrder.Desc)]
-        [TestCase("Grid-Sort=Name&Grid-Order=Desc", GridSortOrder.Desc)]
-        public void SortOrder_DoesNotResetSortOrderAfterSettingIt(String query, GridSortOrder? expected)
-        {
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
-            grid.Name = "Grid";
-
-            column.SortOrder = expected;
 
             GridSortOrder? actual = column.SortOrder;
 
@@ -100,32 +90,26 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Property: Filter
 
         [Test]
-        [TestCase("Grid-Name-Equals=")]
-        [TestCase("Grid-Name-Equals=Test")]
-        [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value")]
-        [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value")]
-        public void Filter_DoesNotResetFilterAfterSettingIt(String query)
+        public void Filter_DoesNotChangeFilterAfterItsSet()
         {
             grid.Name = "Grid";
+            String query = "Grid-Name-Equals=Test";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
             MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
 
-            IGridFilter<GridModel> setFilter = Substitute.For<IGridFilter<GridModel>>();
-            column.Filter = setFilter;
+            column.Filter = null;
 
-            Object actual = column.Filter;
-            Object expected = setFilter;
-
-            Assert.AreSame(expected, actual);
+            Assert.IsNull(column.Filter);
         }
 
         [Test]
+        [TestCase("Grid-Name-=", "", "")]
         [TestCase("Grid-Name-Equals=", "Equals", "")]
         [TestCase("Grid-Name-Equals=Test", "Equals", "Test")]
         [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value", "Equals", "Test")]
         [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value", "Equals", "Test")]
-        public void Filter_SetsFilterFromMvcGridFilters(String query, String type, String value)
+        public void Filter_SetsFilterThenItsNotSet(String query, String type, String value)
         {
             grid.Name = "Grid";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
@@ -142,29 +126,26 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         [TestCase("")]
         [TestCase("=value")]
-        [TestCase("param=value")]
         [TestCase("Grid-Name=value")]
-        public void Filter_OnGridQueryWithoutFilterLeavesFilterNull(String query)
-        {
-            grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
-
-            Object filter = column.Filter;
-
-            Assert.IsNull(filter);
-        }
-
-        [Test]
-        [TestCase("Grid-Name-Equals=")]
-        [TestCase("Grid-Name-Equals=Test")]
-        [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value")]
-        [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value")]
-        public void Filter_DoesNotResetFilterAfterFirstCall(String query)
+        [TestCase("RGrid-Name-Equals=value")]
+        public void Filter_OnGridQueryWithoutFilterSetsFilterToNull(String query)
         {
             grid.Name = "Grid";
             grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+
+            Assert.IsNull(column.Filter);
+        }
+
+        [Test]
+        public void Filter_DoesNotChangeFilterAfterFirstGet()
+        {
+            grid.Name = "Grid";
+            String query = "Grid-Name-Equals=Test";
+            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Name", "Equals").Returns(filter);
 
             filter = Substitute.For<IGridFilter<GridModel>>();
             IGridFilter<GridModel> currentFilter = column.Filter;
@@ -201,7 +182,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_SetsFilterValue()
+        public void FilterValue_SetsFilterValue()
         {
             column.Filter = Substitute.For<IGridFilter<GridModel>>();
             column.Filter.Value = null;
@@ -238,7 +219,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_SetsFilterType()
+        public void FilterType_SetsFilterType()
         {
             column.Filter = Substitute.For<IGridFilter<GridModel>>();
             column.Filter.Type = null;
@@ -281,185 +262,185 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNullForEnum()
+        public void AddProperty_SetsFilterNameAsNullForEnum()
         {
             AssertFilterNameFor(model => model.EnumField, null);
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForSByte()
+        public void AddProperty_SetsFilterNameAsNumberForSByte()
         {
             AssertFilterNameFor(model => model.SByteField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForByte()
+        public void AddProperty_SetsFilterNameAsNumberForByte()
         {
             AssertFilterNameFor(model => model.ByteField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForInt16()
+        public void AddProperty_SetsFilterNameAsNumberForInt16()
         {
             AssertFilterNameFor(model => model.Int16Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForUInt16()
+        public void AddProperty_SetsFilterNameAsNumberForUInt16()
         {
             AssertFilterNameFor(model => model.UInt16Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForInt32()
+        public void AddProperty_SetsFilterNameAsNumberForInt32()
         {
             AssertFilterNameFor(model => model.Int32Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForUInt32()
+        public void AddProperty_SetsFilterNameAsNumberForUInt32()
         {
             AssertFilterNameFor(model => model.UInt32Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForInt64()
+        public void AddProperty_SetsFilterNameAsNumberForInt64()
         {
             AssertFilterNameFor(model => model.Int64Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForUInt64()
+        public void AddProperty_SetsFilterNameAsNumberForUInt64()
         {
             AssertFilterNameFor(model => model.UInt64Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForSingle()
+        public void AddProperty_SetsFilterNameAsNumberForSingle()
         {
             AssertFilterNameFor(model => model.SingleField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForDouble()
+        public void AddProperty_SetsFilterNameAsNumberForDouble()
         {
             AssertFilterNameFor(model => model.DoubleField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForDecimal()
+        public void AddProperty_SetsFilterNameAsNumberForDecimal()
         {
             AssertFilterNameFor(model => model.DecimalField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsBooleanForBoolean()
+        public void AddProperty_SetsFilterNameAsBooleanForBoolean()
         {
             AssertFilterNameFor(model => model.BooleanField, "Boolean");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsDateCellForDateTime()
+        public void AddProperty_SetsFilterNameAsDateCellForDateTime()
         {
             AssertFilterNameFor(model => model.DateTimeField, "Date");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNullForNullableEnum()
+        public void AddProperty_SetsFilterNameAsNullForNullableEnum()
         {
             AssertFilterNameFor(model => model.NullableEnumField, null);
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableSByte()
+        public void AddProperty_SetsFilterNameAsNumberForNullableSByte()
         {
             AssertFilterNameFor(model => model.NullableSByteField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableByte()
+        public void AddProperty_SetsFilterNameAsNumberForNullableByte()
         {
             AssertFilterNameFor(model => model.NullableByteField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableInt16()
+        public void AddProperty_SetsFilterNameAsNumberForNullableInt16()
         {
             AssertFilterNameFor(model => model.NullableInt16Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableUInt16()
+        public void AddProperty_SetsFilterNameAsNumberForNullableUInt16()
         {
             AssertFilterNameFor(model => model.NullableUInt16Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableInt32()
+        public void AddProperty_SetsFilterNameAsNumberForNullableInt32()
         {
             AssertFilterNameFor(model => model.NullableInt32Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableUInt32()
+        public void AddProperty_SetsFilterNameAsNumberForNullableUInt32()
         {
             AssertFilterNameFor(model => model.NullableUInt32Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableInt64()
+        public void AddProperty_SetsFilterNameAsNumberForNullableInt64()
         {
             AssertFilterNameFor(model => model.NullableInt64Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableUInt64()
+        public void AddProperty_SetsFilterNameAsNumberForNullableUInt64()
         {
             AssertFilterNameFor(model => model.NullableUInt64Field, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableSingle()
+        public void AddProperty_SetsFilterNameAsNumberForNullableSingle()
         {
             AssertFilterNameFor(model => model.NullableSingleField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableDouble()
+        public void AddProperty_SetsFilterNameAsNumberForNullableDouble()
         {
             AssertFilterNameFor(model => model.NullableDoubleField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsNumberForNullableDecimal()
+        public void AddProperty_SetsFilterNameAsNumberForNullableDecimal()
         {
             AssertFilterNameFor(model => model.NullableDecimalField, "Number");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsBooleanForNullableBoolean()
+        public void AddProperty_SetsFilterNameAsBooleanForNullableBoolean()
         {
             AssertFilterNameFor(model => model.NullableBooleanField, "Boolean");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsDateForNullableDateTime()
+        public void AddProperty_SetsFilterNameAsDateForNullableDateTime()
         {
             AssertFilterNameFor(model => model.NullableDateTimeField, "Date");
         }
 
         [Test]
-        public void AddProperty_SetsFilterTypeAsTextForOtherTypes()
+        public void AddProperty_SetsFilterNameAsTextForOtherTypes()
         {
             AssertFilterNameFor(model => model.StringField, "Text");
         }
 
         [Test]
-        public void GridColumn_SetsValueFunctionAsCompiledExpression()
+        public void GridColumn_SetsRawValueForAsCompiledExpression()
         {
             GridModel gridModel = new GridModel { Name = "TestName" };
 
-            String actual = column.ValueFunction(gridModel) as String;
+            String actual = column.RawValueFor(gridModel) as String;
             String expected = "TestName";
 
             Assert.AreEqual(expected, actual);
@@ -524,12 +505,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Process(IQueryable<TModel> items)
 
         [Test]
-        public void Process_IfNotFilterableReturnsItems()
+        public void Process_IfFilterIsNullReturnsItems()
         {
+            column.Filter = null;
             column.IsSortable = false;
-            column.IsFilterable = false;
+            column.IsFilterable = true;
             column.SortOrder = GridSortOrder.Desc;
-            column.Filter = Substitute.For<IGridFilter<GridModel>>();
 
             IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
             IQueryable<GridModel> actual = column.Process(expected);
@@ -538,12 +519,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void Process_IfFilterIsNullReturnsItems()
+        public void Process_IfNotFilterableReturnsItems()
         {
-            column.Filter = null;
             column.IsSortable = false;
-            column.IsFilterable = true;
+            column.IsFilterable = false;
             column.SortOrder = GridSortOrder.Desc;
+            column.Filter = Substitute.For<IGridFilter<GridModel>>();
 
             IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
             IQueryable<GridModel> actual = column.Process(expected);
@@ -570,11 +551,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void Process_IfNotSortableReturnsItems()
+        public void Process_IfSortOrderIsNullReturnsItems()
         {
-            column.IsSortable = false;
             column.IsFilterable = false;
-            column.SortOrder = GridSortOrder.Desc;
+            column.IsSortable = true;
+            column.SortOrder = null;
 
             IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
             IQueryable<GridModel> actual = column.Process(expected);
@@ -583,11 +564,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void Process_IfSortOrderIsNullReturnsItems()
+        public void Process_IfNotSortableReturnsItems()
         {
+            column.IsSortable = false;
             column.IsFilterable = false;
-            column.IsSortable = true;
-            column.SortOrder = null;
+            column.SortOrder = GridSortOrder.Desc;
 
             IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
             IQueryable<GridModel> actual = column.Process(expected);
@@ -631,9 +612,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.SortOrder = GridSortOrder.Desc;
             column.Filter = Substitute.For<IGridFilter<GridModel>>();
             IQueryable<GridModel> models = new [] { new GridModel { Name = "A" }, new GridModel { Name = "B" }, new GridModel { Name = "C" } }.AsQueryable();
-            column.Filter.Process(models).Returns(models.Where(model => model.Name == "B").ToList().AsQueryable());
+            column.Filter.Process(models).Returns(models.Where(model => model.Name != "A").ToList().AsQueryable());
 
-            IEnumerable expected = models.Where(model => model.Name == "B").OrderByDescending(model => model.Name);
+            IEnumerable expected = models.Where(model => model.Name != "A").OrderByDescending(model => model.Name);
             IEnumerable actual = column.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);
@@ -644,9 +625,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: ValueFor(IGridRow row)
 
         [Test]
-        public void ValueFor_UsesValueFunctionToGetValue()
+        public void ValueFor_UsesRawValueForToGetValue()
         {
-            column.ValueFunction = (model) => "TestValue";
+            column.RawValueFor = (model) => "TestValue";
 
             String actual = column.ValueFor(new GridRow(null)).ToString();
             String expected = "TestValue";
@@ -664,8 +645,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void ValueFor_GetsValue(String value, String format, Boolean isEncoded, String expected)
         {
             IGridRow row = new GridRow(new GridModel { Name = value });
-            column.Encoded(isEncoded);
-            column.Formatted(format);
+            column.IsEncoded = isEncoded;
+            column.Format = format;
 
             String actual = column.ValueFor(row).ToString();
 

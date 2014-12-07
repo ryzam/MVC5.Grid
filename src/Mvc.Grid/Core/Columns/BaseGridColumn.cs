@@ -8,7 +8,7 @@ namespace NonFactors.Mvc.Grid
     public abstract class BaseGridColumn<TModel, TValue> : IGridColumn<TModel, TValue> where TModel : class
     {
         public Expression<Func<TModel, TValue>> Expression { get; set; }
-        public Func<TModel, TValue> ValueFunction { get; set; }
+        public Func<TModel, TValue> RawValueFor { get; set; }
         public GridProcessorType ProcessorType { get; set; }
         public IGrid<TModel> Grid { get; set; }
 
@@ -29,7 +29,7 @@ namespace NonFactors.Mvc.Grid
 
         public IGridColumn<TModel, TValue> RenderAs(Func<TModel, TValue> value)
         {
-            ValueFunction = value;
+            RawValueFor = value;
 
             return this;
         }

@@ -9,12 +9,12 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumn<TModel, TValue> : BaseGridColumn<TModel, TValue> where TModel : class
     {
-        private Boolean IsGridSortSet { get; set; }
+        private Boolean GridSortIsSet { get; set; }
         public override GridSortOrder? SortOrder
         {
             get
             {
-                if (IsGridSortSet)
+                if (GridSortIsSet)
                     return base.SortOrder;
 
                 if (Grid.Query[Grid.Name + "-Sort"] == Name)
@@ -26,28 +26,28 @@ namespace NonFactors.Mvc.Grid
                         SortOrder = order;
                 }
 
-                IsGridSortSet = true;
+                GridSortIsSet = true;
 
                 return base.SortOrder;
             }
             set
             {
                 base.SortOrder = value;
-                IsGridSortSet = true;
+                GridSortIsSet = true;
             }
         }
 
-        private Boolean IsGridFilterSet { get; set; }
+        private Boolean GridFilterIsSet { get; set; }
         public override IGridFilter<TModel> Filter
         {
             get
             {
-                if (IsGridFilterSet)
+                if (GridFilterIsSet)
                     return base.Filter;
 
                 String filterKey = Grid.Query.AllKeys
                     .FirstOrDefault(key => (key ?? String.Empty)
-                        .Contains(Grid.Name + "-" + Name + "-"));
+                        .StartsWith(Grid.Name + "-" + Name + "-"));
 
                 if (filterKey != null)
                 {
@@ -57,14 +57,14 @@ namespace NonFactors.Mvc.Grid
                     Filter = MvcGrid.Filters.GetFilter(this, filterType, value);
                 }
 
-                IsGridFilterSet = true;
+                GridFilterIsSet = true;
 
                 return base.Filter;
             }
             set
             {
                 base.Filter = value;
-                IsGridFilterSet = true;
+                GridFilterIsSet = true;
             }
         }
         public override String FilterValue
@@ -104,22 +104,18 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
             Expression = expression;
             FilterName = GetFilterName();
-            IsSortable = IsMember(expression);
-            IsFilterable = IsMember(expression);
-            ValueFunction = expression.Compile();
+            RawValueFor = expression.Compile();
             ProcessorType = GridProcessorType.Pre;
+            IsSortable = IsFilterable = IsMember(expression);
             Name = ExpressionHelper.GetExpressionText(expression);
         }
 
         public override IQueryable<TModel> Process(IQueryable<TModel> items)
         {
-            if (IsFilterable == true && Filter != null)
+            if (Filter != null && IsFilterable == true)
                 items = Filter.Process(items);
 
-            if (IsSortable != true)
-                return items;
-
-            if (SortOrder == null)
+            if (SortOrder == null || IsSortable != true)
                 return items;
 
             if (SortOrder == GridSortOrder.Asc)
@@ -136,7 +132,7 @@ namespace NonFactors.Mvc.Grid
         }
         public override String GetSortingQuery()
         {
-            if (!(IsSortable == true))
+            if (IsSortable != true)
                 return null;
 
             GridQuery query = new GridQuery(Grid.Query);
@@ -157,18 +153,17 @@ namespace NonFactors.Mvc.Grid
 
             return false;
         }
+
         private String GetRawValueFor(IGridRow row)
         {
-            TValue value = ValueFunction(row.Model as TModel);
-            if (value == null)
-                return String.Empty;
+            TValue value = RawValueFor(row.Model as TModel);
+            if (value == null) return String.Empty;
 
             if (Format == null)
                 return value.ToString();
 
             return String.Format(Format, value);
         }
-
         private String GetFilterName()
         {
             Type type = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);

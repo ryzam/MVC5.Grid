@@ -18,10 +18,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: RenderAs(Func<TModel, TValue> value)
 
         [Test]
-        public void RenderAs_SetsValueFunction()
+        public void RenderAs_SetsRawValueForColumn()
         {
             Func<GridModel, String> expected = (model) => model.Name;
-            Func<GridModel, String> actual = column.RenderAs(expected).ValueFunction;
+            Func<GridModel, String> actual = column.RenderAs(expected).RawValueFor;
 
             Assert.AreSame(expected, actual);
         }
