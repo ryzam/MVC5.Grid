@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Grid 0.6.0
+ * Mvc.Grid 0.7.0
  * https://github.com/NonFactors/MVC.Grid
  *
  * Copyright © 2014 NonFactors
@@ -201,6 +201,32 @@
             }
         });
     };
+    $.fn.mvcgrid.lang = {
+        Text: {
+            Contains: "Contains",
+            Equals: "Equals",
+            StartsWith: "Starts with",
+            EndsWith: "EndsWith"
+        },
+        Number: {
+            Equals: "Equals",
+            LessThan: "Less than",
+            GreaterThan: "Greater than",
+            LessThanOrEqual: "Less than or equal",
+            GreaterThanOrEqual: "Greater than or equal"
+        },
+        Date: {
+            Equals: "Equals",
+            LessThan: "Less than",
+            GreaterThan: "Greater than",
+            LessThanOrEqual: "Less than or equal",
+            GreaterThanOrEqual: "Greater than or equal"
+        },
+        Boolean: {
+            Yes: "Yes",
+            No: "No"
+        }
+    };
     $.fn.mvcgrid.filters = {
         Text: (function ($) {
             function GridTextFilter() {
@@ -208,13 +234,15 @@
 
             GridTextFilter.prototype = {
                 render: function (filter) {
+                    var lang = $.fn.mvcgrid.lang;
+
                     return (
                         '<div class="form-group">' +
                             '<select class="mvc-grid-filter-type form-control">' +
-                                '<option value="Contains"' + (filter.type == 'Contains' ? ' selected="selected"' : '') + '>Contains</option>' +
-                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
-                                '<option value="StartsWith"' + (filter.type == 'StartsWith' ? ' selected="selected"' : '') + '>Starts with</option>' +
-                                '<option value="EndsWith"' + (filter.type == 'EndsWith' ? ' selected="selected"' : '') + '>Ends with</option>' +
+                                '<option value="Contains"' + (filter.type == 'Contains' ? ' selected="selected"' : '') + '>' + lang.Text.Contains + '</option>' +
+                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>' + lang.Text.Equals + '</option>' +
+                                '<option value="StartsWith"' + (filter.type == 'StartsWith' ? ' selected="selected"' : '') + '>' + lang.Text.StartsWith + '</option>' +
+                                '<option value="EndsWith"' + (filter.type == 'EndsWith' ? ' selected="selected"' : '') + '>' + lang.Text.EndsWith + '</option>' +
                             '</select>' +
                         '</div>' +
                         '<div class="form-group">' +
@@ -268,14 +296,16 @@
 
             GridNumberFilter.prototype = {
                 render: function (filter) {
+                    var lang = $.fn.mvcgrid.lang;
+
                     return (
                         '<div class="form-group">' +
                             '<select class="mvc-grid-filter-type form-control">' +
-                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
-                                '<option value="LessThan"' + (filter.type == 'LessThan' ? ' selected="selected"' : '') + '>Less than</option>' +
-                                '<option value="GreaterThan"' + (filter.type == 'GreaterThan' ? ' selected="selected"' : '') + '>Greater than</option>' +
-                                '<option value="LessThanOrEqual"' + (filter.type == 'LessThanOrEqual' ? ' selected="selected"' : '') + '>Less than or equal</option>' +
-                                '<option value="GreaterThanOrEqual"' + (filter.type == 'GreaterThanOrEqual' ? ' selected="selected"' : '') + '>Greater than or equal</option>' +
+                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>' + lang.Number.Equals + '</option>' +
+                                '<option value="LessThan"' + (filter.type == 'LessThan' ? ' selected="selected"' : '') + '>' + lang.Number.LessThan + '</option>' +
+                                '<option value="GreaterThan"' + (filter.type == 'GreaterThan' ? ' selected="selected"' : '') + '>' + lang.Number.GreaterThan + '</option>' +
+                                '<option value="LessThanOrEqual"' + (filter.type == 'LessThanOrEqual' ? ' selected="selected"' : '') + '>' + lang.Number.LessThanOrEqual + '</option>' +
+                                '<option value="GreaterThanOrEqual"' + (filter.type == 'GreaterThanOrEqual' ? ' selected="selected"' : '') + '>' + lang.Number.GreaterThanOrEqual + '</option>' +
                             '</select>' +
                         '</div>' +
                         '<div class="form-group">' +
@@ -336,15 +366,16 @@
             GridDateFilter.prototype = {
                 render: function (filter) {
                     var filterInput = '<input class="form-control mvc-grid-input" type="text" value="' + filter.value + '">';
+                    var lang = $.fn.mvcgrid.lang;
 
                     return (
                         '<div class="form-group">' +
                             '<select class="mvc-grid-filter-type form-control">' +
-                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>Equals</option>' +
-                                '<option value="LessThan"' + (filter.type == 'LessThan' ? ' selected="selected"' : '') + '>Less than</option>' +
-                                '<option value="GreaterThan"' + (filter.type == 'GreaterThan' ? ' selected="selected"' : '') + '>Greater than</option>' +
-                                '<option value="LessThanOrEqual"' + (filter.type == 'LessThanOrEqual' ? ' selected="selected"' : '') + '>Less than or equal</option>' +
-                                '<option value="GreaterThanOrEqual"' + (filter.type == 'GreaterThanOrEqual' ? ' selected="selected"' : '') + '>Greater than or equal</option>' +
+                                '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>' + lang.Date.Equals + '</option>' +
+                                '<option value="LessThan"' + (filter.type == 'LessThan' ? ' selected="selected"' : '') + '>' + lang.Date.LessThan + '</option>' +
+                                '<option value="GreaterThan"' + (filter.type == 'GreaterThan' ? ' selected="selected"' : '') + '>' + lang.Date.GreaterThan + '</option>' +
+                                '<option value="LessThanOrEqual"' + (filter.type == 'LessThanOrEqual' ? ' selected="selected"' : '') + '>' + lang.Date.LessThanOrEqual + '</option>' +
+                                '<option value="GreaterThanOrEqual"' + (filter.type == 'GreaterThanOrEqual' ? ' selected="selected"' : '') + '>' + lang.Date.GreaterThanOrEqual + '</option>' +
                             '</select>' +
                         '</div>' +
                         '<div class="form-group">' +
@@ -398,11 +429,13 @@
 
             GridBooleanFilter.prototype = {
                 render: function (filter) {
+                    var lang = $.fn.mvcgrid.lang;
+
                     return (
                         '<div class="form-group">' +
                             '<ul class="mvc-grid-filter-type mvc-grid-boolean-filter">' +
-                                '<li ' + (filter.value == 'True' ? 'class="active" ' : '') + 'data-value="True">Yes</li>' +
-                                '<li ' + (filter.value == 'False' ? 'class="active" ' : '') + 'data-value="False">No</li>' +
+                                '<li ' + (filter.value == 'True' ? 'class="active" ' : '') + 'data-value="True">' + lang.Boolean.Yes + '</li>' +
+                                '<li ' + (filter.value == 'False' ? 'class="active" ' : '') + 'data-value="False">' + lang.Boolean.No + '</li>' +
                             '</ul>' +
                         '</div>' +
                         '<div class="mvc-grid-filter-buttons row">' +

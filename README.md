@@ -8,5 +8,5 @@ Planned features for the release:
 - [x] - Automatic paging
 - [x] - Filter extensibility
 - [ ] - Grid extensibility
-- [ ] - Globalization
+- [x] - Globalization
 - [ ] - Ajax support
