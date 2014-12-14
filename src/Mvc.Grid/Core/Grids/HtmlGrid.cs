@@ -24,6 +24,12 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public virtual IHtmlGrid<TModel> ProcessWith(IGridProcessor<TModel> processor)
+        {
+            Grid.Processors.Add(processor);
+
+            return this;
+        }
 
         public virtual IHtmlGrid<TModel> Filterable(Boolean isFilterable)
         {

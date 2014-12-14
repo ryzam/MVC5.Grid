@@ -111,6 +111,32 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: ProcessWith(IGridProcessor<TModel> processor)
+
+        [Test]
+        public void ProcessWith_AddsProcessorToGrid()
+        {
+            IGridProcessor<GridModel> processor = Substitute.For<IGridProcessor<GridModel>>();
+            htmlGrid.Grid.Processors.Clear();
+            htmlGrid.ProcessWith(processor);
+
+            IGridProcessor<GridModel> actual = htmlGrid.Grid.Processors.Single();
+            IGridProcessor<GridModel> expected = processor;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void ProcessWith_ReturnsSameGrid()
+        {
+            IHtmlGrid<GridModel> actual = htmlGrid.ProcessWith(null);
+            IHtmlGrid<GridModel> expected = htmlGrid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: Filterable(Boolean isFilterable)
 
         [Test]
