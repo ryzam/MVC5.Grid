@@ -21,5 +21,13 @@ namespace NonFactors.Mvc.Grid
 
             return column;
         }
+        public virtual IGridColumn<TModel, TKey> Insert<TKey>(Int32 index, Expression<Func<TModel, TKey>> expression)
+        {
+            IGridColumn<TModel, TKey> column = new GridColumn<TModel, TKey>(Grid, expression);
+            Grid.Processors.Add(column);
+            Insert(index, column);
+
+            return column;
+        }
     }
 }
