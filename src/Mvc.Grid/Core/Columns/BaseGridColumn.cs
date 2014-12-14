@@ -13,13 +13,13 @@ namespace NonFactors.Mvc.Grid
         public IGrid<TModel> Grid { get; set; }
 
         public virtual GridSortOrder? SortOrder { get; set; }
-        public Boolean? IsSortable { get; set; }
+        public virtual Boolean? IsSortable { get; set; }
 
         public virtual IGridFilter<TModel> Filter { get; set; }
+        public virtual Boolean? IsFilterable { get; set; }
         public virtual String FilterValue { get; set; }
         public virtual String FilterType { get; set; }
-        public Boolean? IsFilterable { get; set; }
-        public String FilterName { get; set; }
+        public virtual String FilterName { get; set; }
 
         public Boolean IsEncoded { get; set; }
         public String CssClasses { get; set; }
@@ -27,55 +27,55 @@ namespace NonFactors.Mvc.Grid
         public String Title { get; set; }
         public String Name { get; set; }
 
-        public IGridColumn<TModel, TValue> RenderAs(Func<TModel, TValue> value)
+        public virtual IGridColumn<TModel, TValue> RenderAs(Func<TModel, TValue> value)
         {
             RawValueFor = value;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Filterable(Boolean isFilterable)
+        public virtual IGridColumn<TModel, TValue> Filterable(Boolean isFilterable)
         {
             IsFilterable = isFilterable;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> FilteredAs(String filterName)
+        public virtual IGridColumn<TModel, TValue> FilteredAs(String filterName)
         {
             FilterName = filterName;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Sortable(Boolean isSortable)
+        public virtual IGridColumn<TModel, TValue> Sortable(Boolean isSortable)
         {
             IsSortable = isSortable;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Encoded(Boolean isEncoded)
+        public virtual IGridColumn<TModel, TValue> Encoded(Boolean isEncoded)
         {
             IsEncoded = isEncoded;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Formatted(String format)
+        public virtual IGridColumn<TModel, TValue> Formatted(String format)
         {
             Format = format;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Css(String cssClasses)
+        public virtual IGridColumn<TModel, TValue> Css(String cssClasses)
         {
             CssClasses = cssClasses;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Titled(String title)
+        public virtual IGridColumn<TModel, TValue> Titled(String title)
         {
             Title = title;
 
             return this;
         }
-        public IGridColumn<TModel, TValue> Named(String name)
+        public virtual IGridColumn<TModel, TValue> Named(String name)
         {
             Name = name;
 

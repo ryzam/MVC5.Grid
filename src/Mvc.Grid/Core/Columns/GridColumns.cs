@@ -13,7 +13,7 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
         }
 
-        public IGridColumn<TModel, TKey> Add<TKey>(Expression<Func<TModel, TKey>> expression)
+        public virtual IGridColumn<TModel, TKey> Add<TKey>(Expression<Func<TModel, TKey>> expression)
         {
             IGridColumn<TModel, TKey> column = new GridColumn<TModel, TKey>(Grid, expression);
             Grid.Processors.Add(column);

@@ -12,7 +12,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [SetUp]
         public void SetUp()
         {
-            column = Substitute.For<BaseGridColumn<GridModel, String>>();
+            column = Substitute.ForPartsOf<BaseGridColumn<GridModel, String>>();
         }
 
         #region Method: RenderAs(Func<TModel, TValue> value)

@@ -18,14 +18,14 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
         }
 
-        public IHtmlGrid<TModel> Build(Action<IGridColumns<TModel>> builder)
+        public virtual IHtmlGrid<TModel> Build(Action<IGridColumns<TModel>> builder)
         {
             builder(Grid.Columns);
 
             return this;
         }
 
-        public IHtmlGrid<TModel> Filterable(Boolean isFilterable)
+        public virtual IHtmlGrid<TModel> Filterable(Boolean isFilterable)
         {
             foreach (IGridColumn column in Grid.Columns)
                 if (column.IsFilterable == null)
@@ -33,12 +33,12 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public IHtmlGrid<TModel> Filterable()
+        public virtual IHtmlGrid<TModel> Filterable()
         {
             return Filterable(true);
         }
 
-        public IHtmlGrid<TModel> Sortable(Boolean isSortable)
+        public virtual IHtmlGrid<TModel> Sortable(Boolean isSortable)
         {
             foreach (IGridColumn column in Grid.Columns)
                 if (column.IsSortable == null)
@@ -46,37 +46,37 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public IHtmlGrid<TModel> Sortable()
+        public virtual IHtmlGrid<TModel> Sortable()
         {
             return Sortable(true);
         }
 
-        public IHtmlGrid<TModel> RowCss(Func<TModel, String> cssClasses)
+        public virtual IHtmlGrid<TModel> RowCss(Func<TModel, String> cssClasses)
         {
             Grid.Rows.CssClasses = cssClasses;
 
             return this;
         }
-        public IHtmlGrid<TModel> Css(String cssClasses)
+        public virtual IHtmlGrid<TModel> Css(String cssClasses)
         {
             Grid.CssClasses = cssClasses;
 
             return this;
         }
-        public IHtmlGrid<TModel> Empty(String text)
+        public virtual IHtmlGrid<TModel> Empty(String text)
         {
             Grid.EmptyText = text;
 
             return this;
         }
-        public IHtmlGrid<TModel> Named(String name)
+        public virtual IHtmlGrid<TModel> Named(String name)
         {
             Grid.Name = name;
 
             return this;
         }
 
-        public IHtmlGrid<TModel> Pageable(Action<IGridPager<TModel>> builder)
+        public virtual IHtmlGrid<TModel> Pageable(Action<IGridPager<TModel>> builder)
         {
             Grid.Pager = Grid.Pager ?? new GridPager<TModel>(Grid);
             builder(Grid.Pager);
@@ -86,12 +86,12 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public IHtmlGrid<TModel> Pageable()
+        public virtual IHtmlGrid<TModel> Pageable()
         {
             return Pageable(builder => { });
         }
 
-        public String ToHtmlString()
+        public virtual String ToHtmlString()
         {
             return Html.Partial(PartialViewName, Grid).ToHtmlString();
         }

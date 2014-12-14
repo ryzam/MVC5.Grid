@@ -10,11 +10,11 @@ namespace NonFactors.Mvc.Grid
         public String CssClasses { get; set; }
 
         public GridProcessorType ProcessorType { get; set; }
-        public Int32 PagesToDisplay { get; set; }
-        public Int32 CurrentPage { get; set; }
-        public Int32 RowsPerPage { get; set; }
-        public Int32 TotalRows { get; set; }
-        public Int32 StartingPage
+        public virtual Int32 PagesToDisplay { get; set; }
+        public virtual Int32 CurrentPage { get; set; }
+        public virtual Int32 RowsPerPage { get; set; }
+        public virtual Int32 TotalRows { get; set; }
+        public virtual Int32 StartingPage
         {
             get
             {
@@ -28,7 +28,7 @@ namespace NonFactors.Mvc.Grid
                 return CurrentPage - middlePage + 1;
             }
         }
-        public Int32 TotalPages
+        public virtual Int32 TotalPages
         {
             get
             {
@@ -46,14 +46,14 @@ namespace NonFactors.Mvc.Grid
             ProcessorType = GridProcessorType.Post;
         }
 
-        public IQueryable<TModel> Process(IQueryable<TModel> items)
+        public virtual IQueryable<TModel> Process(IQueryable<TModel> items)
         {
             TotalRows = items.Count();
 
             return items.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage);
         }
 
-        public String GetPagingQuery(Int32 page)
+        public virtual String GetPagingQuery(Int32 page)
         {
             GridQuery query = new GridQuery(Grid.Query);
             query[Grid.Name + "-Page"] = page.ToString();

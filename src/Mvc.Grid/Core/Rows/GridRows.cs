@@ -16,7 +16,7 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
         }
 
-        public IEnumerator<IGridRow> GetEnumerator()
+        public virtual IEnumerator<IGridRow> GetEnumerator()
         {
             if (CurrentRows == null)
             {
