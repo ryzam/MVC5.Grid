@@ -15,8 +15,8 @@ namespace NonFactors.Mvc.Grid.Tests
             HttpContext context = new HttpContext(request, response);
 
             RouteValueDictionary routeValues = request.RequestContext.RouteData.Values;
-            routeValues["controller"] = "home";
-            routeValues["action"] = "index";
+            routeValues["controller"] = "Home";
+            routeValues["action"] = "Index";
             RouteTable.Routes.Clear();
             RouteTable.Routes.MapRoute(
                 "Default",

@@ -31,6 +31,20 @@ namespace NonFactors.Mvc.Grid
             return this;
         }
 
+        public virtual IHtmlGrid<TModel> DataSourceAction(String action)
+        {
+            UrlHelper url = new UrlHelper(Html.ViewContext.RequestContext);
+            Grid.DataSourceUrl = url.Action(action);
+
+            return this;
+        }
+        public virtual IHtmlGrid<TModel> DataSource(String url)
+        {
+            Grid.DataSourceUrl = url;
+
+            return this;
+        }
+
         public virtual IHtmlGrid<TModel> Filterable(Boolean isFilterable)
         {
             foreach (IGridColumn column in Grid.Columns)
