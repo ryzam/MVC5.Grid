@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Grid 0.7.0
+ * Mvc.Grid 0.8.0
  * https://github.com/NonFactors/MVC.Grid
  *
  * Copyright © 2014 NonFactors
@@ -9,22 +9,32 @@
  */
 
 (function ($) {
-    function MvcGrid(element) {
-        this.init($(element).find('table'));
+    function MvcGrid(element, isLoaded, currentQuery) {
+        this.init($(element), isLoaded, currentQuery);
     }
 
     MvcGrid.prototype = {
-        init: function (table) {
-            this.initVariables(table);
+        init: function (grid, isLoaded, currentQuery) {
+            this.initVariables(grid, isLoaded, currentQuery);
             this.initFiltering();
             this.initSorting();
+            this.initPaging();
 
             this.removeGridAtributes();
+            this.reloadGrid();
         },
-        initVariables: function (table) {
-            this.name = table.data('name');
-            this.table = table;
+        initVariables: function (grid, isLoaded, currentQuery) {
+            this.table = grid.find('.mvc-grid-table');
+            this.pager = grid.find('.mvc-grid-pager');
+            this.name = grid.data('name');
+            this.options = [];
             this.columns = [];
+            this.grid = grid;
+
+            this.options.dataSourceUrl = grid.data('source-url') || '';
+            this.options.isAjaxGrid = this.options.dataSourceUrl != '';
+            this.options.currentQuery = currentQuery || '';
+            this.options.isLoaded = isLoaded;
 
             var gridColumns = this.table.find('.mvc-grid-header');
             for (var col = 0; col < gridColumns.length; col++) {
@@ -70,12 +80,59 @@
             }
         },
         bindSorting: function (column) {
+            var that = this;
             column.element.bind('click.mvcgrid', function (e) {
                 var target = $(e.target || e.srcElement);
                 if (!target.hasClass("mvc-grid-filter") && target.parents(".mvc-grid-filter").length == 0) {
-                    window.location.href = column.sort.query;
+                    that.options.isLoaded = false;
+
+                    if (that.options.isAjaxGrid) {
+                        that.reloadGrid(column.sort.query);
+                    } else {
+                        window.location.href = column.sort.query;
+                    }
                 }
             });
+        },
+        initPaging: function () {
+            var pageLinks = this.pager.find('span');
+            for (var page = 0; page < pageLinks.length; page++) {
+                this.bindPaging($(pageLinks[page]));
+            }
+
+        },
+        bindPaging: function (pageLink) {
+            var that = this;
+            if (pageLink.data('query')) {
+                pageLink.bind('click.mvcgrid', function (e) {
+                    that.options.isLoaded = false;
+
+                    if (that.options.isAjaxGrid) {
+                        that.reloadGrid($(this).data('query'));
+                    } else {
+                        window.location.href = $(this).data('query');
+                    }
+                });
+            }
+        },
+
+        reloadGrid: function (query) {
+            var that = this;
+            query = (query) ? query : '';
+
+            if (that.options.isAjaxGrid && !that.options.isLoaded) {
+                $.ajax({
+                    url: that.options.dataSourceUrl + query
+                })
+                .success(function (result) {
+                    that.grid.hide();
+                    that.grid.after(result);
+                    that.options.isLoaded = true;
+
+                    that.grid.next('.mvc-grid').mvcgrid(true, query);
+                    that.grid.remove();
+                });
+            }
         },
 
         renderFilterPopupFor: function (filter, column) {
@@ -124,7 +181,7 @@
         formFilterQueryFor: function (column) {
             var filterParam = encodeURIComponent(this.name + '-' + column.name + '-' + column.filter.type);
             var columnParam = encodeURIComponent(this.name + '-' + column.name);
-            var parameters = window.location.search.replace('?', '').split('&');
+            var parameters = (this.options.isAjaxGrid ? this.options.currentQuery : window.location.search).replace('?', '').split('&');
             var filterValue = encodeURIComponent(column.filter.value);
             var paramExists = false;
             var newParameters = [];
@@ -149,7 +206,7 @@
         },
         formFilterQueryWithout: function (column) {
             var columnParam = encodeURIComponent(this.name + '-' + column.name);
-            var parameters = window.location.search.replace('?', '').split('&');
+            var parameters = (this.options.isAjaxGrid ? this.options.currentQuery : window.location.search).replace('?', '').split('&');
             var newParameters = [];
             var newParams = 0;
 
@@ -166,7 +223,8 @@
         },
 
         removeGridAtributes: function () {
-            this.table.removeAttr('data-name');
+            this.grid.removeAttr('data-name');
+            this.grid.removeAttr('data-source-url');
             for (var col = 0; col < this.columns.length; col++) {
                 this.removeGridColumnAttributes(this.columns[col].element);
             }
@@ -194,10 +252,10 @@
         $(".mvc-grid-filter-popup").removeClass("open");
     });
 
-    $.fn.mvcgrid = function () {
+    $.fn.mvcgrid = function (isLoaded, currentQuery) {
         return this.each(function () {
             if (!$.data(this, 'mvc-grid')) {
-                $.data(this, 'mvc-grid', new MvcGrid(this));
+                $.data(this, 'mvc-grid', new MvcGrid(this, isLoaded, currentQuery));
             }
         });
     };
@@ -274,16 +332,26 @@
 
                     var applyButton = popup.find('.mvc-grid-filter-apply');
                     applyButton.bind('click.mvcgrid', function () {
+                        mvcGrid.options.isLoaded = false;
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryFor(column);
+                        if (mvcGrid.options.isAjaxGrid) {
+                            mvcGrid.reloadGrid(mvcGrid.formFilterQueryFor(column));
+                        } else {
+                            window.location.href = mvcGrid.formFilterQueryFor(column);
+                        }
                     });
 
                     var cancelButton = popup.find('.mvc-grid-filter-cancel');
                     cancelButton.bind('click.mvcgrid', function () {
+                        mvcGrid.options.isLoaded = false;
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryWithout(column);
+                        if (mvcGrid.options.isAjaxGrid) {
+                            mvcGrid.reloadGrid(mvcGrid.formFilterQueryWithout(column));
+                        } else {
+                            window.location.href = mvcGrid.formFilterQueryWithout(column);
+                        }
                     });
                 }
             }
@@ -343,16 +411,26 @@
 
                     var applyButton = popup.find('.mvc-grid-filter-apply');
                     applyButton.bind('click.mvcgrid', function () {
+                        mvcGrid.options.isLoaded = false;
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryFor(column);
+                        if (mvcGrid.options.isAjaxGrid) {
+                            mvcGrid.reloadGrid(mvcGrid.formFilterQueryFor(column));
+                        } else {
+                            window.location.href = mvcGrid.formFilterQueryFor(column);
+                        }
                     });
 
                     var cancelButton = popup.find('.mvc-grid-filter-cancel');
                     cancelButton.bind('click.mvcgrid', function () {
+                        mvcGrid.options.isLoaded = false;
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryWithout(column);
+                        if (mvcGrid.options.isAjaxGrid) {
+                            mvcGrid.reloadGrid(mvcGrid.formFilterQueryWithout(column));
+                        } else {
+                            window.location.href = mvcGrid.formFilterQueryWithout(column);
+                        }
                     });
                 }
             }
@@ -407,16 +485,26 @@
 
                     var applyButton = popup.find('.mvc-grid-filter-apply');
                     applyButton.bind('click.mvcgrid', function () {
+                        mvcGrid.options.isLoaded = false;
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryFor(column);
+                        if (mvcGrid.options.isAjaxGrid) {
+                            mvcGrid.reloadGrid(mvcGrid.formFilterQueryFor(column));
+                        } else {
+                            window.location.href = mvcGrid.formFilterQueryFor(column);
+                        }
                     });
 
                     var cancelButton = popup.find('.mvc-grid-filter-cancel');
                     cancelButton.bind('click.mvcgrid', function () {
+                        mvcGrid.options.isLoaded = false;
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryWithout(column);
+                        if (mvcGrid.options.isAjaxGrid) {
+                            mvcGrid.reloadGrid(mvcGrid.formFilterQueryWithout(column));
+                        } else {
+                            window.location.href = mvcGrid.formFilterQueryWithout(column);
+                        }
                     });
                 }
             }
@@ -461,16 +549,26 @@
 
                     var applyButton = popup.find('.mvc-grid-filter-apply');
                     applyButton.bind('click.mvcgrid', function () {
+                        mvcGrid.options.isLoaded = false;
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryFor(column);
+                        if (mvcGrid.options.isAjaxGrid) {
+                            mvcGrid.reloadGrid(mvcGrid.formFilterQueryFor(column));
+                        } else {
+                            window.location.href = mvcGrid.formFilterQueryFor(column);
+                        }
                     });
 
                     var cancelButton = popup.find('.mvc-grid-filter-cancel');
                     cancelButton.bind('click.mvcgrid', function () {
+                        mvcGrid.options.isLoaded = false;
                         popup.removeClass('open');
 
-                        window.location.search = mvcGrid.formFilterQueryWithout(column);
+                        if (mvcGrid.options.isAjaxGrid) {
+                            mvcGrid.reloadGrid(mvcGrid.formFilterQueryWithout(column));
+                        } else {
+                            window.location.href = mvcGrid.formFilterQueryWithout(column);
+                        }
                     });
                 }
             }

@@ -7,34 +7,34 @@
         <ul class="pagination">
             @if (Model.CurrentPage > 1)
             {
-                <li><a href="@Model.GetPagingQuery(1)">&laquo;</a></li>
-                <li><a href="@Model.GetPagingQuery(Model.CurrentPage - 1)">&lsaquo;</a></li>
+                <li><span data-query="@Model.GetPagingQuery(1)">&laquo;</span></li>
+                <li><span data-query="@Model.GetPagingQuery(Model.CurrentPage - 1)">&lsaquo;</span></li>
             }
             else
             {
-                <li class="disabled"><a href="javascript:void(0);">&laquo;</a></li>
-                <li class="disabled"><a href="javascript:void(0);">&lsaquo;</a></li>
+                <li class="disabled"><span>&laquo;</span></li>
+                <li class="disabled"><span>&lsaquo;</span></li>
             }
             @for (Int32 page = Model.StartingPage; page <= Model.TotalPages && page < Model.StartingPage + Model.PagesToDisplay; page++)
             {
                 if (page == Model.CurrentPage)
                 {
-                    <li class="active"><a>@page</a></li>
+                    <li class="active"><span>@page</span></li>
                 }
                 else
                 {
-                    <li><a href="@Model.GetPagingQuery(page)">@page</a></li>
+                    <li><span data-query="@Model.GetPagingQuery(page)">@page</span></li>
                 }
             }
             @if (Model.CurrentPage < Model.TotalPages)
             {
-                <li><a href="@Model.GetPagingQuery(Model.CurrentPage + 1)">&rsaquo;</a></li>
-                <li><a href="@Model.GetPagingQuery(Model.TotalPages)">&raquo;</a></li>
+                <li><span data-query="@Model.GetPagingQuery(Model.CurrentPage + 1)">&rsaquo;</span></li>
+                <li><span data-query="@Model.GetPagingQuery(Model.TotalPages)">&raquo;</span></li>
             }
             else
             {
-                <li class="disabled"><a href="javascript:void(0);">&rsaquo;</a></li>
-                <li class="disabled"><a href="javascript:void(0);">&raquo;</a></li>
+                <li class="disabled"><span>&rsaquo;</span></li>
+                <li class="disabled"><span>&raquo;</span></li>
             }
         </ul>
     </div>

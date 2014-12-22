@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Grid 0.7.0
+ * Mvc.Grid 0.8.0
  * https://github.com/NonFactors/MVC.Grid
  *
  * Copyright © 2014 NonFactors
@@ -128,4 +128,8 @@
 
 .mvc-grid-table-empty {
     text-align: center;
+}
+
+.mvc-grid-pager li {
+    cursor: pointer;
 }

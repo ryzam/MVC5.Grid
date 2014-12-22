@@ -1,12 +1,14 @@
 Grid controls for ASP.NET MVC projects
 
-Planned features for the release:
+Planned/Done features for the release:
+- [x] - Server-side extensibility
+- [ ] - Client-side extensibility
 - [x] - Multiple grids on page
 - [x] - Fluent configuration
 - [x] - Automatic filtering
 - [x] - Automatic sorting
 - [x] - Automatic paging
 - [x] - Filter extensibility
-- [ ] - Grid extensibility
+- [ ] - Documentation
 - [x] - Globalization
-- [ ] - Ajax support
+- [x] - Ajax support

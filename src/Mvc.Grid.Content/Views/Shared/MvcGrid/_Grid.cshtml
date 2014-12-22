@@ -1,8 +1,8 @@
 ﻿@using NonFactors.Mvc.Grid;
 @model IGrid
 
-<div class="mvc-grid">
-    <table class="table table-striped table-hover mvc-grid-table @Model.CssClasses" data-name="@Model.Name">
+<div class="mvc-grid" data-name="@Model.Name" data-source-url="@Model.DataSourceUrl">
+    <table class="table table-striped table-hover mvc-grid-table @Model.CssClasses">
         <thead>
             <tr>
                 @foreach (IGridColumn column in Model.Columns)
