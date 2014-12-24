@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 
@@ -17,7 +18,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void TestFixtureSetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Query = new GridQuery();
+            grid.Query = new NameValueCollection();
 
             pager = new GridPager<GridModel>(grid);
         }
@@ -129,7 +130,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void GridPager_SetsCurrentPageFromGridQuery(String query, Int32 expected)
         {
             grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            grid.Query = HttpUtility.ParseQueryString(query);
 
             Int32 actual = new GridPager<GridModel>(grid).CurrentPage;
 
@@ -180,26 +181,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = pager.Process(models);
 
             CollectionAssert.AreEqual(expected, actual);
-        }
-
-        #endregion
-
-        #region Method: GetPagingQuery(Int32 page)
-
-        [Test]
-        [TestCase("", 3, "?G%3d1%26D%3d2+-Page=3")]
-        [TestCase("Id=4", 3, "?Id=4&G%3d1%26D%3d2+-Page=3")]
-        [TestCase("G%3d1%26D%3d2+-Page=8", 3, "?G%3d1%26D%3d2+-Page=3")]
-        [TestCase("Id=4&G%3d1%26D%3d2+-Page=8", 3, "?Id=4&G%3d1%26D%3d2+-Page=3")]
-        [TestCase("Id=4&G%3d1%26D%3d2+-Page=8&Name=John", 3, "?Id=4&G%3d1%26D%3d2+-Page=3&Name=John")]
-        public void GetPagingQuery_GeneratesPagingQuery(String query, Int32 page, String expected)
-        {
-            grid.Name = "G=1&D=2 ";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
-
-            String actual = new GridPager<GridModel>(grid).GetPagingQuery(page);
-
-            Assert.AreEqual(expected, actual);
         }
 
         #endregion

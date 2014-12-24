@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -17,7 +18,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             columns = new GridColumns<GridModel>(Substitute.For<IGrid<GridModel>>());
             columns.Grid.Processors = new List<IGridProcessor<GridModel>>();
-            columns.Grid.Query = new GridQuery();
+            columns.Grid.Query = new NameValueCollection();
         }
 
         #region Constructor: GridColumns(IGrid<TModel> grid)

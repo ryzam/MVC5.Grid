@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -31,10 +32,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void HtmlGrid_DoesNotChangeExistingQuery()
         {
-            grid.Query = new GridQuery();
+            grid.Query = new NameValueCollection();
 
-            GridQuery actual = new HtmlGrid<GridModel>(null, grid).Grid.Query;
-            GridQuery expected = grid.Query;
+            Object actual = new HtmlGrid<GridModel>(null, grid).Grid.Query;
+            Object expected = grid.Query;
 
             Assert.AreSame(expected, actual);
         }
@@ -45,8 +46,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             HtmlHelper html = HtmlHelperFactory.CreateHtmlHelper("id=3&name=jim");
             grid.Query = null;
 
-            GridQuery expected = new GridQuery(HttpUtility.ParseQueryString("id=3&name=jim"));
-            GridQuery actual = new HtmlGrid<GridModel>(html, grid).Grid.Query;
+            NameValueCollection expected = HttpUtility.ParseQueryString("id=3&name=jim");
+            NameValueCollection actual = new HtmlGrid<GridModel>(html, grid).Grid.Query;
 
             foreach (String key in expected)
                 Assert.AreEqual(expected[key], actual[key]);

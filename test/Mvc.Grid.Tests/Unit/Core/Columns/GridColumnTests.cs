@@ -27,7 +27,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Query = new GridQuery(new NameValueCollection());
+            grid.Query = new NameValueCollection();
+
             column = new GridColumn<GridModel, Object>(grid, model => model.Name);
 
             MvcGrid.Filters = Substitute.For<IGridFilters>();
@@ -45,7 +46,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SortOrder_DoesNotChangeSortOrderAfterItsSet()
         {
             grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString("Grid-Sort=Name&Grid-Order=Asc"));
+            grid.Query = HttpUtility.ParseQueryString("Grid-Sort=Name&Grid-Order=Asc");
 
             column.SortOrder = null;
 
@@ -61,7 +62,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SortOrder_SetsSortOrderThenItsNotSet(String query, GridSortOrder? expected)
         {
             grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            grid.Query = HttpUtility.ParseQueryString(query);
 
             GridSortOrder? actual = new GridColumn<GridModel, String>(grid, model => model.Name).SortOrder;
 
@@ -75,10 +76,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void SortOrder_DoesNotChangeSortOrderAfterFirstGet(String initialQuery, String changedQuery, GridSortOrder? expected)
         {
             grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(initialQuery));
+            grid.Query = HttpUtility.ParseQueryString(initialQuery);
 
             GridSortOrder? sortOrder = column.SortOrder;
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(changedQuery));
+            grid.Query = HttpUtility.ParseQueryString(changedQuery);
 
             GridSortOrder? actual = column.SortOrder;
 
@@ -94,7 +95,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid.Name = "Grid";
             String query = "Grid-Name-Equals=Test";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            grid.Query = HttpUtility.ParseQueryString(query);
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
             MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
 
@@ -112,7 +113,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Filter_SetsFilterThenItsNotSet(String query, String type, String value)
         {
             grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            grid.Query = HttpUtility.ParseQueryString(query);
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
             MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), type, value).Returns(filter);
 
@@ -132,7 +133,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void Filter_OnGridQueryWithoutFilterSetsFilterToNull(String query)
         {
             grid.Name = "Grid";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            grid.Query = HttpUtility.ParseQueryString(query);
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
             MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
 
@@ -144,7 +145,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             grid.Name = "Grid";
             String query = "Grid-Name-Equals=Test";
-            grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
+            grid.Query = HttpUtility.ParseQueryString(query);
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
             MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Name", "Equals").Returns(filter);
 
@@ -656,38 +657,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: GetSortingQuery()
-
-        [Test]
-        [TestCase(null, "Id=1", null, null)]
-        [TestCase(false, "Id=1", null, null)]
-        [TestCase(true, "", null, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
-        [TestCase(true, "Id=1", null, "?Id=1&G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
-        [TestCase(true, "Id=1", GridSortOrder.Asc, "?Id=1&G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Desc")]
-        [TestCase(true, "Id=1", GridSortOrder.Desc, "?Id=1&G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
-        [TestCase(true, "G%3d1%26D%3d2+-Sort=Snatch&G%3d1%26D%3d2+-Order=Desc", null, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
-        [TestCase(true, "G%3d1%26D%3d2+-Sort=Snatch&G%3d1%26D%3d2+-Order=Asc", GridSortOrder.Asc, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Desc")]
-        [TestCase(true, "G%3d1%26D%3d2+-Sort=Snatch&G%3d1%26D%3d2+-Order=Desc", GridSortOrder.Desc, "?G%3d1%26D%3d2+-Sort=Name&G%3d1%26D%3d2+-Order=Asc")]
-        public void GetSortingQuery_GeneratesSortingQuery(Boolean? isSortable, String query, GridSortOrder? order, String expected)
-        {
-            column.Grid.Query = new GridQuery(HttpUtility.ParseQueryString(query));
-            column.IsSortable = isSortable;
-            column.Grid.Name = "G=1&D=2 ";
-            column.SortOrder = order;
-
-            String actual = column.GetSortingQuery();
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        #endregion
-
         #region Test helpers
 
         private void AssertFilterNameFor<TProperty>(Expression<Func<AllTypesModel, TProperty>> property, String expected)
         {
             IGrid<AllTypesModel> grid = Substitute.For<IGrid<AllTypesModel>>();
-            grid.Query = new GridQuery();
+            grid.Query = new NameValueCollection();
 
             String actual = new GridColumn<AllTypesModel, TProperty>(grid, property).FilterName;
 

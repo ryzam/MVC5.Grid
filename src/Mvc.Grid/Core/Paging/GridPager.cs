@@ -53,14 +53,6 @@ namespace NonFactors.Mvc.Grid
             return items.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage);
         }
 
-        public virtual String GetPagingQuery(Int32 page)
-        {
-            GridQuery query = new GridQuery(Grid.Query);
-            query[Grid.Name + "-Page"] = page.ToString();
-
-            return query.ToString();
-        }
-
         private Int32 GetCurrentPage()
         {
             String key = Grid.Name + "-Page";

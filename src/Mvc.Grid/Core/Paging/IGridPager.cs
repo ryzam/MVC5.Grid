@@ -13,8 +13,6 @@ namespace NonFactors.Mvc.Grid
         Int32 StartingPage { get; }
         Int32 TotalPages { get; }
         Int32 TotalRows { get; }
-
-        String GetPagingQuery(Int32 page);
     }
 
     public interface IGridPager<TModel> : IGridProcessor<TModel>, IGridPager where TModel : class

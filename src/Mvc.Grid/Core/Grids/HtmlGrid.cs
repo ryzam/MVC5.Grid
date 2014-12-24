@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
@@ -12,7 +13,7 @@ namespace NonFactors.Mvc.Grid
 
         public HtmlGrid(HtmlHelper html, IGrid<TModel> grid)
         {
-            grid.Query = grid.Query ?? new GridQuery(html.ViewContext.HttpContext.Request.QueryString);
+            grid.Query = grid.Query ?? new NameValueCollection(html.ViewContext.HttpContext.Request.QueryString);
             PartialViewName = "MvcGrid/_Grid";
             Html = html;
             Grid = grid;

@@ -130,21 +130,6 @@ namespace NonFactors.Mvc.Grid
 
             return new HtmlString(value);
         }
-        public override String GetSortingQuery()
-        {
-            if (IsSortable != true)
-                return null;
-
-            GridQuery query = new GridQuery(Grid.Query);
-            query[Grid.Name + "-Sort"] = Name;
-
-            if (SortOrder == GridSortOrder.Asc)
-                query[Grid.Name + "-Order"] = GridSortOrder.Desc.ToString();
-            else
-                query[Grid.Name + "-Order"] = GridSortOrder.Asc.ToString();
-
-            return query.ToString();
-        }
 
         private Boolean? IsMember(Expression<Func<TModel, TValue>> expression)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace NonFactors.Mvc.Grid
@@ -8,7 +9,7 @@ namespace NonFactors.Mvc.Grid
     {
         public IList<IGridProcessor<TModel>> Processors { get; set; }
         public IQueryable<TModel> Source { get; set; }
-        public GridQuery Query { get; set; }
+        public NameValueCollection Query { get; set; }
 
         public String DataSourceUrl { get; set; }
         public String CssClasses { get; set; }

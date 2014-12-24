@@ -84,6 +84,5 @@ namespace NonFactors.Mvc.Grid
 
         public abstract IQueryable<TModel> Process(IQueryable<TModel> items);
         public abstract IHtmlString ValueFor(IGridRow row);
-        public abstract String GetSortingQuery();
     }
 }

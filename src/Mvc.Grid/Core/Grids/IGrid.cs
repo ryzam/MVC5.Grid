@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
     public interface IGrid
     {
-        GridQuery Query { get; set; }
+        NameValueCollection Query { get; set; }
 
         String DataSourceUrl { get; set; }
         String CssClasses { get; set; }
