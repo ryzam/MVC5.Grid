@@ -1,5 +1,5 @@
 ﻿/*!
-* Mvc.Grid 0.8.0
+* Mvc.Grid 0.9.0
 * https://github.com/NonFactors/MVC.Grid
 *
 * Copyright © 2014 NonFactors
@@ -61,6 +61,7 @@ var MvcGrid = (function () {
                 },
                 sort: {
                     isEnabled: header.data('sortable') == 'True',
+                    firstOrder: header.data('sort-first') || '',
                     order: header.data('sort-order') || ''
                 }
             };
@@ -206,6 +207,9 @@ var MvcGrid = (function () {
         formSortQuery: function (column) {
             var sortQuery = this.addOrReplace(this.gridQuery, this.name + '-Sort', column.name);
             var order = column.sort.order == 'Asc' ? 'Desc' : 'Asc';
+            if (column.sort.order == '' && column.sort.firstOrder != '') {
+                order = column.sort.firstOrder;
+            }
 
             return this.addOrReplace(sortQuery, this.name + '-Order', order);
         },
@@ -248,7 +252,7 @@ var MvcGrid = (function () {
 
             header.removeAttr('data-sortable');
             header.removeAttr('data-sort-order');
-            header.removeAttr('data-sort-query');
+            header.removeAttr('data-sort-first');
         },
         cleanGrid: function (grid) {
             grid.removeAttr('data-source-url');

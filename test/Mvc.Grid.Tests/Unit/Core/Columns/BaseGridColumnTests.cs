@@ -81,6 +81,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: FirstSortInIn(GridSortOrder order)
+
+        [Test]
+        public void FirstSortIn_SetsFirstSortInOrder()
+        {
+            GridSortOrder? actual = column.FirstSortIn(GridSortOrder.Desc).FirstSortOrder;
+            GridSortOrder? expected = GridSortOrder.Desc;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FirstSortIn_ReturnsSameGrid()
+        {
+            IGridColumn actual = column.FirstSortIn(GridSortOrder.Desc);
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: Sortable(Boolean isSortable)
 
         [Test]

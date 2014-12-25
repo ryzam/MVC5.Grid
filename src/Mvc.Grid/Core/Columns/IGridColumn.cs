@@ -22,9 +22,13 @@ namespace NonFactors.Mvc.Grid
         IGrid<TModel> Grid { get; set; }
 
         IGridColumn<TModel, TValue> RenderAs(Func<TModel, TValue> value);
+
         IGridColumn<TModel, TValue> Filterable(Boolean isFilterable);
         IGridColumn<TModel, TValue> FilteredAs(String filterName);
+
+        IGridColumn<TModel, TValue> FirstSortIn(GridSortOrder order);
         IGridColumn<TModel, TValue> Sortable(Boolean isSortable);
+
         IGridColumn<TModel, TValue> Encoded(Boolean isEncoded);
         IGridColumn<TModel, TValue> Formatted(String format);
         IGridColumn<TModel, TValue> Css(String cssClasses);

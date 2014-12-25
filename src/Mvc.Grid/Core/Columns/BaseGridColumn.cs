@@ -12,6 +12,7 @@ namespace NonFactors.Mvc.Grid
         public GridProcessorType ProcessorType { get; set; }
         public IGrid<TModel> Grid { get; set; }
 
+        public virtual GridSortOrder? FirstSortOrder { get; set; }
         public virtual GridSortOrder? SortOrder { get; set; }
         public virtual Boolean? IsSortable { get; set; }
 
@@ -33,6 +34,7 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+
         public virtual IGridColumn<TModel, TValue> Filterable(Boolean isFilterable)
         {
             IsFilterable = isFilterable;
@@ -45,12 +47,20 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+
+        public virtual IGridColumn<TModel, TValue> FirstSortIn(GridSortOrder order)
+        {
+            FirstSortOrder = order;
+
+            return this;
+        }
         public virtual IGridColumn<TModel, TValue> Sortable(Boolean isSortable)
         {
             IsSortable = isSortable;
 
             return this;
         }
+
         public virtual IGridColumn<TModel, TValue> Encoded(Boolean isEncoded)
         {
             IsEncoded = isEncoded;
