@@ -377,11 +377,12 @@ var MvcGridNumberFilter = (function () {
             type.change();
         },
         bindValue: function (grid, column, popup) {
-            var pattern = new RegExp('^(?=.*\\d+.*)[-+]?\\d*[.,]?\\d*$');
             var value = popup.find('.mvc-grid-input');
+            var filter = this;
+
             value.bind('keyup.mvcgrid', function (e) {
                 column.filter.val = this.value;
-                if (pattern.test(this.value)) {
+                if (filter.isValid(this.value)) {
                     $(this).removeClass("invalid");
                     if (e.keyCode == 13) {
                         popup.find('.mvc-grid-filter-apply').click();
@@ -390,6 +391,10 @@ var MvcGridNumberFilter = (function () {
                     $(this).addClass("invalid");
                 }
             });
+
+            if (!filter.isValid(column.filter.val)) {
+                value.addClass("invalid");
+            }
         },
         bindApply: function (grid, column, popup) {
             var apply = popup.find('.mvc-grid-filter-apply');
@@ -404,6 +409,12 @@ var MvcGridNumberFilter = (function () {
                 popup.removeClass('open');
                 grid.reload(grid.formFilterQueryWithout(column));
             });
+        },
+
+        isValid: function (value) {
+            var pattern = new RegExp('^(?=.*\\d+.*)[-+]?\\d*[.,]?\\d*$');
+
+            return pattern.test(value);
         }
     };
 
