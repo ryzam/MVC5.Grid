@@ -471,7 +471,11 @@ var MvcGridDateFilter = (function () {
         },
         bindValue: function (grid, column, popup) {
             var value = popup.find('.mvc-grid-input');
-            value.bind('keyup.mvcgrid', function (e) {
+            if ($.fn.datepicker) {
+                value.datepicker();
+            }
+
+            value.bind('change.mvcgrid keyup.mvcgrid', function (e) {
                 column.filter.val = this.value;
                 if (e.keyCode == 13) {
                     popup.find('.mvc-grid-filter-apply').click();
