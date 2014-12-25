@@ -638,6 +638,25 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
+        public void ValueFor_OnNullReferenceInRawValueReturnsEmpty()
+        {
+            column.RawValueFor = (model) => (null as String).Length;
+
+            String actual = column.ValueFor(new GridRow(null)).ToString();
+            String expected = "";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ValueFor_ThrowsNotNullReferenceException()
+        {
+            column.RawValueFor = (model) => Int32.Parse("Zero");
+
+            Assert.Throws<FormatException>(() => column.ValueFor(new GridRow(null)));
+        }
+
+        [Test]
         [TestCase(null, "For {0}", true, "")]
         [TestCase(null, "For {0}", false, "")]
         [TestCase("<name>", null, false, "<name>")]

@@ -141,7 +141,16 @@ namespace NonFactors.Mvc.Grid
 
         private String GetRawValueFor(IGridRow row)
         {
-            TValue value = RawValueFor(row.Model as TModel);
+            TValue value;
+            try
+            {
+                value = RawValueFor(row.Model as TModel);
+            }
+            catch(NullReferenceException)
+            {
+                return String.Empty;
+            }
+
             if (value == null) return String.Empty;
 
             if (Format == null)
