@@ -8,7 +8,7 @@ namespace NonFactors.Mvc.Grid.Tests
 {
     public class HttpContextFactory
     {
-        public static HttpContext CreateHttpContext(String queryString = null)
+        public static HttpContextBase CreateHttpContextBase(String queryString = null)
         {
             HttpRequest request = new HttpRequest(String.Empty, "http://localhost:4601/", queryString);
             HttpResponse response = new HttpResponse(new StringWriter());
@@ -22,11 +22,7 @@ namespace NonFactors.Mvc.Grid.Tests
                 "Default",
                 "{controller}/{action}");
 
-            return context;
-        }
-        public static HttpContextBase CreateHttpContextBase(String queryString = null)
-        {
-            return new HttpContextWrapper(CreateHttpContext(queryString));
+            return new HttpContextWrapper(context);
         }
     }
 }
