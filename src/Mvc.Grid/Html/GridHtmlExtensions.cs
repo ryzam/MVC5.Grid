@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace NonFactors.Mvc.Grid.Html
+namespace NonFactors.Mvc.Grid
 {
     public static class GridHtmlExtensions
     {
