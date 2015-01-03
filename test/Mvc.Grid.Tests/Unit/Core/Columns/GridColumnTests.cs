@@ -438,11 +438,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void GridColumn_SetsRawValueForAsCompiledExpression()
+        public void GridColumn_SetsExpressionValueAsCompiledExpression()
         {
             GridModel gridModel = new GridModel { Name = "TestName" };
 
-            String actual = column.RawValueFor(gridModel) as String;
+            String actual = column.ExpressionValue(gridModel) as String;
             String expected = "TestName";
 
             Assert.AreEqual(expected, actual);
@@ -627,9 +627,9 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: ValueFor(IGridRow row)
 
         [Test]
-        public void ValueFor_UsesRawValueForToGetValue()
+        public void ValueFor_UsesExpressionValueToGetValue()
         {
-            column.RawValueFor = (model) => "TestValue";
+            column.ExpressionValue = (model) => "TestValue";
 
             String actual = column.ValueFor(new GridRow(null)).ToString();
             String expected = "TestValue";
@@ -638,9 +638,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void ValueFor_OnNullReferenceInRawValueReturnsEmpty()
+        public void ValueFor_OnNotNullRenderValueUsesRenderValueToGetValue()
         {
-            column.RawValueFor = (model) => (null as String).Length;
+            column.RenderValue = (model) => "RenderValue";
+            column.ExpressionValue = (model) => "ExpressionValue";
+
+            String actual = column.ValueFor(new GridRow(null)).ToString();
+            String expected = "RenderValue";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ValueFor_OnNullReferenceInExpressionValueReturnsEmpty()
+        {
+            column.ExpressionValue = (model) => (null as String).Length;
 
             String actual = column.ValueFor(new GridRow(null)).ToString();
             String expected = "";
@@ -649,9 +661,29 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Test]
-        public void ValueFor_ThrowsNotNullReferenceException()
+        public void ValueFor_OnNullReferenceInRenderValueReturnsEmpty()
         {
-            column.RawValueFor = (model) => Int32.Parse("Zero");
+            column.RenderValue = (model) => (null as String).Length.ToString();
+            column.ExpressionValue = (model) => "ExpressionValue";
+
+            String actual = column.ValueFor(new GridRow(null)).ToString();
+            String expected = "";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ValueFor_ExpressionValue_ThrowsNotNullReferenceException()
+        {
+            column.ExpressionValue = (model) => Int32.Parse("Zero");
+
+            Assert.Throws<FormatException>(() => column.ValueFor(new GridRow(null)));
+        }
+
+        [Test]
+        public void ValueFor_RenderValue_ThrowsNotNullReferenceException()
+        {
+            column.RenderValue = (model) => Int32.Parse("Zero").ToString();
 
             Assert.Throws<FormatException>(() => column.ValueFor(new GridRow(null)));
         }
@@ -663,7 +695,27 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [TestCase("<name>", null, true, "&lt;name&gt;")]
         [TestCase("<name>", "For <{0}>", false, "For <<name>>")]
         [TestCase("<name>", "For <{0}>", true, "For &lt;&lt;name&gt;&gt;")]
-        public void ValueFor_GetsValue(String value, String format, Boolean isEncoded, String expected)
+        public void ValueFor_GetsRenderValue(String value, String format, Boolean isEncoded, String expected)
+        {
+            IGridRow row = new GridRow(new GridModel { Name = value });
+            column.RenderValue = (model) => model.Name;
+            column.ExpressionValue = null;
+            column.IsEncoded = isEncoded;
+            column.Format = format;
+
+            String actual = column.ValueFor(row).ToString();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase(null, "For {0}", true, "")]
+        [TestCase(null, "For {0}", false, "")]
+        [TestCase("<name>", null, false, "<name>")]
+        [TestCase("<name>", null, true, "&lt;name&gt;")]
+        [TestCase("<name>", "For <{0}>", false, "For <<name>>")]
+        [TestCase("<name>", "For <{0}>", true, "For &lt;&lt;name&gt;&gt;")]
+        public void ValueFor_GetsExpressionValue(String value, String format, Boolean isEncoded, String expected)
         {
             IGridRow row = new GridRow(new GridModel { Name = value });
             column.IsEncoded = isEncoded;

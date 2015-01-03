@@ -104,7 +104,7 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
             Expression = expression;
             FilterName = GetFilterName();
-            RawValueFor = expression.Compile();
+            ExpressionValue = expression.Compile();
             ProcessorType = GridProcessorType.Pre;
             IsSortable = IsFilterable = IsMember(expression);
             Name = ExpressionHelper.GetExpressionText(expression);
@@ -125,7 +125,7 @@ namespace NonFactors.Mvc.Grid
         }
         public override IHtmlString ValueFor(IGridRow row)
         {
-            String value = GetRawValueFor(row);
+            String value = GetValueFor(row);
             if (IsEncoded) value = WebUtility.HtmlEncode(value);
 
             return new HtmlString(value);
@@ -139,19 +139,23 @@ namespace NonFactors.Mvc.Grid
             return false;
         }
 
-        private String GetRawValueFor(IGridRow row)
+        private String GetValueFor(IGridRow row)
         {
-            TValue value;
+            Object value;
             try
             {
-                value = RawValueFor(row.Model as TModel);
+                if (RenderValue != null)
+                    value = RenderValue(row.Model as TModel);
+                else
+                    value = ExpressionValue(row.Model as TModel);
             }
             catch(NullReferenceException)
             {
                 return String.Empty;
             }
 
-            if (value == null) return String.Empty;
+            if (value == null)
+                return String.Empty;
 
             if (Format == null)
                 return value.ToString();

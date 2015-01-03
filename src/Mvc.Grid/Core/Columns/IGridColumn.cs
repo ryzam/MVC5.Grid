@@ -18,10 +18,11 @@ namespace NonFactors.Mvc.Grid
     public interface IGridColumn<TModel, TValue> : IFilterableColumn<TModel>, ISortableColumn<TModel>, IGridColumn where TModel : class
     {
         Expression<Func<TModel, TValue>> Expression { get; set; }
-        Func<TModel, TValue> RawValueFor { get; set; }
+        Func<TModel, TValue> ExpressionValue { get; set; }
+        Func<TModel, Object> RenderValue { get; set; }
         IGrid<TModel> Grid { get; set; }
 
-        IGridColumn<TModel, TValue> RenderAs(Func<TModel, TValue> value);
+        IGridColumn<TModel, TValue> RenderedAs(Func<TModel, Object> value);
 
         IGridColumn<TModel, TValue> Filterable(Boolean isFilterable);
         IGridColumn<TModel, TValue> FilteredAs(String filterName);
