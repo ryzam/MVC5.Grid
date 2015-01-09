@@ -45,6 +45,8 @@ var MvcGrid = (function () {
             this.applyPaging($(pages[ind]));
         }
 
+        this.rowClicked = opt.rowClicked;
+        this.bindGridEvents();
         this.cleanGrid(grid);
     }
 
@@ -239,6 +241,25 @@ var MvcGrid = (function () {
             }
 
             return newParams.join('&');
+        },
+
+        bindGridEvents: function () {
+            var grid = this;
+            this.element.find('.mvc-grid-row').bind('click.mvcgrid', function () {
+                if (grid.rowClicked) {
+                    var cells = $(this).find('td');
+                    var row = [];
+
+                    for (var ind = 0; ind < grid.columns.length; ind++) {
+                        var column = grid.columns[ind];
+                        if (cells.length > ind) {
+                            row[column.name] = $(cells[ind]).text();
+                        }
+                    }
+
+                    grid.rowClicked(grid, row);
+                }
+            });
         },
 
         cleanHeader: function (column) {
