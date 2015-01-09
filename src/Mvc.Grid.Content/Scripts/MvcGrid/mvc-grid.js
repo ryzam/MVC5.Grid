@@ -387,17 +387,17 @@ var MvcGridNumberFilter = (function () {
             value.bind('keyup.mvcgrid', function (e) {
                 column.filter.val = this.value;
                 if (filter.isValid(this.value)) {
-                    $(this).removeClass("invalid");
+                    $(this).removeClass('invalid');
                     if (e.keyCode == 13) {
                         popup.find('.mvc-grid-filter-apply').click();
                     }
                 } else {
-                    $(this).addClass("invalid");
+                    $(this).addClass('invalid');
                 }
             });
 
             if (!filter.isValid(column.filter.val)) {
-                value.addClass("invalid");
+                value.addClass('invalid');
             }
         },
         bindApply: function (grid, column, popup) {
