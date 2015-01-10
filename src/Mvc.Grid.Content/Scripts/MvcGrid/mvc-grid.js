@@ -613,7 +613,7 @@ $.fn.mvcgrid.lang = {
         Contains: 'Contains',
         Equals: 'Equals',
         StartsWith: 'Starts with',
-        EndsWith: 'EndsWith'
+        EndsWith: 'Ends with'
     },
     Number: {
         Equals: 'Equals',
