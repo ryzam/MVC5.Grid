@@ -623,9 +623,10 @@ $.fn.mvcgrid.lang = {
         No: 'No'
     }
 };
-
-$('body').append('<div class="mvc-grid-filter-popup dropdown-menu"></div>');
-$(window).resize(function () {
-    $('.mvc-grid-filter-popup').removeClass('open');
+$(function () {
+    $('body').append('<div class="mvc-grid-filter-popup dropdown-menu"></div>');
+    $(window).resize(function () {
+        $('.mvc-grid-filter-popup').removeClass('open');
+    });
+    $('.mvc-grid').mvcgrid();
 });
-$('.mvc-grid').mvcgrid();
