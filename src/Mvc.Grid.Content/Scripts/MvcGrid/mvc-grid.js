@@ -68,6 +68,14 @@ var MvcGrid = (function () {
                 }
             };
         },
+        set: function(options) {
+            if (options.filters) {
+                this.filters = options.filters;
+            }
+            if (options.rowClicked) {
+                this.rowClicked = options.rowClicked;
+            }
+        },
 
         applyFiltering: function (column) {
             var grid = this;
@@ -112,6 +120,7 @@ var MvcGrid = (function () {
                     grid.element.after(result);
 
                     grid.element.next('.mvc-grid').mvcgrid({
+                        rowClicked: grid.rowClicked,
                         filters: grid.filters,
                         isLoaded: true,
                         query: query
@@ -594,6 +603,8 @@ $.fn.mvcgrid = function (options) {
     return this.each(function () {
         if (!$.data(this, 'mvc-grid')) {
             $.data(this, 'mvc-grid', new MvcGrid($(this), options));
+        } else if (options) {
+            $.data(this, 'mvc-grid').set(options);
         }
     });
 };
