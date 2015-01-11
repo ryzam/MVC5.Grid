@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C8601EA2-46E2-4E8D-86DD-0EE7C70AB3EA}</ProjectGuid>
+    <ProjectGuid>{8AD9F3CC-2515-430A-BD14-A53A8CB81B3E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NonFactors.Mvc.Grid</RootNamespace>
@@ -31,58 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Core\Columns\BaseGridColumn.cs" />
-    <Compile Include="Core\Columns\GridColumn.cs" />
-    <Compile Include="Core\Columns\IFilterableColumn.cs" />
-    <Compile Include="Core\Columns\ISortableColumn.cs" />
-    <Compile Include="Core\Filtering\BaseGridFilter.cs" />
-    <Compile Include="Core\Filtering\Boolean\BooleanFilter.cs" />
-    <Compile Include="Core\Filtering\Date\DateTimeFilter.cs" />
-    <Compile Include="Core\Filtering\Number\ByteFilter.cs" />
-    <Compile Include="Core\Filtering\Number\Int64Filter.cs" />
-    <Compile Include="Core\Filtering\Number\DoubleFilter.cs" />
-    <Compile Include="Core\Filtering\Number\DecimalFilter.cs" />
-    <Compile Include="Core\Filtering\Number\SingleFilter.cs" />
-    <Compile Include="Core\Filtering\Number\UInt16Filter.cs" />
-    <Compile Include="Core\Filtering\Number\Int16Filter.cs" />
-    <Compile Include="Core\Filtering\Number\SByteFilter.cs" />
-    <Compile Include="Core\Filtering\Number\UInt64Filter.cs" />
-    <Compile Include="Core\Filtering\Number\UInt32Filter.cs" />
-    <Compile Include="Core\Filtering\Number\Int32Filter.cs" />
-    <Compile Include="Core\Filtering\Number\NumberFilter.cs" />
-    <Compile Include="Core\Filtering\GridFilters.cs" />
-    <Compile Include="Core\Filtering\IGridFilter.cs" />
-    <Compile Include="Core\Filtering\IGridFilters.cs" />
-    <Compile Include="Core\Filtering\Text\StringEndsWithFilter.cs" />
-    <Compile Include="Core\Filtering\Text\StringStartsWithFilter.cs" />
-    <Compile Include="Core\MvcGrid.cs" />
-    <Compile Include="Core\Filtering\Text\StringContainsFilter.cs" />
-    <Compile Include="Core\Filtering\Text\StringEqualsFilter.cs" />
-    <Compile Include="Core\Grids\Grid.cs" />
-    <Compile Include="Core\Columns\GridColumns.cs" />
-    <Compile Include="Core\Grids\HtmlGrid.cs" />
-    <Compile Include="Core\Grids\IHtmlGrid.cs" />
-    <Compile Include="Core\Paging\GridPager.cs" />
-    <Compile Include="Core\Paging\IGridPager.cs" />
-    <Compile Include="Core\Processors\GridProcessorType.cs" />
-    <Compile Include="Core\Processors\IGridProcessor.cs" />
-    <Compile Include="Core\Rows\GridRow.cs" />
-    <Compile Include="Core\Rows\GridRows.cs" />
-    <Compile Include="Core\Grids\IGrid.cs" />
-    <Compile Include="Core\Columns\IGridColumn.cs" />
-    <Compile Include="Core\Columns\IGridColumns.cs" />
-    <Compile Include="Core\Rows\IGridRow.cs" />
-    <Compile Include="Core\Rows\IGridRows.cs" />
-    <Compile Include="Core\Sorting\GridSortOrder.cs" />
-    <Compile Include="Html\GridHtmlExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\MvcGrid\mvc-grid.css" />
+    <Content Include="Scripts\MvcGrid\mvc-grid.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\Shared\MvcGrid\_Grid.cshtml" />
+    <None Include="Views\Shared\MvcGrid\_Pager.cshtml" />
+    <None Include="Views\Web.config.transform" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

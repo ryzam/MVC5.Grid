@@ -91,18 +91,17 @@
     <Compile Include="Unit\Core\Paging\GridPagerTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowsTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowTests.cs" />
-    <Compile Include="Unit\Html\GridHtmlExtensionsTests.cs" />
+    <Compile Include="Unit\Core\Html\GridHtmlExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Mvc.Grid\Mvc.Grid.csproj">
+    <ProjectReference Include="..\..\src\Mvc.Grid.Core\Mvc.Grid.Core.csproj">
       <Project>{c8601ea2-46e2-4e8d-86dd-0ee7c70ab3ea}</Project>
-      <Name>Mvc.Grid</Name>
+      <Name>Mvc.Grid.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

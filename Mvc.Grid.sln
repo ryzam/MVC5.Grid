@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Grid", "src\Mvc.Grid\Mvc.Grid.csproj", "{C8601EA2-46E2-4E8D-86DD-0EE7C70AB3EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Grid.Core", "src\Mvc.Grid.Core\Mvc.Grid.Core.csproj", "{C8601EA2-46E2-4E8D-86DD-0EE7C70AB3EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Grid.Tests", "test\Mvc.Grid.Tests\Mvc.Grid.Tests.csproj", "{B0AD8296-C273-48CD-A014-6DBAF2DD33F8}"
 EndProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C57402FE-D7B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0B6037F4-8835-4AEF-9AE6-41AF751A78B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Grid.Content", "src\Mvc.Grid.Content\Mvc.Grid.Content.csproj", "{8AD9F3CC-2515-430A-BD14-A53A8CB81B3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc.Grid", "src\Mvc.Grid\Mvc.Grid.csproj", "{8AD9F3CC-2515-430A-BD14-A53A8CB81B3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

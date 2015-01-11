@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C8601EA2-46E2-4E8D-86DD-0EE7C70AB3EA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NonFactors.Mvc.Grid</RootNamespace>
+    <AssemblyName>NonFactors.Mvc.Grid</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Columns\BaseGridColumn.cs" />
+    <Compile Include="Columns\GridColumn.cs" />
+    <Compile Include="Columns\IFilterableColumn.cs" />
+    <Compile Include="Columns\ISortableColumn.cs" />
+    <Compile Include="Filtering\BaseGridFilter.cs" />
+    <Compile Include="Filtering\Boolean\BooleanFilter.cs" />
+    <Compile Include="Filtering\Date\DateTimeFilter.cs" />
+    <Compile Include="Filtering\Number\ByteFilter.cs" />
+    <Compile Include="Filtering\Number\Int64Filter.cs" />
+    <Compile Include="Filtering\Number\DoubleFilter.cs" />
+    <Compile Include="Filtering\Number\DecimalFilter.cs" />
+    <Compile Include="Filtering\Number\SingleFilter.cs" />
+    <Compile Include="Filtering\Number\UInt16Filter.cs" />
+    <Compile Include="Filtering\Number\Int16Filter.cs" />
+    <Compile Include="Filtering\Number\SByteFilter.cs" />
+    <Compile Include="Filtering\Number\UInt64Filter.cs" />
+    <Compile Include="Filtering\Number\UInt32Filter.cs" />
+    <Compile Include="Filtering\Number\Int32Filter.cs" />
+    <Compile Include="Filtering\Number\NumberFilter.cs" />
+    <Compile Include="Filtering\GridFilters.cs" />
+    <Compile Include="Filtering\IGridFilter.cs" />
+    <Compile Include="Filtering\IGridFilters.cs" />
+    <Compile Include="Filtering\Text\StringEndsWithFilter.cs" />
+    <Compile Include="Filtering\Text\StringStartsWithFilter.cs" />
+    <Compile Include="MvcGrid.cs" />
+    <Compile Include="Filtering\Text\StringContainsFilter.cs" />
+    <Compile Include="Filtering\Text\StringEqualsFilter.cs" />
+    <Compile Include="Grids\Grid.cs" />
+    <Compile Include="Columns\GridColumns.cs" />
+    <Compile Include="Grids\HtmlGrid.cs" />
+    <Compile Include="Grids\IHtmlGrid.cs" />
+    <Compile Include="Paging\GridPager.cs" />
+    <Compile Include="Paging\IGridPager.cs" />
+    <Compile Include="Processors\GridProcessorType.cs" />
+    <Compile Include="Processors\IGridProcessor.cs" />
+    <Compile Include="Rows\GridRow.cs" />
+    <Compile Include="Rows\GridRows.cs" />
+    <Compile Include="Grids\IGrid.cs" />
+    <Compile Include="Columns\IGridColumn.cs" />
+    <Compile Include="Columns\IGridColumns.cs" />
+    <Compile Include="Rows\IGridRow.cs" />
+    <Compile Include="Rows\IGridRows.cs" />
+    <Compile Include="Sorting\GridSortOrder.cs" />
+    <Compile Include="Html\GridHtmlExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
