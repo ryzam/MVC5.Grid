@@ -2,7 +2,7 @@
 
 namespace NonFactors.Mvc.Grid
 {
-    public class DecimalFilter<TModel> : NumberFilter<TModel> where TModel : class
+    public class DecimalFilter<T> : NumberFilter<T>
     {
         public override Object GetNumericValue()
         {

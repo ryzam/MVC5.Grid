@@ -2,7 +2,7 @@
 
 namespace NonFactors.Mvc.Grid
 {
-    public interface IGridProcessor<T> where T : class
+    public interface IGridProcessor<T>
     {
         GridProcessorType ProcessorType { get; set; }
 

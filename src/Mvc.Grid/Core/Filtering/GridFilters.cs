@@ -96,9 +96,9 @@ namespace NonFactors.Mvc.Grid
             Register(typeof(String), "StartsWith", typeof(StringStartsWithFilter<>));
         }
 
-        public IGridFilter<TModel> GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String type, String value) where TModel : class
+        public IGridFilter<T> GetFilter<T>(IGridColumn<T> column, String type, String value)
         {
-            Type valueType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+            Type valueType = Nullable.GetUnderlyingType(column.Expression.ReturnType) ?? column.Expression.ReturnType;
             if (!Table.ContainsKey(valueType))
                 return null;
 
@@ -106,8 +106,8 @@ namespace NonFactors.Mvc.Grid
             if (!typedFilters.ContainsKey(type))
                 return null;
 
-            Type filterType = typedFilters[type].MakeGenericType(typeof(TModel));
-            IGridFilter<TModel> filter = (IGridFilter<TModel>)Activator.CreateInstance(filterType);
+            Type filterType = typedFilters[type].MakeGenericType(typeof(T));
+            IGridFilter<T> filter = (IGridFilter<T>)Activator.CreateInstance(filterType);
             filter.FilteredExpression = column.Expression;
             filter.Value = value;
             filter.Type = type;

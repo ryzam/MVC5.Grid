@@ -2,7 +2,7 @@
 
 namespace NonFactors.Mvc.Grid
 {
-    public class Int16Filter<TModel> : NumberFilter<TModel> where TModel : class
+    public class Int16Filter<T> : NumberFilter<T>
     {
         public override Object GetNumericValue()
         {

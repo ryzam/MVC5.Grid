@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Grid
         Boolean? IsSortable { get; set; }
     }
 
-    public interface ISortableColumn<TModel> : IGridProcessor<TModel> where TModel : class
+    public interface ISortableColumn<T> : IGridProcessor<T>
     {
     }
 }

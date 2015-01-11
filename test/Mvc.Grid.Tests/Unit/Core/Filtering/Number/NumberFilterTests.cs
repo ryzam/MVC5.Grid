@@ -22,7 +22,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             filter.FilteredExpression = expression;
         }
 
-        #region Method: Process(IQueryable<TModel> items)
+        #region Method: Process(IQueryable<T> items)
 
         [Test]
         public void Process_OnNullNumericValueReturnsSameItems()

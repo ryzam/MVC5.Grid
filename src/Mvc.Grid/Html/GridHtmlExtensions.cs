@@ -6,13 +6,13 @@ namespace NonFactors.Mvc.Grid
 {
     public static class GridHtmlExtensions
     {
-        public static HtmlGrid<TModel> Grid<TModel>(this HtmlHelper html, IEnumerable<TModel> source) where TModel : class
+        public static HtmlGrid<T> Grid<T>(this HtmlHelper html, IEnumerable<T> source) where T : class
         {
-            return new HtmlGrid<TModel>(html, new Grid<TModel>(source));
+            return new HtmlGrid<T>(html, new Grid<T>(source));
         }
-        public static HtmlGrid<TModel> Grid<TModel>(this HtmlHelper html, String partialViewName, IEnumerable<TModel> source) where TModel : class
+        public static HtmlGrid<T> Grid<T>(this HtmlHelper html, String partialViewName, IEnumerable<T> source) where T : class
         {
-            HtmlGrid<TModel> grid = new HtmlGrid<TModel>(html, new Grid<TModel>(source));
+            HtmlGrid<T> grid = new HtmlGrid<T>(html, new Grid<T>(source));
             grid.PartialViewName = partialViewName;
 
             return grid;

@@ -10,7 +10,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class GridRowsTests
     {
-        #region Constructor: GridRows(IGrid<TModel> grid)
+        #region Constructor: GridRows(IGrid<T> grid)
 
         [Test]
         public void GridRows_SetsGrid()

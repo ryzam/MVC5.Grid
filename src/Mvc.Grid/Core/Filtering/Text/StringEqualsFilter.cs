@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class StringEqualsFilter<TModel> : BaseGridFilter<TModel> where TModel : class
+    public class StringEqualsFilter<T> : BaseGridFilter<T>
     {
-        public override IQueryable<TModel> Process(IQueryable<TModel> items)
+        public override IQueryable<T> Process(IQueryable<T> items)
         {
             ParameterExpression parameter = FilteredExpression.Parameters[0];
             Expression filterExpression;
@@ -31,7 +31,7 @@ namespace NonFactors.Mvc.Grid
                 filterExpression = Expression.AndAlso(notNull, equals);
             }
 
-            Expression<Func<TModel, Boolean>> filter = Expression.Lambda<Func<TModel, Boolean>>(filterExpression, parameter);
+            Expression<Func<T, Boolean>> filter = Expression.Lambda<Func<T, Boolean>>(filterExpression, parameter);
 
             return items.Where(filter);
         }

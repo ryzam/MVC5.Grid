@@ -8,7 +8,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
     [TestFixture]
     public class StringContainsFilterTests
     {
-        #region Method: Process(IQueryable<TModel> items)
+        #region Method: Process(IQueryable<T> items)
 
         [Test]
         public void Process_FiltersItemsWithCaseInsensitiveComparison()

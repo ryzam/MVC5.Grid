@@ -17,7 +17,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit.Html
             html = HtmlHelperFactory.CreateHtmlHelper();
         }
 
-        #region Extension: Grid<TModel>(this HtmlHelper html, IEnumerable<TModel> source)
+        #region Extension: Grid<T>(this HtmlHelper html, IEnumerable<T> source)
 
         [Test]
         public void Grid_CreatesHtmlGridWithHtml()
@@ -39,7 +39,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit.Html
 
         #endregion
 
-        #region Extension: Grid<TModel>(this HtmlHelper html, String partialViewName, IEnumerable<TModel> source)
+        #region Extension: Grid<T>(this HtmlHelper html, String partialViewName, IEnumerable<T> source)
 
         [Test]
         public void Grid_PartialViewName_CreatesHtmlGridWithHtml()

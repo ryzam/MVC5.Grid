@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class BooleanFilter<TModel> : BaseGridFilter<TModel> where TModel : class
+    public class BooleanFilter<T> : BaseGridFilter<T>
     {
-        public override IQueryable<TModel> Process(IQueryable<TModel> items)
+        public override IQueryable<T> Process(IQueryable<T> items)
         {
             Object value = GetBooleanValue();
             if (value == null) return items;

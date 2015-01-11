@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class StringStartsWithFilter<TModel> : BaseGridFilter<TModel> where TModel : class
+    public class StringStartsWithFilter<T> : BaseGridFilter<T>
     {
-        public override IQueryable<TModel> Process(IQueryable<TModel> items)
+        public override IQueryable<T> Process(IQueryable<T> items)
         {
             MethodInfo startsWithMethod = typeof(String).GetMethod("StartsWith", new[] { typeof(String) });
             MethodInfo toUpperMethod = typeof(String).GetMethod("ToUpper", new Type[0]);
@@ -19,7 +19,7 @@ namespace NonFactors.Mvc.Grid
             Expression startsWith = Expression.Call(toUpper, startsWithMethod, value);
 
             Expression notNullStartsWith = Expression.AndAlso(notNull, startsWith);
-            Expression<Func<TModel, Boolean>> filter = Expression.Lambda<Func<TModel, Boolean>>(notNullStartsWith, parameter);
+            Expression<Func<T, Boolean>> filter = Expression.Lambda<Func<T, Boolean>>(notNullStartsWith, parameter);
 
             return items.Where(filter);
         }

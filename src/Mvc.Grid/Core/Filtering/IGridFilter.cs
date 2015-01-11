@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid
 {
-    public interface IGridFilter<TModel> : IGridProcessor<TModel> where TModel : class
+    public interface IGridFilter<T> : IGridProcessor<T>
     {
         LambdaExpression FilteredExpression { get; set; }
         String Value { get; set; }

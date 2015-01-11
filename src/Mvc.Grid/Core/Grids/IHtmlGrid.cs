@@ -3,29 +3,29 @@ using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
-    public interface IHtmlGrid<TModel> : IHtmlString where TModel : class
+    public interface IHtmlGrid<T> : IHtmlString
     {
         String PartialViewName { get; set; }
-        IGrid<TModel> Grid { get; }
+        IGrid<T> Grid { get; }
 
-        IHtmlGrid<TModel> Build(Action<IGridColumns<TModel>> builder);
-        IHtmlGrid<TModel> ProcessWith(IGridProcessor<TModel> processor);
+        IHtmlGrid<T> Build(Action<IGridColumns<T>> builder);
+        IHtmlGrid<T> ProcessWith(IGridProcessor<T> processor);
 
-        IHtmlGrid<TModel> DataSourceAction(String action);
-        IHtmlGrid<TModel> DataSource(String url);
+        IHtmlGrid<T> DataSourceAction(String action);
+        IHtmlGrid<T> DataSource(String url);
 
-        IHtmlGrid<TModel> Filterable(Boolean isFilterable);
-        IHtmlGrid<TModel> Filterable();
+        IHtmlGrid<T> Filterable(Boolean isFilterable);
+        IHtmlGrid<T> Filterable();
 
-        IHtmlGrid<TModel> Sortable(Boolean isSortable);
-        IHtmlGrid<TModel> Sortable();
+        IHtmlGrid<T> Sortable(Boolean isSortable);
+        IHtmlGrid<T> Sortable();
 
-        IHtmlGrid<TModel> RowCss(Func<TModel, String> cssClasses);
-        IHtmlGrid<TModel> Css(String cssClasses);
-        IHtmlGrid<TModel> Empty(String text);
-        IHtmlGrid<TModel> Named(String name);
+        IHtmlGrid<T> RowCss(Func<T, String> cssClasses);
+        IHtmlGrid<T> Css(String cssClasses);
+        IHtmlGrid<T> Empty(String text);
+        IHtmlGrid<T> Named(String name);
 
-        IHtmlGrid<TModel> Pageable(Action<IGridPager<TModel>> builder);
-        IHtmlGrid<TModel> Pageable();
+        IHtmlGrid<T> Pageable(Action<IGridPager<T>> builder);
+        IHtmlGrid<T> Pageable();
     }
 }

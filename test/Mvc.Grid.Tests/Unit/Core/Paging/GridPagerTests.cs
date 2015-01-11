@@ -94,7 +94,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Constructor: GridPager(IGrid<TModel> grid)
+        #region Constructor: GridPager(IGrid<T> grid)
 
         [Test]
         public void GridPager_SetsGrid()
@@ -157,7 +157,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Process(IQueryable<TModel> items)
+        #region Method: Process(IQueryable<T> items)
 
         [Test]
         public void Process_SetsTotalRows()

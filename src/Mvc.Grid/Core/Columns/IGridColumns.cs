@@ -8,11 +8,11 @@ namespace NonFactors.Mvc.Grid
     {
     }
 
-    public interface IGridColumns<TModel> : IGridColumns where TModel : class
+    public interface IGridColumns<T> : IGridColumns
     {
-        IGrid<TModel> Grid { get; set; }
+        IGrid<T> Grid { get; set; }
 
-        IGridColumn<TModel, TKey> Add<TKey>(Expression<Func<TModel, TKey>> constraint);
-        IGridColumn<TModel, TKey> Insert<TKey>(Int32 index, Expression<Func<TModel, TKey>> constraint);
+        IGridColumn<T> Add<TValue>(Expression<Func<T, TValue>> constraint);
+        IGridColumn<T> Insert<TValue>(Int32 index, Expression<Func<T, TValue>> constraint);
     }
 }

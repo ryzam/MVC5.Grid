@@ -20,14 +20,14 @@ namespace NonFactors.Mvc.Grid
         IGridPager Pager { get; }
     }
 
-    public interface IGrid<TModel> : IGrid where TModel : class
+    public interface IGrid<T> : IGrid
     {
-        IList<IGridProcessor<TModel>> Processors { get; set; }
-        IQueryable<TModel> Source { get; set; }
+        IList<IGridProcessor<T>> Processors { get; set; }
+        IQueryable<T> Source { get; set; }
 
-        new IGridColumns<TModel> Columns { get; }
-        new IGridRows<TModel> Rows { get; }
+        new IGridColumns<T> Columns { get; }
+        new IGridRows<T> Rows { get; }
 
-        new IGridPager<TModel> Pager { get; set; }
+        new IGridPager<T> Pager { get; set; }
     }
 }

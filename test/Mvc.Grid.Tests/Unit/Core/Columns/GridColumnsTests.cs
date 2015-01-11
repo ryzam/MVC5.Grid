@@ -21,7 +21,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             columns.Grid.Query = new NameValueCollection();
         }
 
-        #region Constructor: GridColumns(IGrid<TModel> grid)
+        #region Constructor: GridColumns(IGrid<T> grid)
 
         [Test]
         public void GridColumns_SetsGrid()
@@ -34,7 +34,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Add<TKey>(Expression<Func<TModel, TKey>> expression)
+        #region Method: Add<TValue>(Expression<Func<T, TValue>> expression)
 
         [Test]
         public void Add_AddsGridColumn()
@@ -42,8 +42,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
             columns.Add(expression);
 
-            IGridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, expression);
-            IGridColumn<GridModel, String> actual = columns.Single() as IGridColumn<GridModel, String>;
+            GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, expression);
+            GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
 
             Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
             Assert.AreEqual(expected.IsFilterable, actual.IsFilterable);
@@ -83,7 +83,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Insert<TKey>(Int32 index, Expression<Func<TModel, TKey>> expression)
+        #region Method: Insert<TValue>(Int32 index, Expression<Func<T, TValue>> expression)
 
         [Test]
         public void Insert_InsertsGridColumn()
@@ -92,8 +92,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             columns.Add(model => model.Name);
             columns.Insert(0, expression);
 
-            IGridColumn<GridModel, Int32> expected = new GridColumn<GridModel, Int32>(columns.Grid, expression);
-            IGridColumn<GridModel, Int32> actual = columns.First() as IGridColumn<GridModel, Int32>;
+            GridColumn<GridModel, Int32> expected = new GridColumn<GridModel, Int32>(columns.Grid, expression);
+            GridColumn<GridModel, Int32> actual = columns.First() as GridColumn<GridModel, Int32>;
 
             Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
             Assert.AreEqual(expected.IsFilterable, actual.IsFilterable);

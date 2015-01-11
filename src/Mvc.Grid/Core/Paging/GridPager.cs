@@ -3,17 +3,17 @@ using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridPager<TModel> : IGridPager<TModel> where TModel : class
+    public class GridPager<T> : IGridPager<T>
     {
-        public String PartialViewName { get; set; }
-        public IGrid<TModel> Grid { get; set; }
-        public String CssClasses { get; set; }
-
         public GridProcessorType ProcessorType { get; set; }
         public virtual Int32 PagesToDisplay { get; set; }
         public virtual Int32 CurrentPage { get; set; }
         public virtual Int32 RowsPerPage { get; set; }
         public virtual Int32 TotalRows { get; set; }
+        public String PartialViewName { get; set; }
+        public String CssClasses { get; set; }
+        public IGrid<T> Grid { get; set; }
+
         public virtual Int32 StartingPage
         {
             get
@@ -36,7 +36,7 @@ namespace NonFactors.Mvc.Grid
             }
         }
 
-        public GridPager(IGrid<TModel> grid)
+        public GridPager(IGrid<T> grid)
         {
             Grid = grid;
             RowsPerPage = 20;
@@ -46,7 +46,7 @@ namespace NonFactors.Mvc.Grid
             ProcessorType = GridProcessorType.Post;
         }
 
-        public virtual IQueryable<TModel> Process(IQueryable<TModel> items)
+        public virtual IQueryable<T> Process(IQueryable<T> items)
         {
             TotalRows = items.Count();
 

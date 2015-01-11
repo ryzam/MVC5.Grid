@@ -97,7 +97,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             String query = "Grid-Name-Equals=Test";
             grid.Query = HttpUtility.ParseQueryString(query);
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
 
             column.Filter = null;
 
@@ -115,7 +115,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             grid.Name = "Grid";
             grid.Query = HttpUtility.ParseQueryString(query);
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), type, value).Returns(filter);
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), type, value).Returns(filter);
 
             Object actual = column.Filter;
             Object expected = filter;
@@ -135,7 +135,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             grid.Name = "Grid";
             grid.Query = HttpUtility.ParseQueryString(query);
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, Object>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
 
             Assert.IsNull(column.Filter);
         }
@@ -147,11 +147,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             String query = "Grid-Name-Equals=Test";
             grid.Query = HttpUtility.ParseQueryString(query);
             IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), "Name", "Equals").Returns(filter);
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), "Name", "Equals").Returns(filter);
 
             filter = Substitute.For<IGridFilter<GridModel>>();
             IGridFilter<GridModel> currentFilter = column.Filter;
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel, String>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
 
             Object expected = currentFilter;
             Object actual = column.Filter;
@@ -235,7 +235,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Constructor: GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
+        #region Constructor: GridColumn(IGrid<T> grid, Expression<Func<T, TValue>> expression)
 
         [Test]
         public void GridColumn_SetsGrid()
@@ -504,7 +504,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Process(IQueryable<TModel> items)
+        #region Method: Process(IQueryable<T> items)
 
         [Test]
         public void Process_IfFilterIsNullReturnsItems()
@@ -730,12 +730,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #region Test helpers
 
-        private void AssertFilterNameFor<TProperty>(Expression<Func<AllTypesModel, TProperty>> property, String expected)
+        private void AssertFilterNameFor<TValue>(Expression<Func<AllTypesModel, TValue>> property, String expected)
         {
             IGrid<AllTypesModel> grid = Substitute.For<IGrid<AllTypesModel>>();
             grid.Query = new NameValueCollection();
 
-            String actual = new GridColumn<AllTypesModel, TProperty>(grid, property).FilterName;
+            String actual = new GridColumn<AllTypesModel, TValue>(grid, property).FilterName;
 
             Assert.AreEqual(expected, actual);
         }

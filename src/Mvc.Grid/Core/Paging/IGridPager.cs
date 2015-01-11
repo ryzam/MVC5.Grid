@@ -15,8 +15,8 @@ namespace NonFactors.Mvc.Grid
         Int32 TotalRows { get; }
     }
 
-    public interface IGridPager<TModel> : IGridProcessor<TModel>, IGridPager where TModel : class
+    public interface IGridPager<T> : IGridProcessor<T>, IGridPager
     {
-        IGrid<TModel> Grid { get; set; }
+        IGrid<T> Grid { get; set; }
     }
 }

@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class StringContainsFilter<TModel> : BaseGridFilter<TModel> where TModel : class
+    public class StringContainsFilter<T> : BaseGridFilter<T>
     {
-        public override IQueryable<TModel> Process(IQueryable<TModel> items)
+        public override IQueryable<T> Process(IQueryable<T> items)
         {
             MethodInfo toUpperMethod = typeof(String).GetMethod("ToUpper", new Type[0]);
             MethodInfo containsMethod = typeof(String).GetMethod("Contains");
@@ -19,7 +19,7 @@ namespace NonFactors.Mvc.Grid
             Expression contains = Expression.Call(toUpper, containsMethod, value);
 
             Expression notNullContains = Expression.AndAlso(notNull, contains);
-            Expression<Func<TModel, Boolean>> filter = Expression.Lambda<Func<TModel, Boolean>>(notNullContains, parameter);
+            Expression<Func<T, Boolean>> filter = Expression.Lambda<Func<T, Boolean>>(notNullContains, parameter);
 
             return items.Where(filter);
         }

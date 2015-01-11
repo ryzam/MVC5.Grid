@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridRows<TModel> : IGridRows<TModel> where TModel : class
+    public class GridRows<T> : IGridRows<T>
     {
         public IEnumerable<IGridRow> CurrentRows { get; private set; }
-        public Func<TModel, String> CssClasses { get; set; }
-        public IGrid<TModel> Grid { get; private set; }
+        public Func<T, String> CssClasses { get; set; }
+        public IGrid<T> Grid { get; private set; }
 
-        public GridRows(IGrid<TModel> grid)
+        public GridRows(IGrid<T> grid)
         {
             Grid = grid;
         }
@@ -20,11 +20,11 @@ namespace NonFactors.Mvc.Grid
         {
             if (CurrentRows == null)
             {
-                IQueryable<TModel> items = Grid.Source;
-                foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.ProcessorType == GridProcessorType.Pre))
+                IQueryable<T> items = Grid.Source;
+                foreach (IGridProcessor<T> processor in Grid.Processors.Where(proc => proc.ProcessorType == GridProcessorType.Pre))
                     items = processor.Process(items);
 
-                foreach (IGridProcessor<TModel> processor in Grid.Processors.Where(proc => proc.ProcessorType == GridProcessorType.Post))
+                foreach (IGridProcessor<T> processor in Grid.Processors.Where(proc => proc.ProcessorType == GridProcessorType.Post))
                     items = processor.Process(items);
 
                 CurrentRows = items

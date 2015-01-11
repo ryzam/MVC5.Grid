@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class Grid<TModel> : IGrid<TModel> where TModel : class
+    public class Grid<T> : IGrid<T> where T : class
     {
-        public IList<IGridProcessor<TModel>> Processors { get; set; }
-        public IQueryable<TModel> Source { get; set; }
+        public IList<IGridProcessor<T>> Processors { get; set; }
+        public IQueryable<T> Source { get; set; }
         public NameValueCollection Query { get; set; }
 
         public String DataSourceUrl { get; set; }
@@ -17,23 +17,23 @@ namespace NonFactors.Mvc.Grid
         public String Name { get; set; }
 
         IGridColumns IGrid.Columns { get { return Columns; } }
-        public IGridColumns<TModel> Columns { get; set; }
+        public IGridColumns<T> Columns { get; set; }
 
         IGridRows IGrid.Rows { get { return Rows; } }
-        public IGridRows<TModel> Rows { get; set; }
+        public IGridRows<T> Rows { get; set; }
 
         IGridPager IGrid.Pager { get { return Pager; } }
-        public IGridPager<TModel> Pager { get; set; }
+        public IGridPager<T> Pager { get; set; }
 
-        public Grid(IEnumerable<TModel> source)
+        public Grid(IEnumerable<T> source)
         {
-            Processors = new List<IGridProcessor<TModel>>();
+            Processors = new List<IGridProcessor<T>>();
             Source = source.AsQueryable();
 
             Name = "Grid";
 
-            Columns = new GridColumns<TModel>(this);
-            Rows = new GridRows<TModel>(this);
+            Columns = new GridColumns<T>(this);
+            Rows = new GridRows<T>(this);
         }
     }
 }

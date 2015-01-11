@@ -9,8 +9,8 @@ namespace NonFactors.Mvc.Grid
         String FilterType { get; set; }
         String FilterName { get; set; }
     }
-    public interface IFilterableColumn<TModel> : IGridProcessor<TModel> where TModel : class
+    public interface IFilterableColumn<T> : IGridProcessor<T>
     {
-        IGridFilter<TModel> Filter { get; set; }
+        IGridFilter<T> Filter { get; set; }
     }
 }

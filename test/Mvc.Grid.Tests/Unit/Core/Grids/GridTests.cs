@@ -52,7 +52,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Constructor: Grid(IEnumerable<TModel> source)
+        #region Constructor: Grid(IEnumerable<T> source)
 
         [Test]
         public void Grid_CreatesEmptyProcessorsList()

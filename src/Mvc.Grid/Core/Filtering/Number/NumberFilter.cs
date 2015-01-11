@@ -4,20 +4,20 @@ using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid
 {
-    public abstract class NumberFilter<TModel> : BaseGridFilter<TModel> where TModel : class
+    public abstract class NumberFilter<T> : BaseGridFilter<T>
     {
-        public override IQueryable<TModel> Process(IQueryable<TModel> items)
+        public override IQueryable<T> Process(IQueryable<T> items)
         {
             Object value = GetNumericValue();
             if (value == null) return items;
 
-            Expression<Func<TModel, Boolean>> filter = GetFilterExpression(value);
+            Expression<Func<T, Boolean>> filter = GetFilterExpression(value);
             if (filter == null) return items;
 
             return items.Where(filter);
         }
 
-        private Expression<Func<TModel, Boolean>> GetFilterExpression(Object value)
+        private Expression<Func<T, Boolean>> GetFilterExpression(Object value)
         {
             switch (Type)
             {

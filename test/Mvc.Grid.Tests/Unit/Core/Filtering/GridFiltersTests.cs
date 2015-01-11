@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
@@ -109,12 +110,16 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: GetFilter<TModel, TValue>(IGridColumn<TModel, TValue> column, String type, String value)
+        #region Method: GetFilter<T, TValue>(IGridColumn<T> column, String type, String value)
 
         [Test]
         public void GetFilter_OnNotFoundValueTypeReturnsNull()
         {
-            IGridFilter<GridModel> filter = filters.GetFilter<GridModel, Object>(null, "Equals", "1");
+            IGridColumn<GridModel> column = Substitute.For<IGridColumn<GridModel>>();
+            Expression<Func<GridModel, Object>> expression = (model) => 0;
+            column.Expression.Returns(expression);
+
+            IGridFilter<GridModel> filter = filters.GetFilter<GridModel>(column, "Equals", "1");
 
             Assert.IsNull(filter);
         }
@@ -122,7 +127,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetFilter_OnNotFoundFilterTypeReturnsNull()
         {
-            IGridFilter<GridModel> filter = filters.GetFilter<GridModel, String>(null, "GreaterThan", "Test");
+            IGridColumn<GridModel> column = Substitute.For<IGridColumn<GridModel>>();
+            Expression<Func<GridModel, String>> expression = (model) => "Test";
+            column.Expression.Returns(expression);
+
+            IGridFilter<GridModel> filter = filters.GetFilter<GridModel>(column, "GreaterThan", "Test");
 
             Assert.IsNull(filter);
         }
@@ -130,10 +139,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetFilter_GetsFilterForNullableType()
         {
-            IGridColumn<GridModel, Int32?> column = Substitute.For<IGridColumn<GridModel, Int32?>>();
-            column.Expression = (model) => model.Sum;
+            IGridColumn<GridModel> column = Substitute.For<IGridColumn<GridModel>>();
+            Expression<Func<GridModel, Int32?>> expression = (model) => 0;
+            column.Expression.Returns(expression);
 
-            IGridFilter<GridModel> actual = filters.GetFilter<GridModel, Int32?>(column, "Equals", "1");
+            IGridFilter<GridModel> actual = filters.GetFilter<GridModel>(column, "Equals", "1");
             IGridFilter<GridModel> expected = new Int32Filter<GridModel>();
             expected.FilteredExpression = column.Expression;
             expected.Type = "Equals";
@@ -149,10 +159,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetFilter_ReturnsFilter()
         {
-            IGridColumn<GridModel, String> column = Substitute.For<IGridColumn<GridModel, String>>();
-            column.Expression = (model) => model.Name;
+            IGridColumn<GridModel> column = Substitute.For<IGridColumn<GridModel>>();
+            Expression<Func<GridModel, String>> expression = (model) => "Test";
+            column.Expression.Returns(expression);
 
-            IGridFilter<GridModel> actual = filters.GetFilter<GridModel, String>(column, "Equals", "Test");
+            IGridFilter<GridModel> actual = filters.GetFilter<GridModel>(column, "Equals", "Test");
             IGridFilter<GridModel> expected = new StringEqualsFilter<GridModel>();
             expected.FilteredExpression = column.Expression;
             expected.Type = "Equals";

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid
 {
-    public abstract class BaseGridFilter<TModel> : IGridFilter<TModel> where TModel : class
+    public abstract class BaseGridFilter<T> : IGridFilter<T>
     {
         public LambdaExpression FilteredExpression { get; set; }
         public GridProcessorType ProcessorType { get; set; }
@@ -16,9 +16,9 @@ namespace NonFactors.Mvc.Grid
             ProcessorType = GridProcessorType.Pre;
         }
 
-        public abstract IQueryable<TModel> Process(IQueryable<TModel> items);
+        public abstract IQueryable<T> Process(IQueryable<T> items);
 
-        protected Expression<Func<TModel, Boolean>> ToLambda(Expression expression)
+        protected Expression<Func<T, Boolean>> ToLambda(Expression expression)
         {
             if (FilteredExpression.Body.Type.IsGenericType && FilteredExpression.Body.Type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
@@ -26,7 +26,7 @@ namespace NonFactors.Mvc.Grid
                 expression = Expression.AndAlso(notNull, expression);
             }
 
-            return Expression.Lambda<Func<TModel, Boolean>>(expression, FilteredExpression.Parameters[0]);
+            return Expression.Lambda<Func<T, Boolean>>(expression, FilteredExpression.Parameters[0]);
         }
         protected Expression GetNullSafeExpression()
         {

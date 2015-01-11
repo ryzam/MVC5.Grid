@@ -27,7 +27,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             grid.Columns.Add(model => model.Sum);
         }
 
-        #region Constructor: HtmlGrid(HtmlHelper html, IGrid<TModel> grid)
+        #region Constructor: HtmlGrid(HtmlHelper html, IGrid<T> grid)
 
         [Test]
         public void HtmlGrid_DoesNotChangeExistingQuery()
@@ -84,7 +84,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Build(Action<IGridColumns<TModel>> builder)
+        #region Method: Build(Action<IGridColumns<T>> builder)
 
         [Test]
         public void Build_BuildsColumns()
@@ -112,7 +112,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: ProcessWith(IGridProcessor<TModel> processor)
+        #region Method: ProcessWith(IGridProcessor<T> processor)
 
         [Test]
         public void ProcessWith_AddsProcessorToGrid()
@@ -306,7 +306,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: RowCss(Func<TModel, String> cssClasses)
+        #region Method: RowCss(Func<T, String> cssClasses)
 
         [Test]
         public void RowCss_SetsRowsCssClasses()
@@ -394,7 +394,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Pageable(Action<IGridPager<TModel>> builder)
+        #region Method: Pageable(Action<IGridPager<T>> builder)
 
         [Test]
         public void Pageable_Builder_DoesNotChangeExistingPager()

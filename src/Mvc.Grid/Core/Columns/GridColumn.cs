@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class GridColumn<TModel, TValue> : BaseGridColumn<TModel, TValue> where TModel : class
+    public class GridColumn<T, TValue> : BaseGridColumn<T, TValue> where T : class
     {
         private Boolean GridSortIsSet { get; set; }
         public override GridSortOrder? SortOrder
@@ -38,7 +38,7 @@ namespace NonFactors.Mvc.Grid
         }
 
         private Boolean GridFilterIsSet { get; set; }
-        public override IGridFilter<TModel> Filter
+        public override IGridFilter<T> Filter
         {
             get
             {
@@ -98,7 +98,7 @@ namespace NonFactors.Mvc.Grid
             }
         }
 
-        public GridColumn(IGrid<TModel> grid, Expression<Func<TModel, TValue>> expression)
+        public GridColumn(IGrid<T> grid, Expression<Func<T, TValue>> expression)
         {
             Grid = grid;
             IsEncoded = true;
@@ -110,7 +110,7 @@ namespace NonFactors.Mvc.Grid
             Name = ExpressionHelper.GetExpressionText(expression);
         }
 
-        public override IQueryable<TModel> Process(IQueryable<TModel> items)
+        public override IQueryable<T> Process(IQueryable<T> items)
         {
             if (Filter != null && IsFilterable == true)
                 items = Filter.Process(items);
@@ -131,7 +131,7 @@ namespace NonFactors.Mvc.Grid
             return new HtmlString(value);
         }
 
-        private Boolean? IsMember(Expression<Func<TModel, TValue>> expression)
+        private Boolean? IsMember(Expression<Func<T, TValue>> expression)
         {
             if (expression.Body is MemberExpression)
                 return null;
@@ -145,9 +145,9 @@ namespace NonFactors.Mvc.Grid
             try
             {
                 if (RenderValue != null)
-                    value = RenderValue(row.Model as TModel);
+                    value = RenderValue(row.Model as T);
                 else
-                    value = ExpressionValue(row.Model as TModel);
+                    value = ExpressionValue(row.Model as T);
             }
             catch(NullReferenceException)
             {
