@@ -17,13 +17,19 @@
         cursor: pointer;
     }
 
-.mvc-grid-sort.asc:after {
-    content: "\2193";
+.mvc-grid-sort {
+    display: inline-block;
+    text-align: center;
+    min-width: 10px;
 }
 
-.mvc-grid-sort.desc:after {
-    content: "\2191";
-}
+    .mvc-grid-sort.asc:after {
+        content: "\2193";
+    }
+
+    .mvc-grid-sort.desc:after {
+        content: "\2191";
+    }
 
 .mvc-grid-header.filterable {
     padding-right: 30px;
@@ -45,6 +51,7 @@
     right: 0;
     top: 40%;
 }
+
     .mvc-grid-filter.applied {
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAMBAMAAACpRTGTAAAAMFBMVEUAAAD///////9ISEgZGRn///82NjbGxsaHh4f///9VVVW9vb1NTU3///8Ah/8zMzOqIMhJAAAADnRSTlMAQATDTxTzOGwQqzG3KGb54LsAAABDSURBVAgdBcExDkBAEADAsahU9wO/ofJWnqKWiEIp1yqEM1NlqBKYcs5n0yaGer/Ge4unF3N8neWgKzOi9FAIXoKVH+i2E10JB20gAAAAAElFTkSuQmCC');
     }
