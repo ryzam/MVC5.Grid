@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace NonFactors.Mvc.Grid
 {
@@ -16,6 +17,11 @@ namespace NonFactors.Mvc.Grid
             grid.PartialViewName = partialViewName;
 
             return grid;
+        }
+
+        public static MvcHtmlString AjaxGrid(this HtmlHelper html, String dataSource)
+        {
+            return html.Partial("MvcGrid/_AjaxGrid", dataSource);
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -66,6 +68,32 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             String expected = "_Partial";
 
             Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
+        #region Extension: AjaxGrid(this HtmlHelper, String dataSource)
+
+        [Test]
+        public void AjaxGrid_RendersAjaxGridPartial()
+        {
+            IView view = Substitute.For<IView>();
+            IViewEngine engine = Substitute.For<IViewEngine>();
+            ViewEngineResult result = Substitute.For<ViewEngineResult>(view, engine);
+            engine.FindPartialView(Arg.Any<ControllerContext>(), "MvcGrid/_AjaxGrid", Arg.Any<Boolean>()).Returns(result);
+            view.When(sub => sub.Render(Arg.Any<ViewContext>(), Arg.Any<TextWriter>())).Do(sub =>
+            {
+                Assert.AreEqual("DataSource", sub.Arg<ViewContext>().ViewData.Model);
+                sub.Arg<TextWriter>().Write("Rendered");
+            });
+
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(engine);
+
+            String actual = html.AjaxGrid("DataSource").ToHtmlString();
+            String expected = "Rendered";
+
+            Assert.AreEqual(expected, actual);
         }
 
         #endregion

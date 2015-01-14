@@ -6,5 +6,6 @@ Grid controls for ASP.NET MVC projects
 - Automatic filtering
 - Automatic sorting
 - Automatic paging
+- User friendly urls
 - Globalization
 - Ajax support

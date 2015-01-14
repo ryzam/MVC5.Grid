@@ -38,6 +38,7 @@
     <Content Include="Scripts\MvcGrid\mvc-grid.js" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Views\Shared\MvcGrid\_AjaxGrid.cshtml" />
     <None Include="Views\Shared\MvcGrid\_Grid.cshtml" />
     <None Include="Views\Shared\MvcGrid\_Pager.cshtml" />
     <None Include="Views\Web.config.transform" />
