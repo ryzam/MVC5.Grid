@@ -14,11 +14,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         private GridPager<GridModel> pager;
         private IGrid<GridModel> grid;
 
-        [TestFixtureSetUp]
-        public void TestFixtureSetUp()
+        [SetUp]
+        public void SetUp()
         {
             grid = Substitute.For<IGrid<GridModel>>();
             grid.Query = new NameValueCollection();
+            grid.Name = "Grid";
 
             pager = new GridPager<GridModel>(grid);
         }
@@ -64,6 +65,81 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             pager.TotalRows = 5;
 
             Int32 actual = pager.StartingPage;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
+        #region Property: CurrentPage
+
+        [Test]
+        [TestCase("Grid-Page=3", 3)]
+        [TestCase("Grid-Page=3a", 1)]
+        public void CurrentPage_AfterFirstGetLoadsTheSameValue(String query, Int32 expected)
+        {
+            grid.Query = HttpUtility.ParseQueryString(query);
+            Int32 value = pager.CurrentPage;
+
+            grid.Query = HttpUtility.ParseQueryString("Grid-Page=5");
+
+            Int32 actual = pager.CurrentPage;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CurrentPage_OnHandSetCurrentPageReloadFromGridQuery()
+        {
+            grid.Query = HttpUtility.ParseQueryString("Grid-Page=5");
+            Int32 value = pager.CurrentPage;
+
+            grid.Query = HttpUtility.ParseQueryString("Grid-Page=3");
+            pager.CurrentPage = 300;
+
+            Int32 actual = pager.CurrentPage;
+            Int32 expected = 3;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("", 3)]
+        [TestCase("Grid-Page=", 3)]
+        [TestCase("Grid-Page=2a", 3)]
+        public void CurrentPage_OnNotValidValueInQueryLeavesCurrentPage(String query, Int32 currentPage)
+        {
+            grid.Query = HttpUtility.ParseQueryString(query);
+            pager.CurrentPage = currentPage;
+
+            Int32 actual = pager.CurrentPage;
+            Int32 expected = currentPage;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(-1)]
+        public void CurrentPage_OnLessOrEqualToZeroPageReturnsOne(Int32 currentPage)
+        {
+            pager.CurrentPage = currentPage;
+
+            Int32 actual = pager.CurrentPage;
+            Int32 expected = 1;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("Grid-Page=0")]
+        [TestCase("Grid-Page=-1")]
+        public void CurrentPage_OnLessOrEqualToZeroPageInQueryReturnsOne(String query)
+        {
+            grid.Query = HttpUtility.ParseQueryString(query);
+
+            Int32 actual = pager.CurrentPage;
+            Int32 expected = 1;
 
             Assert.AreEqual(expected, actual);
         }
@@ -119,20 +195,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             Int32 actual = new GridPager<GridModel>(grid).PagesToDisplay;
             Int32 expected = 5;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("Page=15", 1)]
-        [TestCase("Grid-Page=2", 2)]
-        [TestCase("Grid-Page=15a", 1)]
-        public void GridPager_SetsCurrentPageFromGridQuery(String query, Int32 expected)
-        {
-            grid.Name = "Grid";
-            grid.Query = HttpUtility.ParseQueryString(query);
-
-            Int32 actual = new GridPager<GridModel>(grid).CurrentPage;
 
             Assert.AreEqual(expected, actual);
         }

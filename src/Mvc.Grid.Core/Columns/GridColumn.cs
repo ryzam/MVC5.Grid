@@ -9,12 +9,12 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumn<T, TValue> : BaseGridColumn<T, TValue> where T : class
     {
-        private Boolean GridSortIsSet { get; set; }
+        private Boolean SortOrderIsSet { get; set; }
         public override GridSortOrder? SortOrder
         {
             get
             {
-                if (GridSortIsSet)
+                if (SortOrderIsSet)
                     return base.SortOrder;
 
                 if (Grid.Query[Grid.Name + "-Sort"] == Name)
@@ -26,23 +26,23 @@ namespace NonFactors.Mvc.Grid
                         SortOrder = order;
                 }
 
-                GridSortIsSet = true;
+                SortOrderIsSet = true;
 
                 return base.SortOrder;
             }
             set
             {
                 base.SortOrder = value;
-                GridSortIsSet = true;
+                SortOrderIsSet = true;
             }
         }
 
-        private Boolean GridFilterIsSet { get; set; }
+        private Boolean FilterIsSet { get; set; }
         public override IGridFilter<T> Filter
         {
             get
             {
-                if (GridFilterIsSet)
+                if (FilterIsSet)
                     return base.Filter;
 
                 String filterKey = Grid.Query.AllKeys
@@ -57,14 +57,14 @@ namespace NonFactors.Mvc.Grid
                     Filter = MvcGrid.Filters.GetFilter(this, filterType, value);
                 }
 
-                GridFilterIsSet = true;
+                FilterIsSet = true;
 
                 return base.Filter;
             }
             set
             {
                 base.Filter = value;
-                GridFilterIsSet = true;
+                FilterIsSet = true;
             }
         }
         public override String FilterValue
