@@ -61,17 +61,24 @@
         outline: none;
     }
 
-.mvc-grid-filter-popup {
+.mvc-grid-popup {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-clip: padding-box;
+    background-color: #FFFFFF;
     position: absolute;
+    border-radius: 4px;
+    margin: 2px 0 0;
+    z-index: 1000;
     display: none;
     padding: 0;
 }
 
-    .mvc-grid-filter-popup.open {
+    .mvc-grid-popup.open {
         display: block;
     }
 
-    .mvc-grid-filter-popup .popup-arrow {
+    .mvc-grid-popup .popup-arrow {
         background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAICAMAAAD+zz7+AAAAP1BMVEX////////////////////////////////////////////////////////MzMzn5+f////d3d3W1tb29vbv7+/jdafZAAAADnRSTlMAAQgRBQcCGgMLKSUZIkFRd6sAAABPSURBVHhePcoJDoVACAPQ4u5fyjb3P6ugiYWkeQQIAJncf2v12ZSPkvoHsGDfsAyOWjkgNfOgmmm5P79JN2vnDEytO84UWEQ+zAhD0N4wLuqDBO7lVsPjAAAAAElFTkSuQmCC');
         position: absolute;
         height: 8px;
@@ -79,59 +86,58 @@
         top: -8px;
     }
 
-    .mvc-grid-filter-popup .popup-content {
+    .mvc-grid-popup .popup-content {
         padding: 0 5px;
     }
 
-    .mvc-grid-filter-popup select {
+    .mvc-grid-popup select {
         border-bottom-right-radius: 0;
         border-top-right-radius: 0;
     }
 
-    .mvc-grid-filter-popup .form-group {
+    .mvc-grid-popup .popup-group,
+    .mvc-grid-popup .popup-button-group {
         border-bottom: 1px solid #EEEEEE;
         border-top: 1px solid #FFFFFF;
         padding: 10px;
         margin: 0;
     }
 
-    .mvc-grid-filter-popup .mvc-grid-boolean-filter {
+    .mvc-grid-popup .popup-button-group {
+        text-align: center;
+    }
+
+        .mvc-grid-popup .popup-button-group button {
+            padding: 5px 20px;
+            margin: 0 5px;
+        }
+
+    .mvc-grid-popup .mvc-grid-boolean-filter {
+        text-align: center;
         list-style: none;
         padding: 0;
         margin: 0;
     }
 
-        .mvc-grid-filter-popup .mvc-grid-boolean-filter li {
+        .mvc-grid-popup .mvc-grid-boolean-filter li {
             cursor: pointer;
             padding: 0 5px;
             display: block;
             width: 100%;
         }
 
-            .mvc-grid-filter-popup .mvc-grid-boolean-filter li:hover {
+            .mvc-grid-popup .mvc-grid-boolean-filter li:hover {
                 background-color: #EEEEEE;
                 text-decoration: none;
             }
 
-            .mvc-grid-filter-popup .mvc-grid-boolean-filter li.active {
+            .mvc-grid-popup .mvc-grid-boolean-filter li.active {
                 background-color: #DDDDDD;
             }
 
-    .mvc-grid-filter-popup .mvc-grid-input {
+    .mvc-grid-popup .mvc-grid-input {
         font-size: 12px;
     }
-
-.mvc-grid-filter-buttons {
-    padding: 10px;
-}
-
-.mvc-grid-left-button {
-    padding-right: 7px;
-}
-
-.mvc-grid-right-button {
-    padding-left: 7px;
-}
 
 .mvc-grid-table-empty {
     text-align: center;
