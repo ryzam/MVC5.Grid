@@ -9,22 +9,18 @@
 */
 var MvcGrid = (function () {
     function MvcGrid(grid, options) {
-        this.gridQuery = window.location.search.replace('?', '');
-        this.dataSourceUrl = grid.data('source-url') || '';
-        this.isAjax = this.dataSourceUrl != '';
-        this.name = grid.data('name') || '';
-        var opt = options || {};
-        this.element = grid;
         this.columns = [];
+        this.element = grid;
+        options = options || {};
+        this.name = grid.data('name') || '';
+        this.dataSourceUrl = grid.data('source-url') || '';
+        this.gridQuery = options.query || window.location.search.replace('?', '');
 
-        if (this.isAjax) {
-            this.gridQuery = opt.query || '';
-            if (opt.isLoaded != true) {
-                this.reload(this.gridQuery);
-                return;
-            }
+        if (options.reload === true || (this.dataSourceUrl != '' && !options.isLoaded)) {
+            this.reload(this.gridQuery);
+            return;
         }
-        this.filters = opt.filters || {
+        this.filters = options.filters || {
             'Text': new MvcGridTextFilter(),
             'Date': new MvcGridDateFilter(),
             'Number': new MvcGridNumberFilter(),
@@ -45,7 +41,7 @@ var MvcGrid = (function () {
             this.applyPaging($(pages[ind]));
         }
 
-        this.rowClicked = opt.rowClicked;
+        this.rowClicked = options.rowClicked;
         this.bindGridEvents();
         this.cleanGrid(grid);
     }
@@ -74,6 +70,9 @@ var MvcGrid = (function () {
             }
             if (options.rowClicked) {
                 this.rowClicked = options.rowClicked;
+            }
+            if (options.reload === true) {
+                this.reload(this.gridQuery);
             }
         },
 
@@ -112,7 +111,7 @@ var MvcGrid = (function () {
         reload: function (query) {
             var grid = this;
 
-            if (grid.isAjax) {
+            if (grid.dataSourceUrl != '') {
                 $.ajax({
                     url: grid.dataSourceUrl + '?' + query
                 }).success(function (result) {
