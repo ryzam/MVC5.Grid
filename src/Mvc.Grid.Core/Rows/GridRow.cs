@@ -4,8 +4,8 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridRow : IGridRow
     {
-        public Object Model { get; private set; }
         public String CssClasses { get; set; }
+        public Object Model { get; set; }
 
         public GridRow(Object model)
         {

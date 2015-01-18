@@ -7,9 +7,9 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridRows<T> : IGridRows<T>
     {
-        public IEnumerable<IGridRow> CurrentRows { get; private set; }
+        public IEnumerable<IGridRow> CurrentRows { get; set; }
         public Func<T, String> CssClasses { get; set; }
-        public IGrid<T> Grid { get; private set; }
+        public IGrid<T> Grid { get; set; }
 
         public GridRows(IGrid<T> grid)
         {

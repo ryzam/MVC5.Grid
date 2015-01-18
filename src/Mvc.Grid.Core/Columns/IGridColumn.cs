@@ -18,7 +18,7 @@ namespace NonFactors.Mvc.Grid
     public interface IGridColumn<T> : IFilterableColumn<T>, ISortableColumn<T>, IGridColumn
     {
         LambdaExpression Expression { get; }
-        IGrid<T> Grid { get; set; }
+        IGrid<T> Grid { get; }
 
         IGridColumn<T> RenderedAs(Func<T, Object> value);
 
