@@ -420,10 +420,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid);
             IGridPager<GridModel> actual = htmlGrid.Grid.Pager;
 
+            Assert.AreEqual(expected.FirstDisplayPage, actual.FirstDisplayPage);
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
             Assert.AreEqual(expected.PagesToDisplay, actual.PagesToDisplay);
             Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
-            Assert.AreEqual(expected.StartingPage, actual.StartingPage);
+            Assert.AreEqual(expected.InitialPage, actual.InitialPage);
             Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
             Assert.AreEqual(expected.RowsPerPage, actual.RowsPerPage);
             Assert.AreEqual(expected.TotalPages, actual.TotalPages);
@@ -511,10 +512,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridPager<GridModel> expected = new GridPager<GridModel>(htmlGrid.Grid);
             IGridPager<GridModel> actual = htmlGrid.Grid.Pager;
 
+            Assert.AreEqual(expected.FirstDisplayPage, actual.FirstDisplayPage);
             Assert.AreEqual(expected.PartialViewName, actual.PartialViewName);
             Assert.AreEqual(expected.PagesToDisplay, actual.PagesToDisplay);
             Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
-            Assert.AreEqual(expected.StartingPage, actual.StartingPage);
+            Assert.AreEqual(expected.InitialPage, actual.InitialPage);
             Assert.AreEqual(expected.CurrentPage, actual.CurrentPage);
             Assert.AreEqual(expected.RowsPerPage, actual.RowsPerPage);
             Assert.AreEqual(expected.TotalPages, actual.TotalPages);

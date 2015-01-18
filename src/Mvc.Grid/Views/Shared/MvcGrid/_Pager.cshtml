@@ -15,7 +15,7 @@
                 <li class="disabled"><span>&laquo;</span></li>
                 <li class="disabled"><span>&lsaquo;</span></li>
             }
-            @for (Int32 page = Model.StartingPage; page <= Model.TotalPages && page < Model.StartingPage + Model.PagesToDisplay; page++)
+            @for (Int32 page = Model.FirstDisplayPage; page <= Model.TotalPages && page < Model.FirstDisplayPage + Model.PagesToDisplay; page++)
             {
                 if (page == Model.CurrentPage)
                 {
