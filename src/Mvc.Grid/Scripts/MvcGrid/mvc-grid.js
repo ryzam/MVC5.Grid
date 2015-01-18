@@ -256,16 +256,16 @@ var MvcGrid = (function () {
             this.element.find('.mvc-grid-row').bind('click.mvcgrid', function () {
                 if (grid.rowClicked) {
                     var cells = $(this).find('td');
-                    var row = [];
+                    var data = [];
 
                     for (var ind = 0; ind < grid.columns.length; ind++) {
                         var column = grid.columns[ind];
                         if (cells.length > ind) {
-                            row[column.name] = $(cells[ind]).text();
+                            data[column.name] = $(cells[ind]).text();
                         }
                     }
 
-                    grid.rowClicked(grid, row);
+                    grid.rowClicked(grid, this, data);
                 }
             });
         },
