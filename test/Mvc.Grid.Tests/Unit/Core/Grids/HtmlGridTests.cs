@@ -138,56 +138,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: DataSourceAction(String action)
-
-        [Test]
-        public void DataSourceAction_CreatesDataSourceUrlFromAction()
-        {
-            UrlHelper url = new UrlHelper(htmlGrid.Html.ViewContext.RequestContext);
-
-            htmlGrid.DataSourceAction("Action");
-
-            String expected = url.Action("Action");
-            String actual = grid.DataSourceUrl;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void DataSourceAction_ReturnsSameGrid()
-        {
-            IHtmlGrid<GridModel> actual = htmlGrid.DataSourceAction("Action");
-            IHtmlGrid<GridModel> expected = htmlGrid;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        #endregion
-
-        #region Method: DataSource(String url)
-
-        [Test]
-        public void DataSource_SetsDataSourceUrl()
-        {
-            htmlGrid.DataSource("/Home/Action");
-
-            String actual = grid.DataSourceUrl;
-            String expected = "/Home/Action";
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void DataSource_ReturnsSameGrid()
-        {
-            IHtmlGrid<GridModel> actual = htmlGrid.DataSource("/Home/Action");
-            IHtmlGrid<GridModel> expected = htmlGrid;
-
-            Assert.AreSame(expected, actual);
-        }
-
-        #endregion
-
         #region Method: Filterable(Boolean isFilterable)
 
         [Test]

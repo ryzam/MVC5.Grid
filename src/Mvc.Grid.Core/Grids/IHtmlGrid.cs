@@ -11,9 +11,6 @@ namespace NonFactors.Mvc.Grid
         IHtmlGrid<T> Build(Action<IGridColumns<T>> builder);
         IHtmlGrid<T> ProcessWith(IGridProcessor<T> processor);
 
-        IHtmlGrid<T> DataSourceAction(String action);
-        IHtmlGrid<T> DataSource(String url);
-
         IHtmlGrid<T> Filterable(Boolean isFilterable);
         IHtmlGrid<T> Filterable();
 

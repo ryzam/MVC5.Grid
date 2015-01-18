@@ -13,10 +13,10 @@ var MvcGrid = (function () {
         this.element = grid;
         options = options || {};
         this.name = grid.data('name') || '';
-        this.dataSourceUrl = grid.data('source-url') || '';
+        this.sourceUrl = grid.data('source-url') || options.sourceUrl || '';
         this.gridQuery = options.query || window.location.search.replace('?', '');
 
-        if (options.reload === true || (this.dataSourceUrl != '' && !options.isLoaded)) {
+        if (options.reload === true || (this.sourceUrl != '' && !options.isLoaded)) {
             this.reload(this.gridQuery);
             return;
         }
@@ -111,15 +111,16 @@ var MvcGrid = (function () {
         reload: function (query) {
             var grid = this;
 
-            if (grid.dataSourceUrl != '') {
+            if (grid.sourceUrl != '') {
                 $.ajax({
-                    url: grid.dataSourceUrl + '?' + query
+                    url: grid.sourceUrl + '?' + query
                 }).success(function (result) {
                     grid.element.hide();
                     grid.element.after(result);
 
                     grid.element.next('.mvc-grid').mvcgrid({
                         rowClicked: grid.rowClicked,
+                        sourceUrl: grid.sourceUrl,
                         filters: grid.filters,
                         isLoaded: true,
                         query: query

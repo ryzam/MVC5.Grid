@@ -9,7 +9,6 @@ namespace NonFactors.Mvc.Grid
     {
         NameValueCollection Query { get; set; }
 
-        String DataSourceUrl { get; set; }
         String CssClasses { get; set; }
         String EmptyText { get; set; }
         String Name { get; set; }
