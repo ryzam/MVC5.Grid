@@ -25,7 +25,8 @@ namespace NonFactors.Mvc.Grid
         IGridColumn<T> Filterable(Boolean isFilterable);
         IGridColumn<T> FilteredAs(String filterName);
 
-        IGridColumn<T> FirstSortIn(GridSortOrder order);
+        IGridColumn<T> InitialSort(GridSortOrder order);
+        IGridColumn<T> FirstSort(GridSortOrder order);
         IGridColumn<T> Sortable(Boolean isSortable);
 
         IGridColumn<T> Encoded(Boolean isEncoded);

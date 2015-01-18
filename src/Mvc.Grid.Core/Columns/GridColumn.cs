@@ -25,6 +25,10 @@ namespace NonFactors.Mvc.Grid
                     if (Enum.TryParse<GridSortOrder>(orderValue, out order))
                         SortOrder = order;
                 }
+                else if (Grid.Query[Grid.Name + "-Sort"] == null)
+                {
+                    SortOrder = InitialSortOrder;
+                }
 
                 SortOrderIsSet = true;
 

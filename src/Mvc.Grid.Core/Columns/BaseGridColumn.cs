@@ -14,6 +14,7 @@ namespace NonFactors.Mvc.Grid
         public Func<T, Object> RenderValue { get; set; }
         public IGrid<T> Grid { get; set; }
 
+        public virtual GridSortOrder? InitialSortOrder { get; set; }
         public virtual GridSortOrder? FirstSortOrder { get; set; }
         public virtual GridSortOrder? SortOrder { get; set; }
         public virtual Boolean? IsSortable { get; set; }
@@ -50,7 +51,13 @@ namespace NonFactors.Mvc.Grid
             return this;
         }
 
-        public virtual IGridColumn<T> FirstSortIn(GridSortOrder order)
+        public virtual IGridColumn<T> InitialSort(GridSortOrder order)
+        {
+            InitialSortOrder = order;
+
+            return this;
+        }
+        public virtual IGridColumn<T> FirstSort(GridSortOrder order)
         {
             FirstSortOrder = order;
 

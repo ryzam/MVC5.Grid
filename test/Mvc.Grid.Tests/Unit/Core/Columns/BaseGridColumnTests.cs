@@ -96,21 +96,43 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: FirstSortInIn(GridSortOrder order)
+        #region Method: InitialSort(GridSortOrder order)
 
         [Test]
-        public void FirstSortIn_SetsFirstSortInOrder()
+        public void InitialSort_SetsInitialSortOrder()
         {
-            GridSortOrder? actual = column.FirstSortIn(GridSortOrder.Desc).FirstSortOrder;
+            GridSortOrder? actual = column.InitialSort(GridSortOrder.Desc).InitialSortOrder;
             GridSortOrder? expected = GridSortOrder.Desc;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void FirstSortIn_ReturnsSameGrid()
+        public void InitialSort_ReturnsSameGrid()
         {
-            IGridColumn actual = column.FirstSortIn(GridSortOrder.Desc);
+            IGridColumn actual = column.InitialSort(GridSortOrder.Desc);
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
+        #region Method: FirstSort(GridSortOrder order)
+
+        [Test]
+        public void FirstSort_SetsFirstSortOrder()
+        {
+            GridSortOrder? actual = column.FirstSort(GridSortOrder.Desc).FirstSortOrder;
+            GridSortOrder? expected = GridSortOrder.Desc;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FirstSort_ReturnsSameGrid()
+        {
+            IGridColumn actual = column.FirstSort(GridSortOrder.Desc);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);
