@@ -13,6 +13,10 @@ var MvcGrid = (function () {
         this.element = grid;
         options = options || {};
         this.name = grid.data('name') || '';
+        this.rowClicked = options.rowClicked;
+        this.reloadEnded = options.reloadEnded;
+        this.reloadFailed = options.reloadFailed;
+        this.reloadStarted = options.reloadStarted;
         this.sourceUrl = grid.data('source-url') || options.sourceUrl || '';
         this.gridQuery = options.query || window.location.search.replace('?', '');
 
@@ -41,7 +45,6 @@ var MvcGrid = (function () {
             this.applyPaging($(pages[ind]));
         }
 
-        this.rowClicked = options.rowClicked;
         this.bindGridEvents();
         this.cleanGrid(grid);
     }
@@ -65,12 +68,12 @@ var MvcGrid = (function () {
             };
         },
         set: function (options) {
-            if (options.filters) {
-                this.filters = options.filters;
-            }
-            if (options.rowClicked) {
-                this.rowClicked = options.rowClicked;
-            }
+            this.filters = options.filters || this.filters;
+            this.rowClicked = options.rowClicked || this.rowClicked;
+            this.reloadEnded = options.reloadEnded || this.reloadEnded;
+            this.reloadFailed = options.reloadFailed || this.reloadFailed;
+            this.reloadStarted = options.reloadStarted || this.reloadStarted;
+
             if (options.reload === true) {
                 this.reload(this.gridQuery);
             }
@@ -112,13 +115,24 @@ var MvcGrid = (function () {
             var grid = this;
 
             if (grid.sourceUrl != '') {
+                if (grid.reloadStarted) {
+                    grid.reloadStarted(grid);
+                }
+
                 $.ajax({
                     url: grid.sourceUrl + '?' + query
                 }).success(function (result) {
+                    if (grid.reloadEnded) {
+                        grid.reloadEnded(grid);
+                    }
+
                     grid.element.hide();
                     grid.element.after(result);
 
                     grid.element.next('.mvc-grid').mvcgrid({
+                        reloadStarted: grid.reloadStarted,
+                        reloadFailed: grid.reloadFailed,
+                        reloadEnded: grid.reloadEnded,
                         rowClicked: grid.rowClicked,
                         sourceUrl: grid.sourceUrl,
                         filters: grid.filters,
@@ -126,6 +140,11 @@ var MvcGrid = (function () {
                         query: query
                     });
                     grid.element.remove();
+                })
+                .error(function (result) {
+                    if (grid.reloadFailed) {
+                        grid.reloadFailed(grid, result);
+                    }
                 });
             } else {
                 window.location.href = '?' + query;
