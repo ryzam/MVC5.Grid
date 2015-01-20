@@ -18,7 +18,7 @@ namespace NonFactors.Mvc.Grid
 
         public abstract IQueryable<T> Process(IQueryable<T> items);
 
-        protected Expression<Func<T, Boolean>> ToLambda(Expression expression)
+        internal Expression<Func<T, Boolean>> ToLambda(Expression expression)
         {
             if (FilteredExpression.Body.Type.IsGenericType && FilteredExpression.Body.Type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
@@ -28,7 +28,7 @@ namespace NonFactors.Mvc.Grid
 
             return Expression.Lambda<Func<T, Boolean>>(expression, FilteredExpression.Parameters[0]);
         }
-        protected Expression GetNullSafeExpression()
+        internal Expression GetNullSafeExpression()
         {
             if (FilteredExpression.Body.Type.IsGenericType && FilteredExpression.Body.Type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return Expression.Property(FilteredExpression.Body, FilteredExpression.Body.Type.GetProperty("Value"));
