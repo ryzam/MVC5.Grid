@@ -1,12 +1,12 @@
 ﻿/*!
-* Mvc.Grid 0.9.0
-* https://github.com/NonFactors/MVC.Grid
-*
-* Copyright © NonFactors
-*
-* Licensed under the terms of the MIT License
-* http://www.opensource.org/licenses/mit-license.php
-*/
+ * Mvc.Grid 1.0.0
+ * https://github.com/NonFactors/MVC.Grid
+ *
+ * Copyright © NonFactors
+ *
+ * Licensed under the terms of the MIT License
+ * http://www.opensource.org/licenses/mit-license.php
+ */
 var MvcGrid = (function () {
     function MvcGrid(grid, options) {
         this.columns = [];
@@ -325,7 +325,10 @@ var MvcGridTextFilter = (function () {
                 '<div class="popup-content">' +
                     '<div class="popup-group">' +
                         '<select class="form-control mvc-grid-type">' +
-                            '<option value="Contains"' + (filter.type == 'Contains' ? ' selected="selected"' : '') + '>' + lang.Contains + '</option>' + '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>' + lang.Equals + '</option>' + '<option value="StartsWith"' + (filter.type == 'StartsWith' ? ' selected="selected"' : '') + '>' + lang.StartsWith + '</option>' + '<option value="EndsWith"' + (filter.type == 'EndsWith' ? ' selected="selected"' : '') + '>' + lang.EndsWith + '</option>' +
+                            '<option value="Contains"' + (filter.type == 'Contains' ? ' selected="selected"' : '') + '>' + lang.Contains + '</option>' +
+                            '<option value="Equals"' + (filter.type == 'Equals' ? ' selected="selected"' : '') + '>' + lang.Equals + '</option>' +
+                            '<option value="StartsWith"' + (filter.type == 'StartsWith' ? ' selected="selected"' : '') + '>' + lang.StartsWith + '</option>' +
+                            '<option value="EndsWith"' + (filter.type == 'EndsWith' ? ' selected="selected"' : '') + '>' + lang.EndsWith + '</option>' +
                         '</select>' +
                      '</div>' +
                      '<div class="popup-group">' +

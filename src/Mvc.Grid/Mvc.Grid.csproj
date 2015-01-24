@@ -36,6 +36,9 @@
   <ItemGroup>
     <Content Include="Content\MvcGrid\mvc-grid.css" />
     <Content Include="Scripts\MvcGrid\mvc-grid.js" />
+    <Content Include="Scripts\MvcGrid\mvc-grid.min.js">
+      <DependentUpon>mvc-grid.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Shared\MvcGrid\_AjaxGrid.cshtml" />
