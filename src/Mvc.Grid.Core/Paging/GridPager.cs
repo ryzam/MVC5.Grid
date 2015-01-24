@@ -46,6 +46,7 @@ namespace NonFactors.Mvc.Grid
                 else
                     CurrentPageValue = InitialPage;
 
+                CurrentPageValue = CurrentPageValue > TotalPages ? TotalPages : CurrentPageValue;
                 CurrentPageValue = CurrentPageValue <= 0 ? 1 : CurrentPageValue;
                 CurrentPageIsSet = true;
 

@@ -80,6 +80,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             pager.Grid.Query = HttpUtility.ParseQueryString(query);
             pager.InitialPage = initialPage;
+            pager.TotalRows = 500;
+
             Int32 value = pager.CurrentPage;
 
             pager.Grid.Query = HttpUtility.ParseQueryString("Grid-Page=5");
@@ -97,9 +99,23 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             pager.Grid.Query = HttpUtility.ParseQueryString(query);
             pager.InitialPage = initialPage;
+            pager.TotalRows = 500;
 
             Int32 actual = pager.CurrentPage;
             Int32 expected = initialPage;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("Grid-Page=5", 4)]
+        public void CurrentPage_OnGreaterThanTotalPagesReturnsTotalPages(String query, Int32 totalPages)
+        {
+            pager.Grid.Query = HttpUtility.ParseQueryString(query);
+            pager.TotalRows = totalPages * pager.RowsPerPage;
+
+            Int32 actual = pager.CurrentPage;
+            Int32 expected = totalPages;
 
             Assert.AreEqual(expected, actual);
         }
