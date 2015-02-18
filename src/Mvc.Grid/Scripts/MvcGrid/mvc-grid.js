@@ -163,7 +163,8 @@ var MvcGrid = (function () {
 
                 $(window).bind('click.mvcgrid', function (e) {
                     var target = $(e.target || e.srcElement);
-                    if (!target.hasClass('mvc-grid-filter') && target.parents('.mvc-grid-popup').length == 0) {
+                    if (!target.hasClass('mvc-grid-filter') && target.parents('.mvc-grid-popup').length == 0 &&
+                        !target.is('[class*="ui-datepicker"]') && target.parents('[class*="ui-datepicker"]').length == 0) {
                         $(window).unbind('click.mvcgrid');
                         popup.removeClass('open');
                     }
