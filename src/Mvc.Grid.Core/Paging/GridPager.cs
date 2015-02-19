@@ -6,13 +6,14 @@ namespace NonFactors.Mvc.Grid
     public class GridPager<T> : IGridPager<T>
     {
         public GridProcessorType ProcessorType { get; set; }
-        public virtual Int32 PagesToDisplay { get; set; }
-        public virtual Int32 RowsPerPage { get; set; }
-        public virtual Int32 InitialPage { get; set; }
-        public virtual Int32 TotalRows { get; set; }
         public String PartialViewName { get; set; }
         public String CssClasses { get; set; }
         public IGrid<T> Grid { get; set; }
+
+        public Int32 PagesToDisplay { get; set; }
+        public Int32 RowsPerPage { get; set; }
+        public Int32 InitialPage { get; set; }
+        public Int32 TotalRows { get; set; }
 
         private Boolean CurrentPageIsSet { get; set; }
         private Int32 CurrentPageValue { get; set; }
