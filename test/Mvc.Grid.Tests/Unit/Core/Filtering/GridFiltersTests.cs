@@ -1,7 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -119,7 +118,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Expression<Func<GridModel, Object>> expression = (model) => 0;
             column.Expression.Returns(expression);
 
-            IGridFilter<GridModel> filter = filters.GetFilter<GridModel>(column, "Equals", "1");
+            IGridFilter<GridModel> filter = filters.GetFilter(column, "Equals", "1");
 
             Assert.IsNull(filter);
         }
@@ -131,7 +130,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Expression<Func<GridModel, String>> expression = (model) => "Test";
             column.Expression.Returns(expression);
 
-            IGridFilter<GridModel> filter = filters.GetFilter<GridModel>(column, "GreaterThan", "Test");
+            IGridFilter<GridModel> filter = filters.GetFilter(column, "GreaterThan", "Test");
 
             Assert.IsNull(filter);
         }
@@ -143,7 +142,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Expression<Func<GridModel, Int32?>> expression = (model) => 0;
             column.Expression.Returns(expression);
 
-            IGridFilter<GridModel> actual = filters.GetFilter<GridModel>(column, "Equals", "1");
+            IGridFilter<GridModel> actual = filters.GetFilter(column, "Equals", "1");
             IGridFilter<GridModel> expected = new Int32Filter<GridModel>();
             expected.FilteredExpression = column.Expression;
             expected.Type = "Equals";
@@ -163,7 +162,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Expression<Func<GridModel, String>> expression = (model) => "Test";
             column.Expression.Returns(expression);
 
-            IGridFilter<GridModel> actual = filters.GetFilter<GridModel>(column, "Equals", "Test");
+            IGridFilter<GridModel> actual = filters.GetFilter(column, "Equals", "Test");
             IGridFilter<GridModel> expected = new StringEqualsFilter<GridModel>();
             expected.FilteredExpression = column.Expression;
             expected.Type = "Equals";

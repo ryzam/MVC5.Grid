@@ -22,7 +22,7 @@ namespace NonFactors.Mvc.Grid
                     String orderValue = Grid.Query[Grid.Name + "-Order"];
                     GridSortOrder order;
 
-                    if (Enum.TryParse<GridSortOrder>(orderValue, out order))
+                    if (Enum.TryParse(orderValue, out order))
                         SortOrder = order;
                 }
                 else if (Grid.Query[Grid.Name + "-Sort"] == null)

@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Grid
         public String Value { get; set; }
         public String Type { get; set; }
 
-        public BaseGridFilter()
+        protected BaseGridFilter()
         {
             ProcessorType = GridProcessorType.Pre;
         }

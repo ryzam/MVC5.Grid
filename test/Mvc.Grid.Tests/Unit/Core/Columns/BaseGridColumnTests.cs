@@ -167,10 +167,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Encoded_SetsIsEncoded()
         {
-            Boolean actual = column.Encoded(true).IsEncoded;
-            Boolean expected = true;
-
-            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(column.Encoded(true).IsEncoded);
         }
 
         [Test]
