@@ -248,12 +248,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void Process_ReturnsPagedItems()
         {
-            IQueryable<GridModel> models = new[] { new GridModel(), new GridModel(), new GridModel() }.AsQueryable();
+            IQueryable<GridModel> items = new[] { new GridModel(), new GridModel(), new GridModel() }.AsQueryable();
             pager.Grid.Query = HttpUtility.ParseQueryString("Grid-Page=2");
             pager.RowsPerPage = 1;
 
-            IEnumerable expected = models.Skip(1).Take(1);
-            IEnumerable actual = pager.Process(models);
+            IEnumerable expected = items.Skip(1).Take(1);
+            IEnumerable actual = pager.Process(items);
 
             CollectionAssert.AreEqual(expected, actual);
         }

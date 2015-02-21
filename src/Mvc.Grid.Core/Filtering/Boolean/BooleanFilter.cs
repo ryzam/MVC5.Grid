@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class BooleanFilter<T> : BaseGridFilter<T>
+    public class BooleanFilter : BaseGridFilter
     {
-        public override IQueryable<T> Process(IQueryable<T> items)
+        public override Expression Apply(Expression expression)
         {
             Object value = GetBooleanValue();
-            if (value == null) return items;
+            if (value == null) return null;
 
-            return items.Where(ToLambda(Expression.Equal(GetNullSafeExpression(), Expression.Constant(value))));
+            return Expression.Equal(expression, Expression.Constant(value, expression.Type));
         }
 
         private Object GetBooleanValue()

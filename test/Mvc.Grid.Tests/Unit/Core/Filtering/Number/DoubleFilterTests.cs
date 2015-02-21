@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetNumericValue_ParsesValue()
         {
-            DoubleFilter<GridModel> filter = new DoubleFilter<GridModel>();
+            DoubleFilter filter = new DoubleFilter();
             filter.Value = "-3.40281540545454";
 
             Object actual = filter.GetNumericValue();
@@ -23,7 +23,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetNumericValue_OnNotValidValueReturnsNull()
         {
-            DoubleFilter<GridModel> filter = new DoubleFilter<GridModel>();
+            DoubleFilter filter = new DoubleFilter();
             filter.Value = "3.2f";
 
             Assert.IsNull(filter.GetNumericValue());

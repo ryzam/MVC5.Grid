@@ -1,22 +1,24 @@
-﻿using NSubstitute;
-using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class BaseGridFilterTests
     {
-        #region Constructor: BaseGridFilter()
-
-        [Test]
-        public void BaseGridFilter_SetsProcessorTypeAsPreProcessor()
+        protected IQueryable<T> Filter<T, P>(IQueryable<T> items, Expression filterExpression, Expression<Func<T, P>> property)
         {
-            GridProcessorType actual = Substitute.For<BaseGridFilter<GridModel>>().ProcessorType;
-            GridProcessorType expected = GridProcessorType.Pre;
-
-            Assert.AreEqual(expected, actual);
+            return items.Where(ToLambda(property, filterExpression));
         }
+        private Expression<Func<T, Boolean>> ToLambda<T, P>(Expression<Func<T, P>> property, Expression expression)
+        {
+            if (property.Body.Type.IsGenericType && property.Body.Type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                Expression notNull = Expression.NotEqual(property.Body, Expression.Constant(null));
+                expression = Expression.AndAlso(notNull, expression);
+            }
 
-        #endregion
+            return Expression.Lambda<Func<T, Boolean>>(expression, property.Parameters[0]);
+        }
     }
 }

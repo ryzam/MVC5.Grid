@@ -28,17 +28,17 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumerator_OnNullCurrentRowsProcessesRows()
         {
-            IQueryable<GridModel> models = new[] { new GridModel(), new GridModel() }.AsQueryable();
+            IQueryable<GridModel> items = new[] { new GridModel(), new GridModel() }.AsQueryable();
             IGridProcessor<GridModel> postProcessor = Substitute.For<IGridProcessor<GridModel>>();
             IGridProcessor<GridModel> preProcessor = Substitute.For<IGridProcessor<GridModel>>();
-            IQueryable<GridModel> postProcessedModels = new[] { new GridModel() }.AsQueryable();
-            IQueryable<GridModel> preProcessedModels = new[] { new GridModel() }.AsQueryable();
+            IQueryable<GridModel> postProcesseditems = new[] { new GridModel() }.AsQueryable();
+            IQueryable<GridModel> preProcesseditems = new[] { new GridModel() }.AsQueryable();
             postProcessor.ProcessorType = GridProcessorType.Post;
             preProcessor.ProcessorType = GridProcessorType.Pre;
-            Grid<GridModel> grid = new Grid<GridModel>(models);
+            Grid<GridModel> grid = new Grid<GridModel>(items);
 
-            postProcessor.Process(preProcessedModels).Returns(postProcessedModels);
-            preProcessor.Process(models).Returns(preProcessedModels);
+            postProcessor.Process(preProcesseditems).Returns(postProcesseditems);
+            preProcessor.Process(items).Returns(preProcesseditems);
             grid.Processors.Add(postProcessor);
             grid.Processors.Add(preProcessor);
 
@@ -46,19 +46,19 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable<IGridRow> currentRows = rows.CurrentRows;
 
             IEnumerable<Object> actual = rows.ToList().Select(row => row.Model);
-            IEnumerable<Object> expected = postProcessedModels;
+            IEnumerable<Object> expected = postProcesseditems;
 
-            postProcessor.Received().Process(preProcessedModels);
+            postProcessor.Received().Process(preProcesseditems);
             CollectionAssert.AreEqual(expected, actual);
-            preProcessor.Received().Process(models);
+            preProcessor.Received().Process(items);
             Assert.IsNull(currentRows);
         }
 
         [Test]
         public void GetEnumerator_SetsRowCssClasses()
         {
-            IQueryable<GridModel> models = new[] { new GridModel(), new GridModel() }.AsQueryable();
-            Grid<GridModel> grid = new Grid<GridModel>(models);
+            IQueryable<GridModel> items = new[] { new GridModel(), new GridModel() }.AsQueryable();
+            Grid<GridModel> grid = new Grid<GridModel>(items);
 
             GridRows<GridModel> rows = new GridRows<GridModel>(grid);
             rows.CssClasses = (model) => "grid-row";
@@ -69,11 +69,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumerator_ReturnsCurrentRows()
         {
-            IQueryable<GridModel> models = new[] { new GridModel(), new GridModel() }.AsQueryable();
+            IQueryable<GridModel> items = new[] { new GridModel(), new GridModel() }.AsQueryable();
             IGridProcessor<GridModel> preProcessor = Substitute.For<IGridProcessor<GridModel>>();
-            preProcessor.Process(models).Returns(new GridModel[0].AsQueryable());
+            preProcessor.Process(items).Returns(new GridModel[0].AsQueryable());
             preProcessor.ProcessorType = GridProcessorType.Pre;
-            Grid<GridModel> grid = new Grid<GridModel>(models);
+            Grid<GridModel> grid = new Grid<GridModel>(items);
 
             GridRows<GridModel> rows = new GridRows<GridModel>(grid);
             rows.ToList();
@@ -81,7 +81,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             grid.Processors.Add(preProcessor);
 
             IEnumerable<Object> actual = rows.ToList().Select(row => row.Model);
-            IEnumerable<Object> expected = models;
+            IEnumerable<Object> expected = items;
 
             preProcessor.DidNotReceive().Process(Arg.Any<IQueryable<GridModel>>());
             CollectionAssert.AreEqual(expected, actual);
@@ -90,8 +90,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetEnumerator_GetsSameEnumerable()
         {
-            GridModel[] models = { new GridModel(), new GridModel() };
-            Grid<GridModel> grid = new Grid<GridModel>(models);
+            GridModel[] items = { new GridModel(), new GridModel() };
+            Grid<GridModel> grid = new Grid<GridModel>(items);
 
             GridRows<GridModel> rows = new GridRows<GridModel>(grid);
 

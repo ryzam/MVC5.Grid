@@ -68,6 +68,7 @@
     <Compile Include="Unit\Core\Filtering\BaseGridFilterTests.cs" />
     <Compile Include="Unit\Core\Filtering\Boolean\BooleanFilterTests.cs" />
     <Compile Include="Unit\Core\Filtering\Date\DateTimeFilterTests.cs" />
+    <Compile Include="Unit\Core\Filtering\GridColumnFilterTests.cs" />
     <Compile Include="Unit\Core\Filtering\GridFiltersTests.cs" />
     <Compile Include="Unit\Core\Filtering\Text\StringEndsWithFilterTests.cs" />
     <Compile Include="Unit\Core\Filtering\Text\StringStartsWithFilterTests.cs" />

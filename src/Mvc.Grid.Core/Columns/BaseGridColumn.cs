@@ -14,14 +14,14 @@ namespace NonFactors.Mvc.Grid
         public Func<T, Object> RenderValue { get; set; }
         public IGrid<T> Grid { get; set; }
 
-        public virtual GridSortOrder? InitialSortOrder { get; set; }
-        public virtual GridSortOrder? FirstSortOrder { get; set; }
         public virtual GridSortOrder? SortOrder { get; set; }
+        public GridSortOrder? InitialSortOrder { get; set; }
+        public GridSortOrder? FirstSortOrder { get; set; }
         public Boolean? IsSortable { get; set; }
 
-        public virtual IGridFilter<T> Filter { get; set; }
-        public virtual String FilterValue { get; set; }
-        public virtual String FilterType { get; set; }
+        IGridColumnFilter IFilterableColumn.Filter { get { return Filter; } }
+        public virtual IGridColumnFilter<T> Filter { get; set; }
+        public Boolean? IsMultiFilterable { get; set; }
         public Boolean? IsFilterable { get; set; }
         public String FilterName { get; set; }
 
@@ -38,6 +38,12 @@ namespace NonFactors.Mvc.Grid
             return this;
         }
 
+        public virtual IGridColumn<T> MultiFilterable(Boolean isMultiple)
+        {
+            IsMultiFilterable = isMultiple;
+
+            return this;
+        }
         public virtual IGridColumn<T> Filterable(Boolean isFilterable)
         {
             IsFilterable = isFilterable;

@@ -43,6 +43,8 @@
     <Compile Include="Filtering\BaseGridFilter.cs" />
     <Compile Include="Filtering\Boolean\BooleanFilter.cs" />
     <Compile Include="Filtering\Date\DateTimeFilter.cs" />
+    <Compile Include="Filtering\GridColumnFilter.cs" />
+    <Compile Include="Filtering\IGridColumnFilter.cs" />
     <Compile Include="Filtering\Number\ByteFilter.cs" />
     <Compile Include="Filtering\Number\Int64Filter.cs" />
     <Compile Include="Filtering\Number\DoubleFilter.cs" />

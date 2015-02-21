@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetNumericValue_ParsesValue()
         {
-            Int32Filter<GridModel> filter = new Int32Filter<GridModel>();
+            Int32Filter filter = new Int32Filter();
             filter.Value = "-2147483648";
 
             Object actual = filter.GetNumericValue();
@@ -23,7 +23,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetNumericValue_OnNotValidValueReturnsNull()
         {
-            Int32Filter<GridModel> filter = new Int32Filter<GridModel>();
+            Int32Filter filter = new Int32Filter();
             filter.Value = "1a";
 
             Assert.IsNull(filter.GetNumericValue());

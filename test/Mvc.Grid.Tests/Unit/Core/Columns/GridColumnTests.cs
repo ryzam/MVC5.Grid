@@ -106,63 +106,26 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Property: Filter
 
         [Test]
-        public void Filter_DoesNotChangeFilterAfterItsSet()
+        public void Filter_SetsFilterThenItsNotSet()
         {
-            String query = "Grid-Name-Equals=Test";
-            grid.Query = HttpUtility.ParseQueryString(query);
-            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
-
-            column.Filter = null;
-
-            Assert.IsNull(column.Filter);
-        }
-
-        [Test]
-        [TestCase("Grid-Name-=", "", "")]
-        [TestCase("Grid-Name-Equals=", "Equals", "")]
-        [TestCase("Grid-Name-Equals=Test", "Equals", "Test")]
-        [TestCase("Grid-Name-Equals=Test&Grid-Name-Equals=Value", "Equals", "Test")]
-        [TestCase("Grid-Name-Equals=Test&Grid-Name-Contains=Value", "Equals", "Test")]
-        public void Filter_SetsFilterThenItsNotSet(String query, String type, String value)
-        {
-            grid.Query = HttpUtility.ParseQueryString(query);
-            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), type, value).Returns(filter);
+            IGridColumnFilter<GridModel> filter = Substitute.For<IGridColumnFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(column).Returns(filter);
 
             Object actual = column.Filter;
             Object expected = filter;
 
-            MvcGrid.Filters.Received().GetFilter(column, type, value);
             Assert.AreSame(expected, actual);
-        }
-
-        [Test]
-        [TestCase("")]
-        [TestCase("value")]
-        [TestCase("=value")]
-        [TestCase("Grid-Name=value")]
-        [TestCase("RGrid-Name-Equals=value")]
-        public void Filter_OnGridQueryWithoutFilterSetsFilterToNull(String query)
-        {
-            grid.Query = HttpUtility.ParseQueryString(query);
-            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
-
-            Assert.IsNull(column.Filter);
         }
 
         [Test]
         public void Filter_DoesNotChangeFilterAfterFirstGet()
         {
-            String query = "Grid-Name-Equals=Test";
-            grid.Query = HttpUtility.ParseQueryString(query);
-            IGridFilter<GridModel> filter = Substitute.For<IGridFilter<GridModel>>();
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), "Name", "Equals").Returns(filter);
+            IGridColumnFilter<GridModel> filter = Substitute.For<IGridColumnFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(column).Returns(filter);
 
-            filter = Substitute.For<IGridFilter<GridModel>>();
-            IGridFilter<GridModel> currentFilter = column.Filter;
-            MvcGrid.Filters.GetFilter(Arg.Any<IGridColumn<GridModel>>(), Arg.Any<String>(), Arg.Any<String>()).Returns(filter);
+            IGridColumnFilter<GridModel> currentFilter = column.Filter;
+            filter = Substitute.For<IGridColumnFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(column).Returns(filter);
 
             Object expected = currentFilter;
             Object actual = column.Filter;
@@ -170,78 +133,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.AreSame(expected, actual);
         }
 
-        #endregion
-
-        #region Property: FilterValue
-
         [Test]
-        public void FilterValue_GetsValueFromFilter()
+        public void Filter_DoesNotChangeFilterAfterItsSet()
         {
-            column.Filter = Substitute.For<IGridFilter<GridModel>>();
-            column.Filter.Value = "Test";
+            IGridColumnFilter<GridModel> filter = Substitute.For<IGridColumnFilter<GridModel>>();
+            MvcGrid.Filters.GetFilter(column).Returns(filter);
 
-            String expected = column.Filter.Value;
-            String actual = column.FilterValue;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void FilterValue_OnNullFilterReturnsNull()
-        {
             column.Filter = null;
 
-            Assert.IsNull(column.FilterValue);
-        }
-
-        [Test]
-        public void FilterValue_SetsFilterValue()
-        {
-            column.Filter = Substitute.For<IGridFilter<GridModel>>();
-            column.Filter.Value = null;
-            column.FilterValue = "T";
-
-            String actual = column.Filter.Value;
-            String expected = "T";
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        #endregion
-
-        #region Property: FilterType
-
-        [Test]
-        public void FilterType_GetsTypeFromFilter()
-        {
-            column.Filter = Substitute.For<IGridFilter<GridModel>>();
-            column.Filter.Type = "Test";
-
-            String expected = column.Filter.Type;
-            String actual = column.FilterType;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void FilterType_OnNullFilterReturnsNull()
-        {
-            column.Filter = null;
-
-            Assert.IsNull(column.FilterType);
-        }
-
-        [Test]
-        public void FilterType_SetsFilterType()
-        {
-            column.Filter = Substitute.For<IGridFilter<GridModel>>();
-            column.Filter.Type = null;
-            column.FilterType = "T";
-
-            String actual = column.Filter.Type;
-            String expected = "T";
-
-            Assert.AreEqual(expected, actual);
+            Assert.IsNull(column.Filter);
         }
 
         #endregion
@@ -537,7 +437,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.IsSortable = false;
             column.IsFilterable = false;
             column.SortOrder = GridSortOrder.Desc;
-            column.Filter = Substitute.For<IGridFilter<GridModel>>();
+            column.Filter = Substitute.For<IGridColumnFilter<GridModel>>();
 
             IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
             IQueryable<GridModel> actual = column.Process(expected);
@@ -551,10 +451,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.IsSortable = false;
             column.IsFilterable = true;
             column.SortOrder = GridSortOrder.Desc;
-            column.Filter = Substitute.For<IGridFilter<GridModel>>();
-            IQueryable<GridModel> items = new GridModel[2].AsQueryable();
-            IQueryable<GridModel> filteredItems = new GridModel[2].AsQueryable();
+            column.Filter = Substitute.For<IGridColumnFilter<GridModel>>();
 
+            IQueryable<GridModel> filteredItems = new GridModel[2].AsQueryable();
+            IQueryable<GridModel> items = new GridModel[2].AsQueryable();
             column.Filter.Process(items).Returns(filteredItems);
 
             IQueryable<GridModel> actual = column.Process(items);
@@ -595,10 +495,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.IsSortable = true;
             column.IsFilterable = false;
             column.SortOrder = GridSortOrder.Asc;
-            GridModel[] models = { new GridModel { Name = "B" }, new GridModel { Name = "A" }};
+            GridModel[] items = { new GridModel { Name = "B" }, new GridModel { Name = "A" }};
 
-            IEnumerable expected = models.OrderBy(model => model.Name);
-            IEnumerable actual = column.Process(models.AsQueryable());
+            IEnumerable expected = items.OrderBy(model => model.Name);
+            IEnumerable actual = column.Process(items.AsQueryable());
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -609,10 +509,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.IsSortable = true;
             column.IsFilterable = false;
             column.SortOrder = GridSortOrder.Desc;
-            GridModel[] models = { new GridModel { Name = "A" }, new GridModel { Name = "B" } };
+            GridModel[] items = { new GridModel { Name = "A" }, new GridModel { Name = "B" } };
 
-            IEnumerable expected = models.OrderByDescending(model => model.Name);
-            IEnumerable actual = column.Process(models.AsQueryable());
+            IEnumerable expected = items.OrderByDescending(model => model.Name);
+            IEnumerable actual = column.Process(items.AsQueryable());
 
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -623,12 +523,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column.IsSortable = true;
             column.IsFilterable = true;
             column.SortOrder = GridSortOrder.Desc;
-            column.Filter = Substitute.For<IGridFilter<GridModel>>();
-            IQueryable<GridModel> models = new [] { new GridModel { Name = "A" }, new GridModel { Name = "B" }, new GridModel { Name = "C" } }.AsQueryable();
-            column.Filter.Process(models).Returns(models.Where(model => model.Name != "A").ToList().AsQueryable());
+            column.Filter = Substitute.For<IGridColumnFilter<GridModel>>();
+            IQueryable<GridModel> items = new [] { new GridModel { Name = "A" }, new GridModel { Name = "B" }, new GridModel { Name = "C" } }.AsQueryable();
+            column.Filter.Process(items).Returns(items.Where(model => model.Name != "A").ToList().AsQueryable());
 
-            IEnumerable expected = models.Where(model => model.Name != "A").OrderByDescending(model => model.Name);
-            IEnumerable actual = column.Process(models);
+            IEnumerable expected = items.Where(model => model.Name != "A").OrderByDescending(model => model.Name);
+            IEnumerable actual = column.Process(items);
 
             CollectionAssert.AreEqual(expected, actual);
         }

@@ -2,7 +2,7 @@
 
 namespace NonFactors.Mvc.Grid
 {
-    public class SingleFilter<T> : NumberFilter<T>
+    public class SingleFilter : NumberFilter
     {
         public override Object GetNumericValue()
         {

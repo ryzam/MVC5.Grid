@@ -8,4 +8,5 @@ Grid controls for ASP.NET MVC projects
 - Automatic paging
 - User friendly urls
 - Globalization
+- Multi filtering
 - Ajax support

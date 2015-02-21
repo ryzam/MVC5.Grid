@@ -47,8 +47,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
             Assert.AreEqual(expected.IsFilterable, actual.IsFilterable);
-            Assert.AreEqual(expected.FilterValue, actual.FilterValue);
-            Assert.AreEqual(expected.FilterType, actual.FilterType);
             Assert.AreEqual(expected.FilterName, actual.FilterName);
             Assert.AreEqual(expected.Expression, actual.Expression);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);
@@ -97,8 +95,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             Assert.AreEqual(expected.ProcessorType, actual.ProcessorType);
             Assert.AreEqual(expected.IsFilterable, actual.IsFilterable);
-            Assert.AreEqual(expected.FilterValue, actual.FilterValue);
-            Assert.AreEqual(expected.FilterType, actual.FilterType);
             Assert.AreEqual(expected.FilterName, actual.FilterName);
             Assert.AreEqual(expected.Expression, actual.Expression);
             Assert.AreEqual(expected.CssClasses, actual.CssClasses);

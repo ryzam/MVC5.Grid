@@ -169,13 +169,41 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Method: MultiFilterable()
+
+        [Test]
+        [TestCase(null, true)]
+        [TestCase(true, true)]
+        [TestCase(false, false)]
+        public void MultiFilterable_SetsIsMultiFilterable(Boolean? isMultiFilterable, Boolean? expected)
+        {
+            foreach (IGridColumn column in htmlGrid.Grid.Columns)
+                column.IsMultiFilterable = isMultiFilterable;
+
+            htmlGrid.MultiFilterable();
+
+            foreach (IGridColumn actual in htmlGrid.Grid.Columns)
+                Assert.AreEqual(expected, actual.IsMultiFilterable);
+        }
+
+        [Test]
+        public void MultiFilterable_ReturnsSameGrid()
+        {
+            IHtmlGrid<GridModel> actual = htmlGrid.Filterable();
+            IHtmlGrid<GridModel> expected = htmlGrid;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: Filterable()
 
         [Test]
         [TestCase(null, true)]
-        [TestCase(false, false)]
         [TestCase(true, true)]
-        public void Filterable_SetsIsFilterableToTrue(Boolean? isColumnFilterable, Boolean? expectedIsFilterable)
+        [TestCase(false, false)]
+        public void Filterable_SetsIsFilterable(Boolean? isColumnFilterable, Boolean? expected)
         {
             foreach (IGridColumn column in htmlGrid.Grid.Columns)
                 column.IsFilterable = isColumnFilterable;
@@ -183,7 +211,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             htmlGrid.Filterable();
 
             foreach (IGridColumn actual in htmlGrid.Grid.Columns)
-                Assert.AreEqual(expectedIsFilterable, actual.IsFilterable);
+                Assert.AreEqual(expected, actual.IsFilterable);
         }
 
         [Test]

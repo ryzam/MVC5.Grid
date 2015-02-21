@@ -4,13 +4,13 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IFilterableColumn
     {
+        Boolean? IsMultiFilterable { get; set; }
         Boolean? IsFilterable { get; set; }
-        String FilterValue { get; set; }
-        String FilterType { get; set; }
+        IGridColumnFilter Filter { get; }
         String FilterName { get; set; }
     }
-    public interface IFilterableColumn<T> : IGridProcessor<T>
+    public interface IFilterableColumn<T> : IFilterableColumn, IGridProcessor<T>
     {
-        IGridFilter<T> Filter { get; set; }
+        new IGridColumnFilter<T> Filter { get; set; }
     }
 }

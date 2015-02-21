@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetNumericValue_ParsesValue()
         {
-            SByteFilter<GridModel> filter = new SByteFilter<GridModel>();
+            SByteFilter filter = new SByteFilter();
             filter.Value = "-128";
 
             Object actual = filter.GetNumericValue();
@@ -23,7 +23,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetNumericValue_OnNotValidValueReturnsNull()
         {
-            SByteFilter<GridModel> filter = new SByteFilter<GridModel>();
+            SByteFilter filter = new SByteFilter();
             filter.Value = "128";
 
             Assert.IsNull(filter.GetNumericValue());

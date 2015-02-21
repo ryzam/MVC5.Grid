@@ -40,6 +40,14 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public virtual IHtmlGrid<T> MultiFilterable()
+        {
+            foreach (IGridColumn column in Grid.Columns)
+                if (column.IsMultiFilterable == null)
+                    column.IsMultiFilterable = true;
+
+            return this;
+        }
         public virtual IHtmlGrid<T> Filterable()
         {
             return Filterable(true);

@@ -4,7 +4,7 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGridFilters
     {
-        IGridFilter<T> GetFilter<T>(IGridColumn<T> column, String type, String value);
+        IGridColumnFilter<T> GetFilter<T>(IGridColumn<T> column);
 
         void Register(Type forType, String filterType, Type filter);
         void Unregister(Type forType, String filterType);

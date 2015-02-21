@@ -30,6 +30,21 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
+        #region Property: IFilterableColumn.Filter
+
+        [Test]
+        public void IFilterableColumnFilter_ReturnsFilter()
+        {
+            IFilterableColumn filterableColumn = column;
+
+            Object actual = filterableColumn.Filter;
+            Object expected = column.Filter;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
         #region Method: RenderedAs(Func<T, Object> value)
 
         [Test]
@@ -45,6 +60,28 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void RenderedAs_ReturnsSameColumn()
         {
             IGridColumn actual = column.RenderedAs(model => model.Name);
+            IGridColumn expected = column;
+
+            Assert.AreSame(expected, actual);
+        }
+
+        #endregion
+
+        #region Method: MultiFilterable(Boolean isMultiple)
+
+        [Test]
+        public void MultiFilterable_SetsIsMultiFilterable()
+        {
+            Boolean? actual = column.MultiFilterable(true).IsMultiFilterable;
+            Boolean? expected = true;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void MultiFilterable_ReturnsSameGrid()
+        {
+            IGridColumn actual = column.MultiFilterable(true);
             IGridColumn expected = column;
 
             Assert.AreSame(expected, actual);

@@ -6,21 +6,20 @@ using System.Linq.Expressions;
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
     [TestFixture]
-    public class StringEqualsFilterTests
+    public class StringEqualsFilterTests : BaseGridFilterTests
     {
-        #region Method: Process(IQueryable<T> items)
+        #region Method: Apply(Expression expression)
 
         [Test]
         [TestCase("")]
         [TestCase(null)]
-        public void Process_FiltersEmptyOrNullValues(String value)
+        public void Apply_FiltersEmptyOrNullValues(String value)
         {
-            StringEqualsFilter<GridModel> filter = new StringEqualsFilter<GridModel>();
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
-            filter.FilteredExpression = expression;
+            StringEqualsFilter filter = new StringEqualsFilter();
             filter.Value = value;
 
-            IQueryable<GridModel> models = new[]
+            IQueryable<GridModel> items = new[]
             {
                 new GridModel { Name = null },
                 new GridModel { Name = "" },
@@ -29,21 +28,20 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
                 new GridModel { Name = "Test2" }
             }.AsQueryable();
 
-            IQueryable expected = models.Where(model => model.Name == null || model.Name == "");
-            IQueryable actual = filter.Process(models);
+            IQueryable expected = items.Where(model => model.Name == null || model.Name == "");
+            IQueryable actual = Filter(items, filter.Apply(expression.Body), expression);
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersItemsWithCaseInsensitiveComparison()
+        public void Apply_FiltersItemsWithCaseInsensitiveComparison()
         {
-            StringEqualsFilter<GridModel> filter = new StringEqualsFilter<GridModel>();
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
-            filter.FilteredExpression = expression;
+            StringEqualsFilter filter = new StringEqualsFilter();
             filter.Value = "Test";
 
-            IQueryable<GridModel> models = new[]
+            IQueryable<GridModel> items = new[]
             {
                 new GridModel { Name = null },
                 new GridModel { Name = "Tes" },
@@ -52,8 +50,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
                 new GridModel { Name = "Test2" }
             }.AsQueryable();
 
-            IQueryable expected = models.Where(model => model.Name != null && model.Name.ToUpper() == "TEST");
-            IQueryable actual = filter.Process(models);
+            IQueryable expected = items.Where(model => model.Name != null && model.Name.ToUpper() == "TEST");
+            IQueryable actual = Filter(items, filter.Apply(expression.Body), expression);
 
             CollectionAssert.AreEqual(expected, actual);
         }

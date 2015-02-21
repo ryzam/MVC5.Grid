@@ -1,39 +1,30 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class DateTimeFilter<T> : BaseGridFilter<T>
+    public class DateTimeFilter : BaseGridFilter
     {
-        public override IQueryable<T> Process(IQueryable<T> items)
+        public override Expression Apply(Expression expression)
         {
             Object value = GetDateValue();
-            if (value == null) return items;
+            if (value == null) return null;
 
-            Expression<Func<T, Boolean>> filter = GetFilterExpression(value);
-            if (filter == null) return items;
-
-            return items.Where(filter);
-        }
-
-        private Expression<Func<T, Boolean>> GetFilterExpression(Object value)
-        {
             switch (Type)
             {
                 case "Equals":
-                    return ToLambda(Expression.Equal(GetNullSafeExpression(), Expression.Constant(value)));
+                    return Expression.Equal(expression, Expression.Constant(value, expression.Type));
                 case "LessThan":
-                    return ToLambda(Expression.LessThan(GetNullSafeExpression(), Expression.Constant(value)));
+                    return Expression.LessThan(expression, Expression.Constant(value, expression.Type));
                 case "GreaterThan":
-                    return ToLambda(Expression.GreaterThan(GetNullSafeExpression(), Expression.Constant(value)));
+                    return Expression.GreaterThan(expression, Expression.Constant(value, expression.Type));
                 case "LessThanOrEqual":
-                    return ToLambda(Expression.LessThanOrEqual(GetNullSafeExpression(), Expression.Constant(value)));
+                    return Expression.LessThanOrEqual(expression, Expression.Constant(value, expression.Type));
                 case "GreaterThanOrEqual":
-                    return ToLambda(Expression.GreaterThanOrEqual(GetNullSafeExpression(), Expression.Constant(value)));
+                    return Expression.GreaterThanOrEqual(expression, Expression.Constant(value, expression.Type));
+                default:
+                    return null;
             }
-
-            return null;
         }
 
         private Object GetDateValue()

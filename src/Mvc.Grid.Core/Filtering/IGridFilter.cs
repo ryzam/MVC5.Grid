@@ -3,10 +3,11 @@ using System.Linq.Expressions;
 
 namespace NonFactors.Mvc.Grid
 {
-    public interface IGridFilter<T> : IGridProcessor<T>
+    public interface IGridFilter
     {
-        LambdaExpression FilteredExpression { get; set; }
-        String Value { get; set; }
         String Type { get; set; }
+        String Value { get; set; }
+
+        Expression Apply(Expression expression);
     }
 }

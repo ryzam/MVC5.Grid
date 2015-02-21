@@ -11,7 +11,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetNumericValue_ParsesValue()
         {
-            DecimalFilter<GridModel> filter = new DecimalFilter<GridModel>();
+            DecimalFilter filter = new DecimalFilter();
             filter.Value = "79228162514264337593543950335";
 
             Object expected = 79228162514264337593543950335M;
@@ -23,7 +23,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Test]
         public void GetNumericValue_OnNotValidValueReturnsNull()
         {
-            DecimalFilter<GridModel> filter = new DecimalFilter<GridModel>();
+            DecimalFilter filter = new DecimalFilter();
             filter.Value = "79228162514264337593543950336";
 
             Assert.IsNull(filter.GetNumericValue());

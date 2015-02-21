@@ -6,19 +6,18 @@ using System.Linq.Expressions;
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
     [TestFixture]
-    public class StringEndsWithFilterTests
+    public class StringEndsWithFilterTests : BaseGridFilterTests
     {
-        #region Method: Process(IQueryable<T> items)
+        #region Method: Apply(Expression expression)
 
         [Test]
-        public void Process_FiltersItemsWithCaseInsensitiveComparison()
+        public void Apply_FiltersItemsWithCaseInsensitiveComparison()
         {
-            StringEndsWithFilter<GridModel> filter = new StringEndsWithFilter<GridModel>();
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
-            filter.FilteredExpression = expression;
+            StringEndsWithFilter filter = new StringEndsWithFilter();
             filter.Value = "Test";
 
-            IQueryable<GridModel> models = new[]
+            IQueryable<GridModel> items = new[]
             {
                 new GridModel { Name = null },
                 new GridModel { Name = "Tes" },
@@ -27,8 +26,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
                 new GridModel { Name = "TEST2" }
             }.AsQueryable();
 
-            IQueryable expected = models.Where(model => model.Name != null && model.Name.ToUpper().EndsWith("TEST"));
-            IQueryable actual = filter.Process(models);
+            IQueryable expected = items.Where(model => model.Name != null && model.Name.ToUpper().EndsWith("TEST"));
+            IQueryable actual = Filter(items, filter.Apply(expression.Body), expression);
 
             CollectionAssert.AreEqual(expected, actual);
         }

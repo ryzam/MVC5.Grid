@@ -42,26 +42,12 @@ namespace NonFactors.Mvc.Grid
         }
 
         private Boolean FilterIsSet { get; set; }
-        public override IGridFilter<T> Filter
+        public override IGridColumnFilter<T> Filter
         {
             get
             {
-                if (FilterIsSet)
-                    return base.Filter;
-
-                String filterKey = Grid.Query.AllKeys
-                    .FirstOrDefault(key => (key ?? String.Empty)
-                        .StartsWith(Grid.Name + "-" + Name + "-"));
-
-                if (filterKey != null)
-                {
-                    String value = Grid.Query.GetValues(filterKey)[0];
-                    String filterType = filterKey.Substring((Grid.Name + "-" + Name + "-").Length);
-
-                    Filter = MvcGrid.Filters.GetFilter(this, filterType, value);
-                }
-
-                FilterIsSet = true;
+                if (!FilterIsSet)
+                    Filter = MvcGrid.Filters.GetFilter(this);
 
                 return base.Filter;
             }
@@ -71,36 +57,6 @@ namespace NonFactors.Mvc.Grid
                 FilterIsSet = true;
             }
         }
-        public override String FilterValue
-        {
-            get
-            {
-                if (Filter != null)
-                    return Filter.Value;
-
-                return null;
-            }
-            set
-            {
-                if (Filter != null)
-                    Filter.Value = value;
-            }
-        }
-        public override String FilterType
-        {
-            get
-            {
-                if (Filter != null)
-                    return Filter.Type;
-
-                return null;
-            }
-            set
-            {
-                if (Filter != null)
-                    Filter.Type = value;
-            }
-        }
 
         public GridColumn(IGrid<T> grid, Expression<Func<T, TValue>> expression)
         {
@@ -108,8 +64,8 @@ namespace NonFactors.Mvc.Grid
             IsEncoded = true;
             Expression = expression;
             FilterName = GetFilterName();
-            ExpressionValue = expression.Compile();
             ProcessorType = GridProcessorType.Pre;
+            ExpressionValue = expression.Compile();
             IsSortable = IsFilterable = IsMember(expression);
             Name = ExpressionHelper.GetExpressionText(expression);
         }
@@ -153,13 +109,13 @@ namespace NonFactors.Mvc.Grid
                 else
                     value = ExpressionValue(row.Model as T);
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
-                return String.Empty;
+                return "";
             }
 
             if (value == null)
-                return String.Empty;
+                return "";
 
             if (Format == null)
                 return value.ToString();

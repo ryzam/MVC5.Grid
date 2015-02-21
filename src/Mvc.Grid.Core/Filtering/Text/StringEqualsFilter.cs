@@ -1,39 +1,29 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class StringEqualsFilter<T> : BaseGridFilter<T>
+    public class StringEqualsFilter : BaseGridFilter
     {
-        public override IQueryable<T> Process(IQueryable<T> items)
+        public override Expression Apply(Expression expression)
         {
-            ParameterExpression parameter = FilteredExpression.Parameters[0];
-            Expression filterExpression;
-
             if (String.IsNullOrEmpty(Value))
             {
-                Expression equalsNull = Expression.Equal(FilteredExpression.Body, Expression.Constant(null));
-                Expression isEmpty = Expression.Equal(FilteredExpression.Body, Expression.Constant(""));
+                Expression equalsNull = Expression.Equal(expression, Expression.Constant(null));
+                Expression isEmpty = Expression.Equal(expression, Expression.Constant(""));
 
-                filterExpression = Expression.OrElse(equalsNull, isEmpty);
-            }
-            else
-            {
-                MethodInfo toUpperMethod = typeof(String).GetMethod("ToUpper", new Type[0]);
-                Expression value = Expression.Constant(Value.ToUpper());
-
-                Expression notNull = Expression.NotEqual(FilteredExpression.Body, Expression.Constant(null));
-                Expression toUpper = Expression.Call(FilteredExpression.Body, toUpperMethod);
-                Expression equals = Expression.Equal(toUpper, value);
-
-                filterExpression = Expression.AndAlso(notNull, equals);
+                return Expression.OrElse(equalsNull, isEmpty);
             }
 
-            Expression<Func<T, Boolean>> filter = Expression.Lambda<Func<T, Boolean>>(filterExpression, parameter);
+            MethodInfo toUpperMethod = typeof(String).GetMethod("ToUpper", new Type[0]);
+            Expression value = Expression.Constant(Value.ToUpper());
 
-            return items.Where(filter);
+            Expression notNull = Expression.NotEqual(expression, Expression.Constant(null));
+            Expression toUpper = Expression.Call(expression, toUpperMethod);
+            Expression equals = Expression.Equal(toUpper, value);
+
+            return Expression.AndAlso(notNull, equals);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace NonFactors.Mvc.Grid
 
         IGridColumn<T> RenderedAs(Func<T, Object> value);
 
+        IGridColumn<T> MultiFilterable(Boolean isMultiple);
         IGridColumn<T> Filterable(Boolean isFilterable);
         IGridColumn<T> FilteredAs(String filterName);
 

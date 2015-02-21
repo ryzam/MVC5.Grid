@@ -1,27 +1,23 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace NonFactors.Mvc.Grid
 {
-    public class StringEndsWithFilter<T> : BaseGridFilter<T>
+    public class StringEndsWithFilter : BaseGridFilter
     {
-        public override IQueryable<T> Process(IQueryable<T> items)
+        public override Expression Apply(Expression expression)
         {
-            MethodInfo startsWithMethod = typeof(String).GetMethod("EndsWith", new[] { typeof(String) });
+            MethodInfo endsWithMethod = typeof(String).GetMethod("EndsWith", new[] { typeof(String) });
             MethodInfo toUpperMethod = typeof(String).GetMethod("ToUpper", new Type[0]);
-            ParameterExpression parameter = FilteredExpression.Parameters[0];
             Expression value = Expression.Constant(Value.ToUpper());
 
-            Expression notNull = Expression.NotEqual(FilteredExpression.Body, Expression.Constant(null));
-            Expression toUpper = Expression.Call(FilteredExpression.Body, toUpperMethod);
-            Expression startsWith = Expression.Call(toUpper, startsWithMethod, value);
+            Expression notNull = Expression.NotEqual(expression, Expression.Constant(null));
+            Expression toUpper = Expression.Call(expression, toUpperMethod);
 
-            Expression notNullStartsWith = Expression.AndAlso(notNull, startsWith);
-            Expression<Func<T, Boolean>> filter = Expression.Lambda<Func<T, Boolean>>(notNullStartsWith, parameter);
+            Expression endsWith = Expression.Call(toUpper, endsWithMethod, value);
 
-            return items.Where(filter);
+            return Expression.AndAlso(notNull, endsWith);
         }
     }
 }

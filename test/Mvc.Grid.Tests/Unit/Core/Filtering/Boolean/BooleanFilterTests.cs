@@ -7,95 +7,67 @@ using System.Linq.Expressions;
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
     [TestFixture]
-    public class BooleanFilterTests
+    public class BooleanFilterTests : BaseGridFilterTests
     {
-        private BooleanFilter<GridModel> filter;
-        private IQueryable<GridModel> models;
+        private IQueryable<GridModel> items;
+        private BooleanFilter filter;
 
         [SetUp]
         public void SetUp()
         {
-            models = new[]
+            items = new[]
             {
                 new GridModel(),
                 new GridModel { IsChecked = true, NIsChecked = true },
                 new GridModel{ IsChecked = false, NIsChecked = false }
             }.AsQueryable();
 
-            Expression<Func<GridModel, Boolean>> expression = (model) => model.IsChecked;
-            filter = new BooleanFilter<GridModel>();
-            filter.FilteredExpression = expression;
+            filter = new BooleanFilter();
         }
 
-        #region Method: Process(IQueryable<T> items)
+        #region Method: Apply(Expression expression)
 
         [Test]
-        public void Process_OnInvalidBooleanValueReturnsItems()
+        public void Apply_OnInvalidBooleanValueReturnsNull()
         {
+            Expression<Func<GridModel, Boolean>> expression = (model) => model.IsChecked;
             filter.Value = "Test";
 
-            IEnumerable actual = filter.Process(models);
-            IEnumerable expected = models;
-
-            Assert.AreSame(expected, actual);
+            Assert.IsNull(filter.Apply(expression.Body));
         }
 
         [Test]
-        [TestCase("true")]
-        [TestCase("True")]
-        [TestCase("TRUE")]
-        public void Process_FiltersNullableUsingEqualsTrue(String value)
+        [TestCase("true", true)]
+        [TestCase("True", true)]
+        [TestCase("TRUE", true)]
+        [TestCase("false", false)]
+        [TestCase("False", false)]
+        [TestCase("FALSE", false)]
+        public void Apply_FiltersNullableBooleanProperty(String value, Boolean isChecked)
         {
             Expression<Func<GridModel, Boolean?>> expression = (model) => model.NIsChecked;
-            filter.FilteredExpression = expression;
             filter.Value = value;
 
-            IEnumerable expected = models.Where(model => model.NIsChecked == true);
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(expression.Body), expression);
+            IEnumerable expected = items.Where(model => model.NIsChecked == isChecked);
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        [TestCase("true")]
-        [TestCase("True")]
-        [TestCase("TRUE")]
-        public void Process_FiltersUsingEqualsTrue(String value)
+        [TestCase("true", true)]
+        [TestCase("True", true)]
+        [TestCase("TRUE", true)]
+        [TestCase("false", false)]
+        [TestCase("False", false)]
+        [TestCase("FALSE", false)]
+        public void Apply_FiltersBooleanProperty(String value, Boolean isChecked)
         {
+            Expression<Func<GridModel, Boolean?>> expression = (model) => model.IsChecked;
             filter.Value = value;
 
-            IEnumerable expected = models.Where(model => model.IsChecked);
-            IEnumerable actual = filter.Process(models);
-
-            CollectionAssert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("false")]
-        [TestCase("False")]
-        [TestCase("FALSE")]
-        public void Process_FiltersNullableUsingEqualsFalse(String value)
-        {
-            Expression<Func<GridModel, Boolean?>> expression = (model) => model.NIsChecked;
-            filter.FilteredExpression = expression;
-            filter.Value = value;
-
-            IEnumerable expected = models.Where(model => model.NIsChecked == false);
-            IEnumerable actual = filter.Process(models);
-
-            CollectionAssert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        [TestCase("false")]
-        [TestCase("False")]
-        [TestCase("FALSE")]
-        public void Process_FiltersUsingEqualsFalse(String value)
-        {
-            filter.Value = value;
-
-            IEnumerable expected = models.Where(model => !model.IsChecked);
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(expression.Body), expression);
+            IEnumerable expected = items.Where(model => model.IsChecked == isChecked);
 
             CollectionAssert.AreEqual(expected, actual);
         }

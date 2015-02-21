@@ -7,179 +7,165 @@ using System.Linq.Expressions;
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
     [TestFixture]
-    public class DateTimeFilterTests
+    public class DateTimeFilterTests : BaseGridFilterTests
     {
-        private DateTimeFilter<GridModel> filter;
-        private IQueryable<GridModel> models;
+        private Expression<Func<GridModel, DateTime?>> nDateExpression;
+        private Expression<Func<GridModel, DateTime>> dateExpression;
+        private IQueryable<GridModel> items;
+        private DateTimeFilter filter;
 
         [SetUp]
         public void SetUp()
         {
-            models = new[]
+            items = new[]
             {
                 new GridModel { Date = new DateTime(2013, 01, 01), NDate = null },
                 new GridModel { Date = new DateTime(2014, 01, 01), NDate = new DateTime(2014, 01, 01) },
                 new GridModel { Date = new DateTime(2015, 01, 01), NDate = new DateTime(2015, 01, 01) }
             }.AsQueryable();
 
-            Expression<Func<GridModel, DateTime>> expression = (model) => model.Date;
-            filter = new DateTimeFilter<GridModel>();
-            filter.FilteredExpression = expression;
+            nDateExpression = (model) => model.NDate;
+            dateExpression = (model) => model.Date;
+            filter = new DateTimeFilter();
         }
 
-        #region Method: Process(IQueryable<T> items)
+        #region Method: Apply(Expression expression)
 
         [Test]
-        public void Process_OnInvalidDateTimeValueReturnsItems()
+        public void Apply_OnInvalidDateTimeValueReturnsItems()
         {
             filter.Value = "Test";
 
-            IEnumerable actual = filter.Process(models);
-            IEnumerable expected = models;
-
-            Assert.AreSame(expected, actual);
+            Assert.IsNull(filter.Apply(dateExpression.Body));
         }
 
         [Test]
-        public void Process_FiltersNullableUsingEquals()
+        public void Apply_FiltersNullableUsingEquals()
         {
-            Expression<Func<GridModel, DateTime?>> expression = (model) => model.NDate;
             filter.Value = new DateTime(2014, 01, 01).ToString();
-            filter.FilteredExpression = expression;
             filter.Type = "Equals";
 
-            IEnumerable expected = models.Where(model => model.NDate == new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(nDateExpression.Body), nDateExpression);
+            IEnumerable expected = items.Where(model => model.NDate == new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersUsingEquals()
+        public void Apply_FiltersUsingEquals()
         {
             filter.Value = new DateTime(2014, 01, 01).ToString();
             filter.Type = "Equals";
 
-            IEnumerable expected = models.Where(model => model.Date == new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(dateExpression.Body), dateExpression);
+            IEnumerable expected = items.Where(model => model.Date == new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersNullableUsingLessThan()
+        public void Apply_FiltersNullableUsingLessThan()
         {
-            Expression<Func<GridModel, DateTime?>> expression = (model) => model.NDate;
             filter.Value = new DateTime(2014, 01, 01).ToString();
-            filter.FilteredExpression = expression;
             filter.Type = "LessThan";
 
-            IEnumerable expected = models.Where(model => model.NDate < new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(nDateExpression.Body), nDateExpression);
+            IEnumerable expected = items.Where(model => model.NDate < new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersUsingLessThan()
+        public void Apply_FiltersUsingLessThan()
         {
             filter.Value = new DateTime(2014, 01, 01).ToShortDateString();
             filter.Type = "LessThan";
 
-            IEnumerable expected = models.Where(model => model.Date < new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(dateExpression.Body), dateExpression);
+            IEnumerable expected = items.Where(model => model.Date < new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersNullableUsingGreaterThan()
+        public void Apply_FiltersNullableUsingGreaterThan()
         {
-            Expression<Func<GridModel, DateTime?>> expression = (model) => model.NDate;
             filter.Value = new DateTime(2014, 01, 01).ToString();
-            filter.FilteredExpression = expression;
             filter.Type = "GreaterThan";
 
-            IEnumerable expected = models.Where(model => model.NDate > new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(nDateExpression.Body), nDateExpression);
+            IEnumerable expected = items.Where(model => model.NDate > new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersUsingGreaterThan()
+        public void Apply_FiltersUsingGreaterThan()
         {
             filter.Value = new DateTime(2014, 01, 01).ToLongDateString();
             filter.Type = "GreaterThan";
 
-            IEnumerable expected = models.Where(model => model.Date > new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(dateExpression.Body), dateExpression);
+            IEnumerable expected = items.Where(model => model.Date > new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersNullableUsingLessThanOrEqual()
+        public void Apply_FiltersNullableUsingLessThanOrEqual()
         {
-            Expression<Func<GridModel, DateTime?>> expression = (model) => model.NDate;
             filter.Value = new DateTime(2014, 01, 01).ToString();
-            filter.FilteredExpression = expression;
             filter.Type = "LessThanOrEqual";
 
-            IEnumerable expected = models.Where(model => model.NDate <= new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(nDateExpression.Body), nDateExpression);
+            IEnumerable expected = items.Where(model => model.NDate <= new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersUsingLessThanOrEqual()
+        public void Apply_FiltersUsingLessThanOrEqual()
         {
             filter.Value = new DateTime(2014, 01, 01).ToShortDateString();
             filter.Type = "LessThanOrEqual";
 
-            IEnumerable expected = models.Where(model => model.Date <= new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(dateExpression.Body), dateExpression);
+            IEnumerable expected = items.Where(model => model.Date <= new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersNullableUsingGreaterThanOrEqual()
+        public void Apply_FiltersNullableUsingGreaterThanOrEqual()
         {
-            Expression<Func<GridModel, DateTime?>> expression = (model) => model.NDate;
             filter.Value = new DateTime(2014, 01, 01).ToString();
-            filter.FilteredExpression = expression;
             filter.Type = "GreaterThanOrEqual";
 
-            IEnumerable expected = models.Where(model => model.NDate >= new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(nDateExpression.Body), nDateExpression);
+            IEnumerable expected = items.Where(model => model.NDate >= new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_FiltersUsingGreaterThanOrEqual()
+        public void Apply_FiltersUsingGreaterThanOrEqual()
         {
             filter.Value = new DateTime(2014, 01, 01).ToShortDateString();
             filter.Type = "GreaterThanOrEqual";
 
-            IEnumerable expected = models.Where(model => model.Date >= new DateTime(2014, 01, 01));
-            IEnumerable actual = filter.Process(models);
+            IEnumerable actual = Filter(items, filter.Apply(dateExpression.Body), dateExpression);
+            IEnumerable expected = items.Where(model => model.Date >= new DateTime(2014, 01, 01));
 
             CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Process_OnNotSupportedFilterTypeReturnsSameItems()
+        public void Apply_OnNotSupportedFilterTypeReturnsNull()
         {
             filter.Value = new DateTime(2014, 01, 01).ToShortDateString();
             filter.Type = "Test";
 
-            IEnumerable actual = filter.Process(models);
-            IEnumerable expected = models;
-
-            Assert.AreSame(expected, actual);
+            Assert.IsNull(filter.Apply(dateExpression.Body));
         }
 
         #endregion
