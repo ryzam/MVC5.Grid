@@ -1,5 +1,10 @@
 Grid controls for ASP.NET MVC projects
 
+![Semantic](https://img.shields.io/badge/Sem-Ver-lightgrey.svg?style=plastic)
+![NuGet](https://img.shields.io/nuget/v/NonFactors.Grid.Mvc5.svg?style=plastic)
+![Downloads](https://img.shields.io/nuget/dt/NonFactors.Grid.Mvc5.svg?style=plastic)
+![License](https://img.shields.io/badge/license-MIT-green.svg?style=plastic)
+
 # Features
 - Multiple grids on page
 - Fluent configuration
