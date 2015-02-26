@@ -1,16 +1,15 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Xunit;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class StringContainsFilterTests : BaseGridFilterTests
     {
         #region Method: Apply(Expression expression)
 
-        [Test]
+        [Fact]
         public void Apply_FiltersItemsWithCaseInsensitiveComparison()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -30,7 +29,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable expected = items.Where(model => model.Name != null && model.Name.ToUpper().Contains("EST"));
             IQueryable actual = Filter(items, filter.Apply(expression.Body), expression);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         #endregion

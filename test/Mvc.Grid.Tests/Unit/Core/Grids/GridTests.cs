@@ -1,15 +1,14 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Linq;
+using Xunit;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class GridTests
     {
         #region Property: IGrid.Columns
 
-        [Test]
+        [Fact]
         public void IGridColumns_ReturnsColumns()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
@@ -17,14 +16,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridColumns actual = (grid as IGrid).Columns;
             IGridColumns expected = grid.Columns;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         #endregion
 
         #region Property: IGrid.Rows
 
-        [Test]
+        [Fact]
         public void IGridRows_ReturnsRows()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
@@ -32,14 +31,14 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridRows actual = (grid as IGrid).Rows;
             IGridRows expected = grid.Rows;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         #endregion
 
         #region Property: IGrid.Pager
 
-        [Test]
+        [Fact]
         public void IGridPager_ReturnsPager()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
@@ -47,40 +46,40 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IGridPager actual = (grid as IGrid).Pager;
             IGridPager expected = grid.Pager;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         #endregion
 
         #region Constructor: Grid(IEnumerable<T> source)
 
-        [Test]
+        [Fact]
         public void Grid_CreatesEmptyProcessorsList()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
 
-            CollectionAssert.IsEmpty(grid.Processors);
+            Assert.Empty(grid.Processors);
         }
 
-        [Test]
+        [Fact]
         public void Grid_SetsSource()
         {
             IQueryable<GridModel> expected = new GridModel[2].AsQueryable();
             IQueryable<GridModel> actual = new Grid<GridModel>(expected).Source;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Grid_SetsName()
         {
             String actual = new Grid<GridModel>(new GridModel[0]).Name;
             String expected = "Grid";
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Grid_CreatesColumns()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
@@ -88,11 +87,11 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridColumns<GridModel> actual = grid.Columns as GridColumns<GridModel>;
             GridColumns<GridModel> expected = new GridColumns<GridModel>(grid);
 
-            CollectionAssert.AreEqual(expected, actual);
-            Assert.AreSame(expected.Grid, actual.Grid);
+            Assert.Equal(expected, actual);
+            Assert.Same(expected.Grid, actual.Grid);
         }
 
-        [Test]
+        [Fact]
         public void Grid_CreatesRows()
         {
             Grid<GridModel> grid = new Grid<GridModel>(new GridModel[0]);
@@ -100,8 +99,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridRows<GridModel> actual = grid.Rows as GridRows<GridModel>;
             GridRows<GridModel> expected = new GridRows<GridModel>(grid);
 
-            CollectionAssert.AreEqual(expected, actual);
-            Assert.AreSame(expected.Grid, actual.Grid);
+            Assert.Equal(expected, actual);
+            Assert.Same(expected.Grid, actual.Grid);
         }
 
         #endregion

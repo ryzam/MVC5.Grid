@@ -1,19 +1,18 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
+using Xunit;
+using Xunit.Extensions;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class BooleanFilterTests : BaseGridFilterTests
     {
         private IQueryable<GridModel> items;
         private BooleanFilter filter;
 
-        [SetUp]
-        public void SetUp()
+        public BooleanFilterTests()
         {
             items = new[]
             {
@@ -27,22 +26,22 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #region Method: Apply(Expression expression)
 
-        [Test]
+        [Fact]
         public void Apply_OnInvalidBooleanValueReturnsNull()
         {
             Expression<Func<GridModel, Boolean>> expression = (model) => model.IsChecked;
             filter.Value = "Test";
 
-            Assert.IsNull(filter.Apply(expression.Body));
+            Assert.Null(filter.Apply(expression.Body));
         }
 
-        [Test]
-        [TestCase("true", true)]
-        [TestCase("True", true)]
-        [TestCase("TRUE", true)]
-        [TestCase("false", false)]
-        [TestCase("False", false)]
-        [TestCase("FALSE", false)]
+        [Theory]
+        [InlineData("true", true)]
+        [InlineData("True", true)]
+        [InlineData("TRUE", true)]
+        [InlineData("false", false)]
+        [InlineData("False", false)]
+        [InlineData("FALSE", false)]
         public void Apply_FiltersNullableBooleanProperty(String value, Boolean isChecked)
         {
             Expression<Func<GridModel, Boolean?>> expression = (model) => model.NIsChecked;
@@ -51,16 +50,16 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(expression.Body), expression);
             IEnumerable expected = items.Where(model => model.NIsChecked == isChecked);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
-        [TestCase("true", true)]
-        [TestCase("True", true)]
-        [TestCase("TRUE", true)]
-        [TestCase("false", false)]
-        [TestCase("False", false)]
-        [TestCase("FALSE", false)]
+        [Theory]
+        [InlineData("true", true)]
+        [InlineData("True", true)]
+        [InlineData("TRUE", true)]
+        [InlineData("false", false)]
+        [InlineData("False", false)]
+        [InlineData("FALSE", false)]
         public void Apply_FiltersBooleanProperty(String value, Boolean isChecked)
         {
             Expression<Func<GridModel, Boolean?>> expression = (model) => model.IsChecked;
@@ -69,7 +68,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(expression.Body), expression);
             IEnumerable expected = items.Where(model => model.IsChecked == isChecked);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         #endregion

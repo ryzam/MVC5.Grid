@@ -1,20 +1,19 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using Xunit;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class GridRowTests
     {
         #region Constructor: GridRow(Object model)
 
-        [Test]
+        [Fact]
         public void GridRow_SetsModel()
         {
             Object expected = new Object();
             Object actual = new GridRow(expected).Model;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         #endregion

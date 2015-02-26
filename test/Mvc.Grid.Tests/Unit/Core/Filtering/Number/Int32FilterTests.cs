@@ -1,32 +1,31 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using Xunit;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class Int32FilterTests
     {
         #region Method: GetNumericValue()
 
-        [Test]
+        [Fact]
         public void GetNumericValue_ParsesValue()
         {
             Int32Filter filter = new Int32Filter();
             filter.Value = "-2147483648";
 
             Object actual = filter.GetNumericValue();
-            Object expected = -2147483648;
+            Int32 expected = -2147483648;
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void GetNumericValue_OnNotValidValueReturnsNull()
         {
             Int32Filter filter = new Int32Filter();
             filter.Value = "1a";
 
-            Assert.IsNull(filter.GetNumericValue());
+            Assert.Null(filter.GetNumericValue());
         }
 
         #endregion

@@ -1,31 +1,30 @@
 ﻿using NSubstitute;
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class GridRowsTests
     {
         #region Constructor: GridRows(IGrid<T> grid)
 
-        [Test]
+        [Fact]
         public void GridRows_SetsGrid()
         {
             IGrid<GridModel> expected = new Grid<GridModel>(new GridModel[0]);
             IGrid<GridModel> actual = new GridRows<GridModel>(expected).Grid;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         #endregion
 
         #region Method: GetEnumerator()
 
-        [Test]
+        [Fact]
         public void GetEnumerator_OnNullCurrentRowsProcessesRows()
         {
             IQueryable<GridModel> items = new[] { new GridModel(), new GridModel() }.AsQueryable();
@@ -49,12 +48,12 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable<Object> expected = postProcesseditems;
 
             postProcessor.Received().Process(preProcesseditems);
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
             preProcessor.Received().Process(items);
-            Assert.IsNull(currentRows);
+            Assert.Null(currentRows);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_SetsRowCssClasses()
         {
             IQueryable<GridModel> items = new[] { new GridModel(), new GridModel() }.AsQueryable();
@@ -63,10 +62,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridRows<GridModel> rows = new GridRows<GridModel>(grid);
             rows.CssClasses = (model) => "grid-row";
 
-            Assert.IsTrue(rows.All(row => row.CssClasses == "grid-row"));
+            Assert.True(rows.All(row => row.CssClasses == "grid-row"));
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_ReturnsCurrentRows()
         {
             IQueryable<GridModel> items = new[] { new GridModel(), new GridModel() }.AsQueryable();
@@ -84,10 +83,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable<Object> expected = items;
 
             preProcessor.DidNotReceive().Process(Arg.Any<IQueryable<GridModel>>());
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void GetEnumerator_GetsSameEnumerable()
         {
             GridModel[] items = { new GridModel(), new GridModel() };
@@ -99,7 +98,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerator expected = rows.GetEnumerator();
 
             while (expected.MoveNext() | actual.MoveNext())
-                Assert.AreSame((expected.Current as IGridRow).Model, (actual.Current as IGridRow).Model);
+                Assert.Same((expected.Current as IGridRow).Model, (actual.Current as IGridRow).Model);
         }
 
         #endregion

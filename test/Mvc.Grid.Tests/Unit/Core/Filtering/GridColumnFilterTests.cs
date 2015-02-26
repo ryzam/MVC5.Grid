@@ -1,19 +1,18 @@
 ﻿using NSubstitute;
-using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Xunit;
+using Xunit.Extensions;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class GridColumnFilterTests
     {
         private GridColumnFilter<GridModel> filter;
         private IQueryable<GridModel> items;
 
-        [SetUp]
-        public void SetUp()
+        public GridColumnFilterTests()
         {
             filter = new GridColumnFilter<GridModel>();
             filter.Column = Substitute.For<IGridColumn<GridModel>>();
@@ -29,7 +28,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #region Method: Process(IQueryable<T> items)
 
-        [Test]
+        [Fact]
         public void Process_OnNoFiltersReturnsSameItems()
         {
             filter.First = null;
@@ -38,10 +37,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable actual = filter.Process(items);
             IQueryable expected = items;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Process_OnNullAppliedFiltersReturnsSameItems()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -53,10 +52,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable actual = filter.Process(items);
             IQueryable expected = items;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Prcoess_OnNullSecondFilterAndNullFirstFiltersExpressionReturnsSameItems()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -68,10 +67,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable actual = filter.Process(items);
             IQueryable expected = items;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Prcoess_OnNullFirstFilterAndNullSecondFiltersExpressionReturnsSameItems()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -83,10 +82,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable actual = filter.Process(items);
             IQueryable expected = items;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Process_UsingAndOperator()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -98,10 +97,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable expected = items.Where(item => item.Name != null && item.Name.Contains("AA") && item.Name.Contains("A"));
             IQueryable actual = filter.Process(items);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Process_UsingOrOperator()
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -113,13 +112,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable expected = items.Where(item => item.Name != null && (item.Name.Contains("A") || item.Name.Contains("BB")));
             IQueryable actual = filter.Process(items);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
-        [TestCase(null)]
-        [TestCase("or")]
-        [TestCase("and")]
+        [Theory]
+        [InlineData(null)]
+        [InlineData("or")]
+        [InlineData("and")]
         public void Process_OnInvalidOperatorUsesOnlyFirstFilter(String op)
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -131,13 +130,13 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable expected = items.Where(item => item.Name != null && item.Name.Contains("BB"));
             IQueryable actual = filter.Process(items);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
-        [TestCase(null)]
-        [TestCase("or")]
-        [TestCase("and")]
+        [Theory]
+        [InlineData(null)]
+        [InlineData("or")]
+        [InlineData("and")]
         public void Process_OnInvalidOperatorAndFirstFilterNullUsesSecondFilter(String op)
         {
             Expression<Func<GridModel, String>> expression = (model) => model.Name;
@@ -149,10 +148,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable expected = items.Where(item => item.Name != null && item.Name.Contains("A"));
             IQueryable actual = filter.Process(items);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Process_FiltersNullableExpressions()
         {
             Expression<Func<GridModel, Int32?>> expression = (model) => model.NSum;
@@ -164,7 +163,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IQueryable expected = items.Where(item => item.NSum == 10 || item.NSum > 25);
             IQueryable actual = filter.Process(items);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         #endregion

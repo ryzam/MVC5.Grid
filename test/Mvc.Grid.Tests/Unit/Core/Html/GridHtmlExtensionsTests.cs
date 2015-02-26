@@ -1,80 +1,78 @@
 ﻿using NSubstitute;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using Xunit;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class GridHtmlExtensionsTests
     {
-        private HtmlHelper html;
+        private static HtmlHelper html;
 
-        [TestFixtureSetUp]
-        public void SetUp()
+        static GridHtmlExtensionsTests()
         {
             html = HtmlHelperFactory.CreateHtmlHelper();
         }
 
         #region Extension: Grid<T>(this HtmlHelper html, IEnumerable<T> source)
 
-        [Test]
+        [Fact]
         public void Grid_CreatesHtmlGridWithHtml()
         {
             HtmlHelper actual = html.Grid(new GridModel[0]).Html;
             HtmlHelper expected = html;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Grid_CreatesGridWithSource()
         {
             IEnumerable<GridModel> expected = new GridModel[0].AsQueryable();
             IEnumerable<GridModel> actual = html.Grid(expected).Grid.Source;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         #endregion
 
         #region Extension: Grid<T>(this HtmlHelper html, String partialViewName, IEnumerable<T> source)
 
-        [Test]
+        [Fact]
         public void Grid_PartialViewName_CreatesHtmlGridWithHtml()
         {
             HtmlHelper actual = html.Grid("_Partial", new GridModel[0]).Html;
             HtmlHelper expected = html;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Grid_PartialViewName_CreatesGridWithSource()
         {
             IEnumerable<GridModel> expected = new GridModel[0].AsQueryable();
             IEnumerable<GridModel> actual = html.Grid("_Partial", expected).Grid.Source;
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Grid_PartialViewName_CreatesGridWithPartialViewName()
         {
             String actual = html.Grid("_Partial", new GridModel[0]).PartialViewName;
             String expected = "_Partial";
 
-            Assert.AreSame(expected, actual);
+            Assert.Same(expected, actual);
         }
 
         #endregion
 
         #region Extension: AjaxGrid(this HtmlHelper, String dataSource)
 
-        [Test]
+        [Fact]
         public void AjaxGrid_RendersAjaxGridPartial()
         {
             IView view = Substitute.For<IView>();
@@ -83,7 +81,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             engine.FindPartialView(Arg.Any<ControllerContext>(), "MvcGrid/_AjaxGrid", Arg.Any<Boolean>()).Returns(result);
             view.When(sub => sub.Render(Arg.Any<ViewContext>(), Arg.Any<TextWriter>())).Do(sub =>
             {
-                Assert.AreEqual("DataSource", sub.Arg<ViewContext>().ViewData.Model);
+                Assert.Equal("DataSource", sub.Arg<ViewContext>().ViewData.Model);
                 sub.Arg<TextWriter>().Write("Rendered");
             });
 
@@ -93,7 +91,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             String actual = html.AjaxGrid("DataSource").ToHtmlString();
             String expected = "Rendered";
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
         #endregion

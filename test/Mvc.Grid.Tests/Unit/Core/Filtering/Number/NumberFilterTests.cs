@@ -1,13 +1,12 @@
 ﻿using NSubstitute;
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
+using Xunit;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    [TestFixture]
     public class NumberFilterTests : BaseGridFilterTests
     {
         private Expression<Func<GridModel, Int32?>> nSumExpression;
@@ -15,8 +14,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         private IQueryable<GridModel> items;
         private NumberFilter filter;
 
-        [SetUp]
-        public void SetUp()
+        public NumberFilterTests()
         {
             items = new[]
             {
@@ -32,15 +30,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #region Method: Apply(Expression expression)
 
-        [Test]
+        [Fact]
         public void Apply_OnNullNumericValueReturnsNull()
         {
             filter.GetNumericValue().Returns(null);
 
-            Assert.IsNull(filter.Apply(sumExpression.Body));
+            Assert.Null(filter.Apply(sumExpression.Body));
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersNullableUsingEquals()
         {
             filter.GetNumericValue().Returns(1);
@@ -49,10 +47,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(nSumExpression.Body), nSumExpression);
             IEnumerable expected = items.Where(model => model.NSum == 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersUsingEquals()
         {
             filter.GetNumericValue().Returns(1);
@@ -61,10 +59,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(sumExpression.Body), sumExpression);
             IEnumerable expected = items.Where(model => model.Sum == 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersNullableUsingLessThan()
         {
             filter.GetNumericValue().Returns(1);
@@ -73,10 +71,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(nSumExpression.Body), nSumExpression);
             IEnumerable expected = items.Where(model => model.NSum < 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersUsingLessThan()
         {
             filter.GetNumericValue().Returns(1);
@@ -85,10 +83,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(sumExpression.Body), sumExpression);
             IEnumerable expected = items.Where(model => model.Sum < 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersNullableUsingGreaterThan()
         {
             filter.GetNumericValue().Returns(1);
@@ -97,10 +95,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(nSumExpression.Body), nSumExpression);
             IEnumerable expected = items.Where(model => model.NSum > 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersUsingGreaterThan()
         {
             filter.GetNumericValue().Returns(1);
@@ -109,10 +107,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(sumExpression.Body), sumExpression);
             IEnumerable expected = items.Where(model => model.Sum > 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersNullableUsingLessThanOrEqual()
         {
             filter.GetNumericValue().Returns(1);
@@ -121,10 +119,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(nSumExpression.Body), nSumExpression);
             IEnumerable expected = items.Where(model => model.NSum <= 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersUsingLessThanOrEqual()
         {
             filter.GetNumericValue().Returns(1);
@@ -133,10 +131,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(sumExpression.Body), sumExpression);
             IEnumerable expected = items.Where(model => model.Sum <= 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersNullableUsingGreaterThanOrEqual()
         {
             filter.GetNumericValue().Returns(1);
@@ -145,10 +143,10 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(nSumExpression.Body), nSumExpression);
             IEnumerable expected = items.Where(model => model.NSum >= 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_FiltersUsingGreaterThanOrEqual()
         {
             filter.GetNumericValue().Returns(1);
@@ -157,16 +155,16 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             IEnumerable actual = Filter(items, filter.Apply(sumExpression.Body), sumExpression);
             IEnumerable expected = items.Where(model => model.Sum >= 1);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [Test]
+        [Fact]
         public void Apply_OnNotSupportedFilterTypeReturnsNull()
         {
             filter.GetNumericValue().Returns(1);
             filter.Type = "Test";
 
-            Assert.IsNull(filter.Apply(sumExpression.Body));
+            Assert.Null(filter.Apply(sumExpression.Body));
         }
 
         #endregion
