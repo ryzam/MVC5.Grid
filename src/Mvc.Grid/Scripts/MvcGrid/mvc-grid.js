@@ -863,8 +863,8 @@ $.fn.mvcgrid.lang = {
     },
     Operator: {
         Select: '',
-        And: 'And',
-        Or: 'Or'
+        And: 'and',
+        Or: 'or'
     }
 };
 $(function () {
