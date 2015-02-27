@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Grid 1.0.1
+ * Mvc.Grid 2.0.0
  * https://github.com/NonFactors/MVC.Grid
  *
  * Copyright © NonFactors
@@ -872,5 +872,4 @@ $(function () {
     $(window).resize(function () {
         $('.mvc-grid-popup').removeClass('open');
     });
-    $('.mvc-grid').mvcgrid();
 });
