@@ -464,7 +464,6 @@ var MvcGridTextFilter = (function () {
             operator.bind('change.mvcgrid', function () {
                 column.filter.operator = this.value;
             });
-            operator.change();
         }
     };
 
@@ -599,7 +598,6 @@ var MvcGridNumberFilter = (function () {
             operator.bind('change.mvcgrid', function () {
                 column.filter.operator = this.value;
             });
-            operator.change();
         },
 
         isValid: function (value) {
@@ -725,7 +723,6 @@ var MvcGridDateFilter = (function () {
             operator.bind('change.mvcgrid', function () {
                 column.filter.operator = this.value;
             });
-            operator.change();
         },
     };
 
@@ -820,9 +817,8 @@ var MvcGridBooleanFilter = (function () {
             operator.bind('change.mvcgrid', function () {
                 column.filter.operator = this.value;
             });
-            operator.change();
         },
-    };;
+    };
 
     return MvcGridBooleanFilter;
 })();
