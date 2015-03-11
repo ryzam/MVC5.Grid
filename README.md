@@ -15,3 +15,8 @@ Grid controls for ASP.NET MVC projects
 - Globalization
 - Multi filtering
 - Ajax support
+
+# Contribution
+- Questions or anything conserning MVC.Grid website/documentation should be reported at [MVC.Grid.Web](https://github.com/NonFactors/MVC.Grid.Web).
+- Before you start writing a pull request you should discuss it using GitHub issues.
+- Bugs, improvements or features should be reported using GitHub issues.
