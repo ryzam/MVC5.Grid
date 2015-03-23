@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -63,6 +65,7 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
             IsEncoded = true;
             Expression = expression;
+            Title = GetTitle(expression);
             FilterName = GetFilterName();
             ProcessorType = GridProcessorType.Pre;
             ExpressionValue = expression.Compile();
@@ -99,6 +102,16 @@ namespace NonFactors.Mvc.Grid
             return false;
         }
 
+        private String GetTitle(Expression<Func<T, TValue>> expression)
+        {
+            MemberExpression body = expression.Body as MemberExpression;
+            if (body == null) return null;
+
+            DisplayAttribute display = body.Member.GetCustomAttribute<DisplayAttribute>();
+            if (display == null) return null;
+
+            return display.GetName();
+        }
         private String GetValueFor(IGridRow row)
         {
             Object value;

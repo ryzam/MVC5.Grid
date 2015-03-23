@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using Xunit;
@@ -167,6 +169,34 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Expression<Func<GridModel, String>> actual = new GridColumn<GridModel, String>(grid, expected).Expression;
 
             Assert.Same(expected, actual);
+        }
+
+        [Fact]
+        public void GridColumn_OnNonMemberExpressionSetsTitleToNull()
+        {
+            column = new GridColumn<GridModel, Object>(grid, model => model.ToString());
+
+            Assert.Null(column.Title);
+        }
+
+        [Fact]
+        public void GridColumn_OnPropertyWithoutDisplayAttributeSetsTitleToNull()
+        {
+            column = new GridColumn<GridModel, Object>(grid, model => model.Name);
+
+            Assert.Null(column.Title);
+        }
+
+        [Fact]
+        public void GridColumn_SetsTitleFromDisplayAttribute()
+        {
+            DisplayAttribute display = typeof(GridModel).GetProperty("Text").GetCustomAttribute<DisplayAttribute>();
+            column = new GridColumn<GridModel, Object>(grid, model => model.Text);
+
+            String expected = display.GetName();
+            String actual = column.Title;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
