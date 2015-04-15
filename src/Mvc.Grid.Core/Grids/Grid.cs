@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
     public class Grid<T> : IGrid<T> where T : class
     {
         public IList<IGridProcessor<T>> Processors { get; set; }
-        public IQueryable<T> Source { get; set; }
+        public HttpContextBase HttpContext { get; set; }
         public NameValueCollection Query { get; set; }
+        public IQueryable<T> Source { get; set; }
 
         public String CssClasses { get; set; }
         public String EmptyText { get; set; }

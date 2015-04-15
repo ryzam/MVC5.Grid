@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Web;
 
 namespace NonFactors.Mvc.Grid
 {
     public interface IGrid
     {
+        HttpContextBase HttpContext { get; set; }
         NameValueCollection Query { get; set; }
 
         String CssClasses { get; set; }
