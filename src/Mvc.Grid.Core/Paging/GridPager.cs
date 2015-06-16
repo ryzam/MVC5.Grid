@@ -5,30 +5,18 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridPager<T> : IGridPager<T>
     {
-        public GridProcessorType ProcessorType { get; set; }
-        public String PartialViewName { get; set; }
-        public String CssClasses { get; set; }
         public IGrid<T> Grid { get; set; }
 
-        public Int32 PagesToDisplay { get; set; }
-        public Int32 RowsPerPage { get; set; }
-        public Int32 InitialPage { get; set; }
         public Int32 TotalRows { get; set; }
+        public Int32 InitialPage { get; set; }
+        public Int32 RowsPerPage { get; set; }
+        public Int32 PagesToDisplay { get; set; }
 
-        private Boolean CurrentPageIsSet { get; set; }
-        private Int32 CurrentPageValue { get; set; }
-        public virtual Int32 FirstDisplayPage
+        public virtual Int32 TotalPages
         {
             get
             {
-                Int32 middlePage = (PagesToDisplay / 2) + (PagesToDisplay % 2);
-                if (CurrentPage < middlePage)
-                    return 1;
-
-                if (CurrentPage - middlePage + PagesToDisplay > TotalPages)
-                    return Math.Max(TotalPages - PagesToDisplay + 1, 1);
-
-                return CurrentPage - middlePage + 1;
+                return (Int32)(Math.Ceiling(TotalRows / (Double)RowsPerPage));
             }
         }
         public virtual Int32 CurrentPage
@@ -54,13 +42,26 @@ namespace NonFactors.Mvc.Grid
                 return CurrentPageValue;
             }
         }
-        public virtual Int32 TotalPages
+        public virtual Int32 FirstDisplayPage
         {
             get
             {
-                return (Int32)(Math.Ceiling(TotalRows / (Double)RowsPerPage));
+                Int32 middlePage = (PagesToDisplay / 2) + (PagesToDisplay % 2);
+                if (CurrentPage < middlePage)
+                    return 1;
+
+                if (CurrentPage - middlePage + PagesToDisplay > TotalPages)
+                    return Math.Max(TotalPages - PagesToDisplay + 1, 1);
+
+                return CurrentPage - middlePage + 1;
             }
         }
+        private Int32 CurrentPageValue { get; set; }
+        private Boolean CurrentPageIsSet { get; set; }
+
+        public String CssClasses { get; set; }
+        public String PartialViewName { get; set; }
+        public GridProcessorType ProcessorType { get; set; }
 
         public GridPager(IGrid<T> grid)
         {

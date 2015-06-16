@@ -9,7 +9,7 @@ namespace NonFactors.Mvc.Grid
 
     public interface IGridRows<T> : IGridRows
     {
-        Func<T, String> CssClasses { get; set; }
         IGrid<T> Grid { get; }
+        Func<T, String> CssClasses { get; set; }
     }
 }

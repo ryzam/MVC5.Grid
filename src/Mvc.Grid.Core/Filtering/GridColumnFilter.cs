@@ -6,11 +6,11 @@ namespace NonFactors.Mvc.Grid
 {
     public class GridColumnFilter<T> : IGridColumnFilter<T>
     {
-        public GridProcessorType ProcessorType { get; set; }
-        public IGridColumn<T> Column { get; set; }
-        public IGridFilter Second { get; set; }
-        public IGridFilter First { get; set; }
         public String Operator { get; set; }
+        public IGridFilter First { get; set; }
+        public IGridFilter Second { get; set; }
+        public IGridColumn<T> Column { get; set; }
+        public GridProcessorType ProcessorType { get; set; }
 
         public IQueryable<T> Process(IQueryable<T> items)
         {

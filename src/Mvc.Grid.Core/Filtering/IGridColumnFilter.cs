@@ -4,9 +4,9 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGridColumnFilter
     {
-        IGridFilter Second { get; set; }
-        IGridFilter First { get; set; }
         String Operator { get; set; }
+        IGridFilter First { get; set; }
+        IGridFilter Second { get; set; }
     }
     public interface IGridColumnFilter<T> : IGridColumnFilter, IGridProcessor<T>
     {

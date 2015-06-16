@@ -8,23 +8,23 @@ namespace NonFactors.Mvc.Grid
 {
     public class Grid<T> : IGrid<T> where T : class
     {
-        public IList<IGridProcessor<T>> Processors { get; set; }
-        public HttpContextBase HttpContext { get; set; }
-        public NameValueCollection Query { get; set; }
-        public IQueryable<T> Source { get; set; }
-
-        public String CssClasses { get; set; }
-        public String EmptyText { get; set; }
         public String Name { get; set; }
+        public String EmptyText { get; set; }
+        public String CssClasses { get; set; }
 
-        IGridColumns IGrid.Columns { get { return Columns; } }
+        public IQueryable<T> Source { get; set; }
+        public NameValueCollection Query { get; set; }
+        public HttpContextBase HttpContext { get; set; }
+        public IList<IGridProcessor<T>> Processors { get; set; }
+
         public IGridColumns<T> Columns { get; set; }
+        IGridColumns IGrid.Columns { get { return Columns; } }
 
-        IGridRows IGrid.Rows { get { return Rows; } }
         public IGridRows<T> Rows { get; set; }
+        IGridRows IGrid.Rows { get { return Rows; } }
 
-        IGridPager IGrid.Pager { get { return Pager; } }
         public IGridPager<T> Pager { get; set; }
+        IGridPager IGrid.Pager { get { return Pager; } }
 
         public Grid(IEnumerable<T> source)
         {

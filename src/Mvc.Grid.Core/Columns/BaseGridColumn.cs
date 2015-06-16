@@ -7,29 +7,29 @@ namespace NonFactors.Mvc.Grid
 {
     public abstract class BaseGridColumn<T, TValue> : IGridColumn<T>
     {
-        LambdaExpression IGridColumn<T>.Expression { get { return Expression; } }
-        public Expression<Func<T, TValue>> Expression { get; set; }
-        public Func<T, TValue> ExpressionValue { get; set; }
-        public GridProcessorType ProcessorType { get; set; }
-        public Func<T, Object> RenderValue { get; set; }
-        public IGrid<T> Grid { get; set; }
-
-        public virtual GridSortOrder? SortOrder { get; set; }
-        public GridSortOrder? InitialSortOrder { get; set; }
-        public GridSortOrder? FirstSortOrder { get; set; }
-        public Boolean? IsSortable { get; set; }
-
-        IGridColumnFilter IFilterableColumn.Filter { get { return Filter; } }
-        public virtual IGridColumnFilter<T> Filter { get; set; }
-        public Boolean? IsMultiFilterable { get; set; }
-        public Boolean? IsFilterable { get; set; }
-        public String FilterName { get; set; }
-
-        public Boolean IsEncoded { get; set; }
-        public String CssClasses { get; set; }
-        public String Format { get; set; }
-        public String Title { get; set; }
         public String Name { get; set; }
+        public String Title { get; set; }
+        public String Format { get; set; }
+        public String CssClasses { get; set; }
+        public Boolean IsEncoded { get; set; }
+
+        public Boolean? IsSortable { get; set; }
+        public GridSortOrder? FirstSortOrder { get; set; }
+        public GridSortOrder? InitialSortOrder { get; set; }
+        public virtual GridSortOrder? SortOrder { get; set; }
+
+        public String FilterName { get; set; }
+        public Boolean? IsFilterable { get; set; }
+        public Boolean? IsMultiFilterable { get; set; }
+        public virtual IGridColumnFilter<T> Filter { get; set; }
+        IGridColumnFilter IFilterableColumn.Filter { get { return Filter; } }
+
+        public IGrid<T> Grid { get; set; }
+        public Func<T, Object> RenderValue { get; set; }
+        public GridProcessorType ProcessorType { get; set; }
+        public Func<T, TValue> ExpressionValue { get; set; }
+        public Expression<Func<T, TValue>> Expression { get; set; }
+        LambdaExpression IGridColumn<T>.Expression { get { return Expression; } }
 
         public virtual IGridColumn<T> RenderedAs(Func<T, Object> value)
         {

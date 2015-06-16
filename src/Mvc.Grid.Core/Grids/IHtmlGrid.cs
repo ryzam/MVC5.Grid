@@ -5,8 +5,8 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IHtmlGrid<T> : IHtmlString
     {
-        String PartialViewName { get; set; }
         IGrid<T> Grid { get; }
+        String PartialViewName { get; set; }
 
         IHtmlGrid<T> Build(Action<IGridColumns<T>> builder);
         IHtmlGrid<T> ProcessWith(IGridProcessor<T> processor);

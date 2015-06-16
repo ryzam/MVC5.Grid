@@ -6,19 +6,19 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGridColumn : IFilterableColumn, ISortableColumn
     {
-        Boolean IsEncoded { get; set; }
-        String CssClasses { get; set; }
-        String Format { get; set; }
-        String Title { get; set; }
         String Name { get; set; }
+        String Title { get; set; }
+        String Format { get; set; }
+        String CssClasses { get; set; }
+        Boolean IsEncoded { get; set; }
 
         IHtmlString ValueFor(IGridRow row);
     }
 
     public interface IGridColumn<T> : IFilterableColumn<T>, ISortableColumn<T>, IGridColumn
     {
-        LambdaExpression Expression { get; }
         IGrid<T> Grid { get; }
+        LambdaExpression Expression { get; }
 
         IGridColumn<T> RenderedAs(Func<T, Object> value);
 
