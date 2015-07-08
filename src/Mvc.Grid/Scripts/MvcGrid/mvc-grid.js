@@ -737,7 +737,7 @@ var MvcGridDateFilter = (function () {
             operator.bind('change.mvcgrid', function () {
                 column.filter.operator = this.value;
             });
-        },
+        }
     };
 
     return MvcGridDateFilter;
@@ -832,7 +832,7 @@ var MvcGridBooleanFilter = (function () {
             operator.bind('change.mvcgrid', function () {
                 column.filter.operator = this.value;
             });
-        },
+        }
     };
 
     return MvcGridBooleanFilter;
