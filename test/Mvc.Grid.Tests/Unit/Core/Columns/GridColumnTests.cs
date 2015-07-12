@@ -397,7 +397,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void GridColumn_OnNonMemberExpressionIsNotSortable()
         {
             Boolean? actual = new GridColumn<GridModel, String>(grid, model => model.ToString()).IsSortable;
-            Boolean expected = false;
+            Boolean? expected = false;
 
             Assert.Equal(expected, actual);
         }
@@ -414,7 +414,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public void GridColumn_OnNonMemberExpressionIsNotFilterable()
         {
             Boolean? actual = new GridColumn<GridModel, String>(grid, model => model.ToString()).IsFilterable;
-            Boolean expected = false;
+            Boolean? expected = false;
 
             Assert.Equal(expected, actual);
         }

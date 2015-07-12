@@ -94,7 +94,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
             GridRows<GridModel> rows = new GridRows<GridModel>(grid);
 
-            IEnumerator actual = (rows as IEnumerable).GetEnumerator();
+            IEnumerator actual = ((IEnumerable)rows).GetEnumerator();
             IEnumerator expected = rows.GetEnumerator();
 
             while (expected.MoveNext() | actual.MoveNext())
