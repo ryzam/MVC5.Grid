@@ -1,8 +1,7 @@
-/TestResults
-/packages
-bin
-obj
+/packages/
+/.vs/
+bin/
+obj/
+
 *.user
 *.suo
-*.mdf
-*.ldf
