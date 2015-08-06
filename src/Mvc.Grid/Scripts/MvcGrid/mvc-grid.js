@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Grid 2.2.1
+ * Mvc.Grid 2.2.2
  * https://github.com/NonFactors/MVC.Grid
  *
  * Copyright © NonFactors
@@ -18,6 +18,13 @@ var MvcGrid = (function () {
         this.reloadFailed = options.reloadFailed;
         this.reloadStarted = options.reloadStarted;
         this.sourceUrl = options.sourceUrl || grid.data('source-url') || '';
+        this.filters = $.extend({
+            'Text': new MvcGridTextFilter(),
+            'Date': new MvcGridDateFilter(),
+            'Number': new MvcGridNumberFilter(),
+            'Boolean': new MvcGridBooleanFilter()
+        }, options.filters);
+
         if (this.sourceUrl != '') {
             var splitIndex = this.sourceUrl.indexOf('?');
             if (splitIndex > -1) {
@@ -34,12 +41,6 @@ var MvcGrid = (function () {
             this.reload(this.gridQuery);
             return;
         }
-        this.filters = $.extend({
-            'Text': new MvcGridTextFilter(),
-            'Date': new MvcGridDateFilter(),
-            'Number': new MvcGridNumberFilter(),
-            'Boolean': new MvcGridBooleanFilter()
-        }, options.filters);
 
         var headers = grid.find('.mvc-grid-header');
         for (var i = 0; i < headers.length; i++) {
