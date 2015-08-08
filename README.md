@@ -1,4 +1,4 @@
-Grid controls for ASP.NET MVC projects
+Grid controls for ASP.NET MVC 5 projects
 
 ![Semantic](https://img.shields.io/badge/sem-ver-lightgrey.svg?style=plastic)
 ![Docs](https://img.shields.io/github/release/NonFactors/MVC.Grid.Web.svg?style=plastic&label=docs)
