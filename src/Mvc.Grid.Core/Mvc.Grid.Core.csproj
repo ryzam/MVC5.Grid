@@ -82,7 +82,7 @@
     <Compile Include="Rows\IGridRow.cs" />
     <Compile Include="Rows\IGridRows.cs" />
     <Compile Include="Sorting\GridSortOrder.cs" />
-    <Compile Include="Html\GridHtmlExtensions.cs" />
+    <Compile Include="Html\MvcGridExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
