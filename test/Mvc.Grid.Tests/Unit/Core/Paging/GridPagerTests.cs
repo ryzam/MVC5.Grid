@@ -56,7 +56,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [InlineData(6, 3, 1)]
         [InlineData(6, 4, 1)]
         [InlineData(6, 5, 1)]
-        public void FirstDisplayPage_GetsFirstDisplayPage(Int32 pagesToDisplay, Int32 currentPage, Int32 expected)
+        public void FirstDisplayPage_ReturnsFirstDisplayPage(Int32 pagesToDisplay, Int32 currentPage, Int32 expected)
         {
             pager.Grid.Query = HttpUtility.ParseQueryString("Grid-Page=" + currentPage);
             pager.PagesToDisplay = pagesToDisplay;
@@ -159,7 +159,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [InlineData(39, 20, 2)]
         [InlineData(40, 20, 2)]
         [InlineData(41, 20, 3)]
-        public void TotalPages_GetsTotalPages(Int32 totalRows, Int32 rowsPerPage, Int32 expected)
+        public void TotalPages_ReturnsTotalPages(Int32 totalRows, Int32 rowsPerPage, Int32 expected)
         {
             GridPager<GridModel> pager = new GridPager<GridModel>(grid);
             pager.RowsPerPage = rowsPerPage;

@@ -30,7 +30,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Constructor: HtmlGrid(HtmlHelper html, IGrid<T> grid)
 
         [Fact]
-        public void HtmlGrid_DoesNotChangeExistingQuery()
+        public void HtmlGrid_DoesNotChangeQuery()
         {
             NameValueCollection query = grid.Query = new NameValueCollection();
 
@@ -56,7 +56,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void HtmlGrid_DoesNotChangeExistingHttpContext()
+        public void HtmlGrid_DoesNotChangeHttpContext()
         {
             HttpContextBase httpContext = grid.HttpContext = HttpContextFactory.CreateHttpContextBase();
 
@@ -78,7 +78,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void HtmlGrid_SetsDefaultPartialViewName()
+        public void HtmlGrid_SetsPartialViewName()
         {
             String actual = new HtmlGrid<GridModel>(null, grid).PartialViewName;
             String expected = "MvcGrid/_Grid";
@@ -109,7 +109,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Build(Action<IGridColumns<T>> builder)
 
         [Fact]
-        public void Build_BuildsColumns()
+        public void Build_Columns()
         {
             IGridColumns expected = htmlGrid.Grid.Columns;
             Boolean builderCalled = false;
@@ -124,7 +124,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Build_ReturnsSameGrid()
+        public void Build_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Build(columns => { });
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -150,7 +150,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void ProcessWith_ReturnsSameGrid()
+        public void ProcessWith_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.ProcessWith(null);
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -169,7 +169,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [InlineData(false, true, false)]
         [InlineData(true, false, true)]
         [InlineData(true, true, true)]
-        public void Filterable_Set_SetsIsFilterable(Boolean? isColumnFilterable, Boolean isGridFilterable, Boolean? expectedIsFilterable)
+        public void Filterable_Set_IsFilterable(Boolean? isColumnFilterable, Boolean isGridFilterable, Boolean? expectedIsFilterable)
         {
             foreach (IGridColumn column in htmlGrid.Grid.Columns)
                 column.IsFilterable = isColumnFilterable;
@@ -181,7 +181,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Filterable_Set_ReturnsSameGrid()
+        public void Filterable_Set_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Filterable(true);
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -209,7 +209,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void MultiFilterable_ReturnsSameGrid()
+        public void MultiFilterable_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Filterable();
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -237,7 +237,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Filterable_ReturnsSameGrid()
+        public void Filterable_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Filterable();
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -256,7 +256,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [InlineData(false, true, false)]
         [InlineData(true, false, true)]
         [InlineData(true, true, true)]
-        public void Sortable_Set_SetsIsSortable(Boolean? isColumnSortable, Boolean isGridSortable, Boolean? expectedIsSortable)
+        public void Sortable_Set_IsSortable(Boolean? isColumnSortable, Boolean isGridSortable, Boolean? expectedIsSortable)
         {
             foreach (IGridColumn column in htmlGrid.Grid.Columns)
                 column.IsSortable = isColumnSortable;
@@ -268,7 +268,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Sortable_Set_ReturnsSameGrid()
+        public void Sortable_Set_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Sortable(true);
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -296,7 +296,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Sortable_ReturnsSameGrid()
+        public void Sortable_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Sortable();
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -318,7 +318,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void RowCss_ReturnsSameGrid()
+        public void RowCss_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.RowCss(null);
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -340,7 +340,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Css_ReturnsSameGrid()
+        public void Css_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Css("table");
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -362,7 +362,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Empty_ReturnsSameGrid()
+        public void Empty_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Empty("Text");
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -384,7 +384,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Named_ReturnsSameGrid()
+        public void Named_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Named("Name");
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -397,7 +397,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Method: Pageable(Action<IGridPager<T>> builder)
 
         [Fact]
-        public void Pageable_Builder_DoesNotChangeExistingPager()
+        public void Pageable_Builder_DoesNotChangePager()
         {
             IGridPager<GridModel> pager = new GridPager<GridModel>(htmlGrid.Grid);
             htmlGrid.Grid.Pager = pager;
@@ -433,7 +433,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Pageable_Builder_BuildsPager()
+        public void Pageable_Builder_Pager()
         {
             htmlGrid.Grid.Pager = Substitute.For<IGridPager<GridModel>>();
             IGridPager expected = htmlGrid.Grid.Pager;
@@ -462,7 +462,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Pageable_Builder_DoesNotReaddGridProcessor()
+        public void Pageable_Builder_DoesNotReadGridProcessor()
         {
             htmlGrid.Grid.Processors = new List<IGridProcessor<GridModel>>();
 
@@ -476,7 +476,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Pageable_Builder_ReturnsSameGrid()
+        public void Pageable_Builder_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Pageable(gridPager => { });
             IHtmlGrid<GridModel> expected = htmlGrid;
@@ -552,7 +552,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void Pageable_ReturnsSameGrid()
+        public void Pageable_ReturnsItself()
         {
             IHtmlGrid<GridModel> actual = htmlGrid.Pageable();
             IHtmlGrid<GridModel> expected = htmlGrid;

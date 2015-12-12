@@ -73,7 +73,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         #region Extension: AjaxGrid(this HtmlHelper, String dataSource)
 
         [Fact]
-        public void AjaxGrid_RendersAjaxGridPartial()
+        public void AjaxGrid_RendersPartial()
         {
             IView view = Substitute.For<IView>();
             IViewEngine engine = Substitute.For<IViewEngine>();
