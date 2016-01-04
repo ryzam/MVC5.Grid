@@ -8,11 +8,11 @@ using Xunit;
 
 namespace NonFactors.Mvc.Grid.Tests.Unit
 {
-    public class MvcGridExtensions
+    public class MvcGridExtensionsTests
     {
         private static HtmlHelper html;
 
-        static MvcGridExtensions()
+        static MvcGridExtensionsTests()
         {
             html = HtmlHelperFactory.CreateHtmlHelper();
         }

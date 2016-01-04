@@ -97,7 +97,7 @@
     <Compile Include="Unit\Core\Paging\GridPagerTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowsTests.cs" />
     <Compile Include="Unit\Core\Rows\GridRowTests.cs" />
-    <Compile Include="Unit\Core\Html\MvcGridExtensions.cs" />
+    <Compile Include="Unit\Core\Html\MvcGridExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
