@@ -327,7 +327,7 @@ var MvcGrid = (function () {
 
         bindGridEvents: function () {
             var grid = this;
-            this.element.find('.mvc-grid-row').on('click.mvcgrid', function () {
+            this.element.find('.mvc-grid-row').on('click.mvcgrid', function (e) {
                 if (grid.rowClicked) {
                     var cells = $(this).find('td');
                     var data = [];
@@ -339,7 +339,7 @@ var MvcGrid = (function () {
                         }
                     }
 
-                    grid.rowClicked(grid, this, data);
+                    grid.rowClicked(grid, this, data, e);
                 }
             });
         },
