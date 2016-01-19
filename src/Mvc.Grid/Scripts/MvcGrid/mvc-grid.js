@@ -1,5 +1,5 @@
 ﻿/*!
- * Mvc.Grid 2.3.0
+ * Mvc.Grid 2.3.1
  * https://github.com/NonFactors/MVC5.Grid
  *
  * Copyright © NonFactors
@@ -139,6 +139,7 @@ var MvcGrid = (function () {
                 }
 
                 $.ajax({
+                    cache: false,
                     url: grid.sourceUrl + '?' + query
                 }).success(function (result) {
                     if (grid.reloadEnded) {
