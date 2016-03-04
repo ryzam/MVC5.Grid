@@ -16,7 +16,7 @@ namespace NonFactors.Mvc.Grid
         {
             get
             {
-                return (Int32)(Math.Ceiling(TotalRows / (Double)RowsPerPage));
+                return (Int32)Math.Ceiling(TotalRows / (Double)RowsPerPage);
             }
         }
         public virtual Int32 CurrentPage
