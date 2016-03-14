@@ -12,7 +12,7 @@ namespace NonFactors.Mvc.Grid
         String CssClasses { get; set; }
         Boolean IsEncoded { get; set; }
 
-        IHtmlString ValueFor(IGridRow row);
+        IHtmlString ValueFor(IGridRow<Object> row);
     }
 
     public interface IGridColumn<T> : IFilterableColumn<T>, ISortableColumn<T>, IGridColumn

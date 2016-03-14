@@ -20,7 +20,7 @@ namespace NonFactors.Mvc.Grid
             Grid = grid;
         }
 
-        public virtual IHtmlGrid<T> Build(Action<IGridColumns<T>> builder)
+        public virtual IHtmlGrid<T> Build(Action<IGridColumnsOf<T>> builder)
         {
             builder(Grid.Columns);
 
