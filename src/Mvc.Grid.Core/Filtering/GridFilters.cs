@@ -126,7 +126,7 @@ namespace NonFactors.Mvc.Grid
             else
                 Table.Add(underlyingType, typedFilters);
 
-            typedFilters.Add(filterType, filter);
+            typedFilters[filterType] = filter;
         }
         public void Unregister(Type forType, String filterType)
         {
