@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace NonFactors.Mvc.Grid.Tests
 {
@@ -8,6 +9,7 @@ namespace NonFactors.Mvc.Grid.Tests
         [Display(Name = "Text")]
         public String Text { get; set; }
 
+        public IHtmlString Content { get; set; }
         public Boolean? NIsChecked { get; set; }
         public Boolean IsChecked { get; set; }
         public DateTime? NDate { get; set; }

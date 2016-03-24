@@ -602,6 +602,45 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [Theory]
         [InlineData(null, "For {0}", true, "")]
         [InlineData(null, "For {0}", false, "")]
+        [InlineData("<name>", null, true, "<name>")]
+        [InlineData("<name>", null, false, "<name>")]
+        [InlineData("<name>", "For <{0}>", true, "<name>")]
+        [InlineData("<name>", "For <{0}>", false, "<name>")]
+        public void ValueFor_GetsHtmlContentRenderValue(String value, String format, Boolean isEncoded, String expected)
+        {
+            IGridRow<GridModel> row = new GridRow<GridModel>(new GridModel { Content = value == null ? null : new HtmlString(value) });
+            column.RenderValue = (model) => model.Content;
+            column.ExpressionValue = null;
+            column.IsEncoded = isEncoded;
+            column.Format = format;
+
+            String actual = column.ValueFor(row).ToString();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(null, "For {0}", true, "")]
+        [InlineData(null, "For {0}", false, "")]
+        [InlineData("<name>", null, true, "<name>")]
+        [InlineData("<name>", null, false, "<name>")]
+        [InlineData("<name>", "For <{0}>", true, "<name>")]
+        [InlineData("<name>", "For <{0}>", false, "<name>")]
+        public void ValueFor_GetsHtmlContentExpressionValue(String value, String format, Boolean isEncoded, String expected)
+        {
+            IGridRow<GridModel> row = new GridRow<GridModel>(new GridModel { Content = value == null ? null : new HtmlString(value) });
+            column = new GridColumn<GridModel, Object>(grid, model => model.Content);
+            column.IsEncoded = isEncoded;
+            column.Format = format;
+
+            String actual = column.ValueFor(row).ToString();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(null, "For {0}", true, "")]
+        [InlineData(null, "For {0}", false, "")]
         [InlineData("<name>", null, false, "<name>")]
         [InlineData("<name>", null, true, "&lt;name&gt;")]
         [InlineData("<name>", "For <{0}>", false, "For <<name>>")]

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
@@ -88,10 +88,13 @@ namespace NonFactors.Mvc.Grid
         }
         public override IHtmlString ValueFor(IGridRow<Object> row)
         {
-            String value = GetValueFor(row);
-            if (IsEncoded) value = WebUtility.HtmlEncode(value);
+            Object value = GetValueFor(row);
+            if (value == null) return MvcHtmlString.Empty;
+            if (value is IHtmlString) return value as IHtmlString;
+            if (Format != null) value = String.Format(Format, value);
+            if (IsEncoded) return new HtmlString(WebUtility.HtmlEncode(value.ToString()));
 
-            return new HtmlString(value);
+            return new HtmlString(value.ToString());
         }
 
         private Boolean? IsMember(Expression<Func<T, TValue>> expression)
@@ -112,28 +115,19 @@ namespace NonFactors.Mvc.Grid
 
             return display.GetName();
         }
-        private String GetValueFor(IGridRow<Object> row)
+        private Object GetValueFor(IGridRow<Object> row)
         {
-            Object value;
             try
             {
                 if (RenderValue != null)
-                    value = RenderValue(row.Model as T);
-                else
-                    value = ExpressionValue(row.Model as T);
+                    return RenderValue(row.Model as T);
+
+                return ExpressionValue(row.Model as T);
             }
             catch (NullReferenceException)
             {
-                return "";
+                return null;
             }
-
-            if (value == null)
-                return "";
-
-            if (Format == null)
-                return value.ToString();
-
-            return String.Format(Format, value);
         }
         private String GetFilterName()
         {
