@@ -9,7 +9,6 @@ namespace NonFactors.Mvc.Grid
         public IDictionary<Type, IDictionary<String, Type>> Table
         {
             get;
-            private set;
         }
 
         public GridFilters()
