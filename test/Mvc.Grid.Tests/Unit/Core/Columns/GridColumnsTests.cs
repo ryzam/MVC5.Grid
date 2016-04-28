@@ -43,6 +43,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridColumn<GridModel, String> expected = new GridColumn<GridModel, String>(columns.Grid, expression);
             GridColumn<GridModel, String> actual = columns.Single() as GridColumn<GridModel, String>;
 
+            Assert.Equal(expected.Title.ToString(), actual.Title.ToString());
             Assert.Equal(expected.ProcessorType, actual.ProcessorType);
             Assert.Equal(expected.IsFilterable, actual.IsFilterable);
             Assert.Equal(expected.FilterName, actual.FilterName);
@@ -52,7 +53,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.Equal(expected.SortOrder, actual.SortOrder);
             Assert.Equal(expected.IsEncoded, actual.IsEncoded);
             Assert.Equal(expected.Format, actual.Format);
-            Assert.Equal(expected.Title, actual.Title);
             Assert.Equal(expected.Name, actual.Name);
             Assert.Equal(expected.Grid, actual.Grid);
         }
@@ -91,6 +91,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             GridColumn<GridModel, Int32> expected = new GridColumn<GridModel, Int32>(columns.Grid, expression);
             GridColumn<GridModel, Int32> actual = columns.First() as GridColumn<GridModel, Int32>;
 
+            Assert.Equal(expected.Title.ToString(), actual.Title.ToString());
             Assert.Equal(expected.ProcessorType, actual.ProcessorType);
             Assert.Equal(expected.IsFilterable, actual.IsFilterable);
             Assert.Equal(expected.FilterName, actual.FilterName);
@@ -100,7 +101,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.Equal(expected.SortOrder, actual.SortOrder);
             Assert.Equal(expected.IsEncoded, actual.IsEncoded);
             Assert.Equal(expected.Format, actual.Format);
-            Assert.Equal(expected.Title, actual.Title);
             Assert.Equal(expected.Name, actual.Name);
             Assert.Equal(expected.Grid, actual.Grid);
         }

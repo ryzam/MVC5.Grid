@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -8,10 +8,10 @@ namespace NonFactors.Mvc.Grid
     public abstract class BaseGridColumn<T, TValue> : IGridColumn<T>
     {
         public String Name { get; set; }
-        public String Title { get; set; }
         public String Format { get; set; }
         public String CssClasses { get; set; }
         public Boolean IsEncoded { get; set; }
+        public IHtmlString Title { get; set; }
 
         public Boolean? IsSortable { get; set; }
         public GridSortOrder? FirstSortOrder { get; set; }
@@ -94,9 +94,9 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
-        public virtual IGridColumn<T> Titled(String title)
+        public virtual IGridColumn<T> Titled(Object value)
         {
-            Title = title;
+            Title = value as IHtmlString ?? new HtmlString(value?.ToString());
 
             return this;
         }

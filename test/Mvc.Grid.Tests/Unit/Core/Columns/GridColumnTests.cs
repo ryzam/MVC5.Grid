@@ -177,7 +177,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             column = new GridColumn<GridModel, Object>(grid, model => model.ToString());
 
-            Assert.Null(column.Title);
+            Assert.Null(column.Title.ToString());
         }
 
         [Fact]
@@ -185,7 +185,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             column = new GridColumn<GridModel, Object>(grid, model => model.Name);
 
-            Assert.Null(column.Title);
+            Assert.Null(column.Title.ToString());
         }
 
         [Fact]
@@ -194,8 +194,8 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             DisplayAttribute display = typeof(GridModel).GetProperty("Text").GetCustomAttribute<DisplayAttribute>();
             column = new GridColumn<GridModel, Object>(grid, model => model.Text);
 
+            String actual = column.Title.ToString();
             String expected = display.GetName();
-            String actual = column.Title;
 
             Assert.Equal(expected, actual);
         }
@@ -207,7 +207,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column = new GridColumn<GridModel, Object>(grid, model => model.ShortText);
 
             String expected = display.GetShortName();
-            String actual = column.Title;
+            String actual = column.Title.ToString();
 
             Assert.Equal(expected, actual);
         }
