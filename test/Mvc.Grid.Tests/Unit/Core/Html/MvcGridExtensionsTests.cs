@@ -17,7 +17,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             html = HtmlHelperFactory.CreateHtmlHelper();
         }
 
-        #region Extension: Grid<T>(this HtmlHelper html, IEnumerable<T> source)
+        #region Grid<T>(this HtmlHelper html, IEnumerable<T> source)
 
         [Fact]
         public void Grid_CreatesHtmlGridWithHtml()
@@ -39,7 +39,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Extension: Grid<T>(this HtmlHelper html, String partialViewName, IEnumerable<T> source)
+        #region Grid<T>(this HtmlHelper html, String partialViewName, IEnumerable<T> source)
 
         [Fact]
         public void Grid_PartialViewName_CreatesHtmlGridWithHtml()
@@ -70,7 +70,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Extension: AjaxGrid(this HtmlHelper, String dataSource)
+        #region AjaxGrid(this HtmlHelper, String dataSource)
 
         [Fact]
         public void AjaxGrid_RendersPartial()

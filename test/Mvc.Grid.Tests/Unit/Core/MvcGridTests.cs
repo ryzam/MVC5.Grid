@@ -5,7 +5,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 {
     public class MvcGridTests
     {
-        #region Static constructor: MvcGrid()
+        #region MvcGrid()
 
         [Fact]
         public void MvcGrid_SetsFiltersToDefaultImplementation()

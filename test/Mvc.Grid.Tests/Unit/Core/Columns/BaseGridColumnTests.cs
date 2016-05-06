@@ -14,7 +14,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             column = Substitute.ForPartsOf<BaseGridColumn<GridModel, String>>();
         }
 
-        #region Property: IGridColumn<T>.Expression
+        #region IGridColumn<T>.Expression
 
         [Fact]
         public void IGridColumnExpression_ReturnsExpression()
@@ -29,7 +29,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Property: IFilterableColumn.Filter
+        #region IFilterableColumn.Filter
 
         [Fact]
         public void IFilterableColumnFilter_ReturnsFilter()
@@ -44,7 +44,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: RenderedAs(Func<T, Object> value)
+        #region RenderedAs(Func<T, Object> value)
 
         [Fact]
         public void RenderedAs_SetsRenderValue()
@@ -66,7 +66,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: MultiFilterable(Boolean isMultiple)
+        #region MultiFilterable(Boolean isMultiple)
 
         [Fact]
         public void MultiFilterable_SetsIsMultiFilterable()
@@ -88,7 +88,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Filterable(Boolean isFilterable)
+        #region Filterable(Boolean isFilterable)
 
         [Fact]
         public void Filterable_SetsIsFilterable()
@@ -110,7 +110,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: FilteredAs(String filterName)
+        #region FilteredAs(String filterName)
 
         [Fact]
         public void FilteredAs_SetsFilterName()
@@ -132,7 +132,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: InitialSort(GridSortOrder order)
+        #region InitialSort(GridSortOrder order)
 
         [Fact]
         public void InitialSort_SetsInitialSortOrder()
@@ -154,7 +154,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: FirstSort(GridSortOrder order)
+        #region FirstSort(GridSortOrder order)
 
         [Fact]
         public void FirstSort_SetsFirstOrder()
@@ -176,7 +176,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Sortable(Boolean isSortable)
+        #region Sortable(Boolean isSortable)
 
         [Fact]
         public void Sortable_SetsIsSortable()
@@ -198,7 +198,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Encoded(Boolean isEncoded)
+        #region Encoded(Boolean isEncoded)
 
         [Fact]
         public void Encoded_SetsIsEncoded()
@@ -217,7 +217,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Formatted(String format)
+        #region Formatted(String format)
 
         [Fact]
         public void Formatted_SetsFormat()
@@ -239,7 +239,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Css(String cssClasses)
+        #region Css(String cssClasses)
 
         [Fact]
         public void Css_SetsCssClasses()
@@ -261,7 +261,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Titled(Object value)
+        #region Titled(Object value)
 
         [Fact]
         public void Titled_SetsHtmlContentTitle()
@@ -307,7 +307,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Named(String name)
+        #region Named(String name)
 
         [Fact]
         public void Named_SetsName()

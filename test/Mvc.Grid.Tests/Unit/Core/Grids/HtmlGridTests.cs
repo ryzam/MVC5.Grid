@@ -27,7 +27,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             grid.Columns.Add(model => model.Sum);
         }
 
-        #region Constructor: HtmlGrid(HtmlHelper html, IGrid<T> grid)
+        #region HtmlGrid(HtmlHelper html, IGrid<T> grid)
 
         [Fact]
         public void HtmlGrid_DoesNotChangeQuery()
@@ -106,7 +106,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Build(Action<IGridColumnsOf<T>> builder)
+        #region Build(Action<IGridColumnsOf<T>> builder)
 
         [Fact]
         public void Build_Columns()
@@ -134,7 +134,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: ProcessWith(IGridProcessor<T> processor)
+        #region ProcessWith(IGridProcessor<T> processor)
 
         [Fact]
         public void ProcessWith_AddsProcessorToGrid()
@@ -160,7 +160,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Filterable(Boolean isFilterable)
+        #region Filterable(Boolean isFilterable)
 
         [Theory]
         [InlineData(null, false, false)]
@@ -191,7 +191,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: MultiFilterable()
+        #region MultiFilterable()
 
         [Theory]
         [InlineData(null, true)]
@@ -219,7 +219,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Filterable()
+        #region Filterable()
 
         [Theory]
         [InlineData(null, true)]
@@ -247,7 +247,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Sortable(Boolean isSortable)
+        #region Sortable(Boolean isSortable)
 
         [Theory]
         [InlineData(null, false, false)]
@@ -278,7 +278,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Sortable()
+        #region Sortable()
 
         [Theory]
         [InlineData(null, true)]
@@ -306,7 +306,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: RowCss(Func<T, String> cssClasses)
+        #region RowCss(Func<T, String> cssClasses)
 
         [Fact]
         public void RowCss_SetsRowsCssClasses()
@@ -328,7 +328,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Css(String cssClasses)
+        #region Css(String cssClasses)
 
         [Fact]
         public void Css_SetsCssClasses()
@@ -350,7 +350,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Empty(String text)
+        #region Empty(String text)
 
         [Fact]
         public void Empty_SetsEmptyText()
@@ -372,7 +372,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Named(String name)
+        #region Named(String name)
 
         [Fact]
         public void Named_SetsName()
@@ -394,7 +394,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Pageable(Action<IGridPager<T>> builder)
+        #region Pageable(Action<IGridPager<T>> builder)
 
         [Fact]
         public void Pageable_Builder_DoesNotChangePager()
@@ -486,7 +486,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Pageable()
+        #region Pageable()
 
         [Fact]
         public void Pageable_DoesNotChangeExistingPager()
@@ -562,7 +562,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: ToHtmlString()
+        #region ToHtmlString()
 
         [Fact]
         public void ToHtmlString_RendersPartialView()

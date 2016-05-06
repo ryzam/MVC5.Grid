@@ -19,7 +19,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             columns.Grid.Query = new NameValueCollection();
         }
 
-        #region Constructor: GridColumns(IGrid<T> grid)
+        #region GridColumns(IGrid<T> grid)
 
         [Fact]
         public void GridColumns_SetsGrid()
@@ -32,7 +32,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Add<TValue>(Expression<Func<T, TValue>> expression)
+        #region Add<TValue>(Expression<Func<T, TValue>> expression)
 
         [Fact]
         public void Add_GridColumn()
@@ -79,7 +79,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
 
         #endregion
 
-        #region Method: Insert<TValue>(Int32 index, Expression<Func<T, TValue>> expression)
+        #region Insert<TValue>(Int32 index, Expression<Func<T, TValue>> expression)
 
         [Fact]
         public void Insert_GridColumn()
