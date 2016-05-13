@@ -1,7 +1,6 @@
 ﻿using NSubstitute;
 using System;
 using System.Collections;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using Xunit;
@@ -17,53 +16,30 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         public GridPagerTests()
         {
             grid = Substitute.For<IGrid<GridModel>>();
-            grid.Query = new NameValueCollection();
+            grid.Query = HttpUtility.ParseQueryString("");
             grid.Name = "Grid";
 
             pager = new GridPager<GridModel>(grid);
         }
 
-        #region FirstDisplayPage
+        #region TotalPages
 
         [Theory]
-        [InlineData(1, 1, 1)]
-        [InlineData(1, 2, 2)]
-        [InlineData(1, 3, 3)]
-        [InlineData(1, 4, 4)]
-        [InlineData(1, 5, 5)]
-        [InlineData(2, 1, 1)]
-        [InlineData(2, 2, 2)]
-        [InlineData(2, 3, 3)]
-        [InlineData(2, 4, 4)]
-        [InlineData(2, 5, 4)]
-        [InlineData(3, 1, 1)]
-        [InlineData(3, 2, 1)]
-        [InlineData(3, 3, 2)]
-        [InlineData(3, 4, 3)]
-        [InlineData(3, 5, 3)]
-        [InlineData(4, 1, 1)]
-        [InlineData(4, 2, 1)]
-        [InlineData(4, 3, 2)]
-        [InlineData(4, 4, 2)]
-        [InlineData(4, 5, 2)]
-        [InlineData(5, 1, 1)]
-        [InlineData(5, 2, 1)]
-        [InlineData(5, 3, 1)]
-        [InlineData(5, 4, 1)]
-        [InlineData(5, 5, 1)]
-        [InlineData(6, 1, 1)]
-        [InlineData(6, 2, 1)]
-        [InlineData(6, 3, 1)]
-        [InlineData(6, 4, 1)]
-        [InlineData(6, 5, 1)]
-        public void FirstDisplayPage_ReturnsFirstDisplayPage(Int32 pagesToDisplay, Int32 currentPage, Int32 expected)
+        [InlineData(0, 20, 0)]
+        [InlineData(1, 20, 1)]
+        [InlineData(19, 20, 1)]
+        [InlineData(20, 20, 1)]
+        [InlineData(21, 20, 2)]
+        [InlineData(39, 20, 2)]
+        [InlineData(40, 20, 2)]
+        [InlineData(41, 20, 3)]
+        public void TotalPages_ReturnsTotalPages(Int32 totalRows, Int32 rowsPerPage, Int32 expected)
         {
-            pager.Grid.Query = HttpUtility.ParseQueryString("Grid-Page=" + currentPage);
-            pager.PagesToDisplay = pagesToDisplay;
-            pager.RowsPerPage = 1;
-            pager.TotalRows = 5;
+            GridPager<GridModel> pager = new GridPager<GridModel>(grid);
+            pager.RowsPerPage = rowsPerPage;
+            pager.TotalRows = totalRows;
 
-            Int32 actual = pager.FirstDisplayPage;
+            Int32 actual = pager.TotalPages;
 
             Assert.Equal(expected, actual);
         }
@@ -119,7 +95,7 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         [InlineData(-1)]
         public void CurrentPage_OnLessOrEqualToZeroCurrentPageReturnsOne(Int32 currentPage)
         {
-            pager.Grid.Query = new NameValueCollection();
+            pager.Grid.Query = HttpUtility.ParseQueryString("");
             pager.CurrentPage = currentPage;
 
             Int32 actual = pager.CurrentPage;
@@ -128,26 +104,120 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void CurrentPage_SetsCurrentPageFromQuery()
+        {
+            grid.Query = HttpUtility.ParseQueryString("Grid-Page=2");
+            pager.TotalRows = 4 * pager.RowsPerPage;
+
+            Int32 actual = pager.CurrentPage;
+            Int32 expected = 2;
+
+            Assert.Equal(expected, actual);
+        }
+
         #endregion
 
-        #region TotalPages
+        #region RowsPerPage
 
         [Theory]
-        [InlineData(0, 20, 0)]
-        [InlineData(1, 20, 1)]
-        [InlineData(19, 20, 1)]
-        [InlineData(20, 20, 1)]
-        [InlineData(21, 20, 2)]
-        [InlineData(39, 20, 2)]
-        [InlineData(40, 20, 2)]
-        [InlineData(41, 20, 3)]
-        public void TotalPages_ReturnsTotalPages(Int32 totalRows, Int32 rowsPerPage, Int32 expected)
+        [InlineData("", 3)]
+        [InlineData("Grid-Rows=", 3)]
+        [InlineData("Grid-Rows=2a", 3)]
+        public void RowsPerPage_OnInvalidQueryRowsUsesRowsPerPage(String query, Int32 rowsPerPage)
         {
-            GridPager<GridModel> pager = new GridPager<GridModel>(grid);
+            pager.Grid.Query = HttpUtility.ParseQueryString(query);
             pager.RowsPerPage = rowsPerPage;
-            pager.TotalRows = totalRows;
+            pager.TotalRows = 500;
 
-            Int32 actual = pager.TotalPages;
+            Int32 actual = pager.RowsPerPage;
+            Int32 expected = rowsPerPage;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("Grid-Rows=0")]
+        [InlineData("Grid-Rows=-1")]
+        public void RowsPerPage_OnLessOrEqualToZeroQueryPageReturnsOne(String query)
+        {
+            pager.Grid.Query = HttpUtility.ParseQueryString(query);
+            pager.RowsPerPage = 5;
+
+            Int32 actual = pager.RowsPerPage;
+            Int32 expected = 1;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public void RowsPerPage_OnLessOrEqualToZeroCurrentPageReturnsOne(Int32 rowsPerPage)
+        {
+            pager.Grid.Query = HttpUtility.ParseQueryString("");
+            pager.RowsPerPage = rowsPerPage;
+
+            Int32 actual = pager.RowsPerPage;
+            Int32 expected = 1;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void RowsPerPage_SetsRowsPerPageFromQuery()
+        {
+            grid.Query = HttpUtility.ParseQueryString("Grid-Rows=123");
+
+            Int32 actual = pager.RowsPerPage;
+            Int32 expected = 123;
+
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region FirstDisplayPage
+
+        [Theory]
+        [InlineData(1, 1, 1)]
+        [InlineData(1, 2, 2)]
+        [InlineData(1, 3, 3)]
+        [InlineData(1, 4, 4)]
+        [InlineData(1, 5, 5)]
+        [InlineData(2, 1, 1)]
+        [InlineData(2, 2, 2)]
+        [InlineData(2, 3, 3)]
+        [InlineData(2, 4, 4)]
+        [InlineData(2, 5, 4)]
+        [InlineData(3, 1, 1)]
+        [InlineData(3, 2, 1)]
+        [InlineData(3, 3, 2)]
+        [InlineData(3, 4, 3)]
+        [InlineData(3, 5, 3)]
+        [InlineData(4, 1, 1)]
+        [InlineData(4, 2, 1)]
+        [InlineData(4, 3, 2)]
+        [InlineData(4, 4, 2)]
+        [InlineData(4, 5, 2)]
+        [InlineData(5, 1, 1)]
+        [InlineData(5, 2, 1)]
+        [InlineData(5, 3, 1)]
+        [InlineData(5, 4, 1)]
+        [InlineData(5, 5, 1)]
+        [InlineData(6, 1, 1)]
+        [InlineData(6, 2, 1)]
+        [InlineData(6, 3, 1)]
+        [InlineData(6, 4, 1)]
+        [InlineData(6, 5, 1)]
+        public void FirstDisplayPage_ReturnsFirstDisplayPage(Int32 pagesToDisplay, Int32 currentPage, Int32 expected)
+        {
+            pager.Grid.Query = HttpUtility.ParseQueryString("Grid-Page=" + currentPage);
+            pager.PagesToDisplay = pagesToDisplay;
+            pager.RowsPerPage = 1;
+            pager.TotalRows = 5;
+
+            Int32 actual = pager.FirstDisplayPage;
 
             Assert.Equal(expected, actual);
         }
@@ -175,6 +245,15 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
+        public void GridPager_SetsRowsPerPage()
+        {
+            Int32 actual = new GridPager<GridModel>(grid).RowsPerPage;
+            Int32 expected = 20;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void GridPager_SetsPagesToDisplay()
         {
             Int32 actual = new GridPager<GridModel>(grid).PagesToDisplay;
@@ -197,24 +276,6 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         {
             GridProcessorType actual = new GridPager<GridModel>(grid).ProcessorType;
             GridProcessorType expected = GridProcessorType.Post;
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Theory]
-        [InlineData("", 20)]
-        [InlineData("Grid-=123", 20)]
-        [InlineData("Grid-A=123", 20)]
-        [InlineData("Grid-Rows=", 20)]
-        [InlineData("Grid-Rows=A", 20)]
-        [InlineData("Grid-Rows=123", 123)]
-        [InlineData("Other-Rows=1234", 20)]
-        public void GridPager_SetsRowsPerPageFromQuery(String query, Int32 rows)
-        {
-            grid.Query = HttpUtility.ParseQueryString(query);
-
-            Int32 actual = new GridPager<GridModel>(grid).RowsPerPage;
-            Int32 expected = rows;
 
             Assert.Equal(expected, actual);
         }
