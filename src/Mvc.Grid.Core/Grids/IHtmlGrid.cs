@@ -22,6 +22,7 @@ namespace NonFactors.Mvc.Grid
         IHtmlGrid<T> Css(String cssClasses);
         IHtmlGrid<T> Empty(String text);
         IHtmlGrid<T> Named(String name);
+        IHtmlGrid<T> Id(String id);
 
         IHtmlGrid<T> Pageable(Action<IGridPager<T>> builder);
         IHtmlGrid<T> Pageable();

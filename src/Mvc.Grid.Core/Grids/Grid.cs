@@ -11,6 +11,7 @@ namespace NonFactors.Mvc.Grid
         public String Name { get; set; }
         public String EmptyText { get; set; }
         public String CssClasses { get; set; }
+        public String Id { get; set; }
 
         public IQueryable<T> Source { get; set; }
         public NameValueCollection Query { get; set; }

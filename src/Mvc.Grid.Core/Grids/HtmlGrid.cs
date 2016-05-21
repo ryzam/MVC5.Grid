@@ -91,6 +91,12 @@ namespace NonFactors.Mvc.Grid
 
             return this;
         }
+        public virtual IHtmlGrid<T> Id(String id)
+        {
+            Grid.Id = id;
+
+            return this;
+        }
 
         public virtual IHtmlGrid<T> Pageable(Action<IGridPager<T>> builder)
         {
